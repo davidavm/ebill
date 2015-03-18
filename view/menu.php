@@ -104,13 +104,13 @@
         </a>
         <ul>
             <li>
-                <a href="#">
+                  <a href="index.php?page=/si/warehouse/groups&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <span class="title">Manejo de grupos</span>
                 </a>
             </li>
             
             <li>
-                <a href="#">
+                  <a href="index.php?page=/si/warehouse/warehouse&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <span class="title">Manejo de almacenes</span>
                 </a>
             </li>
