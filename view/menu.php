@@ -33,7 +33,7 @@
 <ul class="navbar-nav">
     <li>
         <a href="">
-            <img src="<?php echo IMG_RELATIVE_PATH . "ebil/iconos/config.png"; ?>">
+            <img src="<?php echo IMG_RELATIVE_PATH . "ebil/iconos/codigo_barras.png"; ?>">
             <span class="title">Facturaci&oacute;n</span>
         </a>
         <ul>
