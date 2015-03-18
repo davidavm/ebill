@@ -220,7 +220,6 @@ $errorWebPageProperty = $property["general"]["error"];
                             </div>
 
                             <div class="user-details">
-
                                 <h3>
                                     <a href="extra-profile.html">Juan Peres</a>
                                     <span class="user-status is-online"></span>
@@ -396,12 +395,6 @@ $errorWebPageProperty = $property["general"]["error"];
                         </ul>
                     </li>
 
-                    <li>
-                        <a href="#" data-toggle="chat">
-                            <i class="linecons-params"></i>
-                        </a>
-                    </li>
-
                 </ul>
 
             </div>
@@ -472,35 +465,7 @@ $errorWebPageProperty = $property["general"]["error"];
                     </div>
                 </footer>        
                 <!-- END Pie -->
-            </div>
-            
-            <!-- START Chat Section -->
-            <div id="chat" class="fixed">
-
-                <div class="chat-inner">
-
-                    <h2 class="chat-header">
-                        <a href="#" class="chat-close" data-toggle="chat">
-                            <i class="fa-plus-circle rotate-45deg"></i>
-                        </a>
-
-                        Historial Reportes
-                        <span class="badge badge-success is-hidden">0</span>
-                    </h2>
-
-                    <div class="chat-group">
-
-                        <a href="#"><span class="user-status"></span> <em>Reporte 01/15</em> </a>
-                        <a href="#"><span class="user-status"></span> <em>Reporte 02/15</em></a>
-                        <a href="#"><span class="user-status"></span> <em>Reporte 03/15</em></a>
-                        <a href="#"><span class="user-status"></span> <em>Reporte 04/15</em></a>
-
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- END Chat Section -->
+            </div>            
         </div>
     </body>
 </html>
