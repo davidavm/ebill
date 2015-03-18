@@ -1208,7 +1208,7 @@ body {
   filter: alpha(opacity=0);
   -webkit-opacity: 0;
   -moz-opacity: 0;
-  opacity: 0;
+  opacity: 30;
 }
 .navbar.horizontal-menu .navbar-inner .navbar-brand a[data-toggle="settings-pane"] i {
   display: block;
