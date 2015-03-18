@@ -39,8 +39,8 @@
         <ul>
             <li>
                 <a href="#">
-                    <span class="title">Configuracion Factura</span>
-                    <span class="label label-info pull-right">3</span>
+                    <i class="linecons-cog"></i>
+                    <span class="title">Configuraci&oacute;n Factura</span>
                 </a>
                 <ul>
                     <li>
@@ -66,10 +66,10 @@
                     </li>
 
                 </ul>
-            </li>
-            
+            </li>            
             <li>
                 <a href="#">
+                    <i class="linecons-money"></i>
                     <span class="title">Facturar</span>
                 </a>
             </li>
@@ -85,13 +85,15 @@
         <ul>
             <li>
                 <a href="#">
-                    <span class="title">Lista</span>
+                    <i class="linecons-cog"></i>
+                    <span class="title">Configurar campos de cliente</span>
                 </a>
             </li>
             
             <li>
                 <a href="#">
-                    <span class="title">Grupos</span>
+                    <i class="linecons-wallet"></i>
+                    <span class="title">Manejar clientes</span>
                 </a>
             </li>
         </ul>
@@ -105,30 +107,35 @@
         <ul>
             <li>
                   <a href="index.php?page=/si/warehouse/groups&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
-                    <span class="title">Manejo de grupos</span>
+                      <i class="linecons-params"></i>
+                      <span class="title">Manejo de grupos</span>
                 </a>
             </li>
             
             <li>
                   <a href="index.php?page=/si/warehouse/warehouse&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                    <i class="linecons-truck"></i>  
                     <span class="title">Manejo de almacenes</span>
                 </a>
             </li>
             
             <li>
                 <a href="#">
+                    <i class="linecons-cog"></i>                    
                     <span class="title">Configurar campos de item</span>
                 </a>
             </li>
             
             <li>
                 <a href="#">
+                    <i class="linecons-t-shirt"></i>
                     <span class="title">Manejo de items</span>
                 </a>
             </li>
 
             <li>
                 <a href="#">
+                    <i class="linecons-database"></i>
                     <span class="title">Importar datos  de items</span>
                 </a>
             </li>
@@ -144,88 +151,15 @@
         <ul>
             <li>
                 <a href="#">
-                    <i class="linecons-cloud"></i>
-                    <span class="title">Menu Levels</span>
+                    <i class="inecons-location"></i>
+                    <span class="title">Manejar centros de costo</span>
                 </a>
-                <ul>
-                    <li>
-                        <a href="#">
-                            <i class="entypo-flow-line"></i>
-                            <span class="title">Menu Level 1.1</span>
-                        </a>
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    <i class="entypo-flow-parallel"></i>
-                                    <span class="title">Menu Level 2.1</span>
-                                </a>
-                            </li>
-                            
-                            <li>
-                                <a href="#">
-                                    <i class="entypo-flow-parallel"></i>
-                                    <span class="title">Menu Level 2.2</span>
-                                </a>
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i class="entypo-flow-cascade"></i>
-                                            <span class="title">Menu Level 3.1</span>
-                                        </a>
-                                    </li>
-                                    
-                                    <li>
-                                        <a href="#">
-                                            <i class="entypo-flow-cascade"></i>
-                                            <span class="title">Menu Level 3.2</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="#">
-                                                    <i class="entypo-flow-branch"></i>
-                                                    <span class="title">Menu Level 4.1</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                    
-                            <li>
-                                <a href="#">
-                                    <i class="entypo-flow-parallel"></i>
-                                    <span class="title">Menu Level 2.3</span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </li>
-                    
-                    <li>
-                        <a href="#">
-                            <i class="entypo-flow-line"></i>
-                            <span class="title">Menu Level 1.2</span>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="#">
-                            <i class="entypo-flow-line"></i>
-                            <span class="title">Menu Level 1.3</span>
-                        </a>
-                    </li>
-                    
-                </ul>
             </li>
             
             <li>
                 <a href="#">
-                    <span class="title">Lista</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <span class="title">Stock</span>
+                    <i class="linecons-money"></i>
+                    <span class="title">Compras</span>
                 </a>
             </li>
 
@@ -240,123 +174,31 @@
         <ul>
             <li>
                 <a href="#">
-                    <span class="title">Lista de proveedores</span>
+                    <i class="linecons-cog"></i>
+                    <span class="title">Configurar campos de proveedor</span>
                 </a>
             </li>
+            <li>
+                <a href="#">
+                    <i class="linecons-tag"></i>
+                    <span class="title">Manejar Proveedores</span>
+                </a>
+            </li>            
         </ul>
     </li>
     
     <li>
         <a href="">
             <img src="<?php echo IMG_RELATIVE_PATH . "ebil/iconos/bank.png"; ?>">
-            <span class="title">Bancarización</span>
+            <span class="title">Bancarizaci&oacute;n</span>
         </a>
         <ul>
             <li>
                 <a href="ui-widgets.html">
-                    <i class="linecons-star"></i>
-                    <span class="title">Menu nivel 1</span>
+                    <i class="linecons-diamond"></i>
+                    <span class="title">Realizar Bancarizaci&oacute;n</span>
                 </a>
-            </li>
-            
-            <li>
-                <a href="mailbox-main.html">
-                    <i class="linecons-mail"></i>
-                    <span class="title">Menu nivel 1</span>
-                    <span class="label label-success pull-right">3</span>
-                </a>
-                <ul>
-                    <li>
-                        <a href="mailbox-main.html">
-                            <span class="title">Menu Nivel 2</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="mailbox-compose.html">
-                            <span class="title">Menu Nivel 2</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="mailbox-message.html">
-                            <span class="title">Menu Nivel 2</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="extra-gallery.html">
-                    <i class="linecons-beaker"></i>
-                    <span class="title">Menu Multinivel</span>
-
-                </a>
-                <ul>
-                    <li>
-                        <a href="#">
-                            <span class="title">Menu Nivel 2</span>
-                            <span class="label label-warning pull-right">4</span>
-                        </a>
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    <span class="title">Menu Nivel 3</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="title">Menu Nivel 3</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="title">Menu Nivel 3</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="title">Menu Nivel 3</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="title">Menu Nivel 2</span>
-                        </a>
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    <span class="title">Menu Nivel 3</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="title">Menu Nivel 3</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span class="title">Menu Nivel 3</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="title">Menu Nivel 2</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#">
-                            <span class="title">Menu Nivel 2</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-
-
+            </li>            
         </ul>
     </li>
 
@@ -368,15 +210,24 @@
         <ul>
             <li>
                 <a href="index.php?page=/si/security/business&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                    <i class="linecons-shop"></i>
                     <span class="title">Manejo de empresas</span>
                 </a>
             </li>
             
             <li>
                 <a href="#">
+                    <i class="linecons-user"></i>
                     <span class="title">Manejo de usuarios</span>
                 </a>
             </li>
+            
+            <li>
+                <a href="#">
+                    <i class="linecons-key"></i>
+                    <span class="title">Cambiar mi contrase&nacute;a</span>
+                </a>
+            </li>            
 
         </ul>
     </li>
@@ -389,9 +240,45 @@
         <ul>
             <li>
                 <a href="#">
-                    <span class="title">Reporte por fechas</span>
+                    <i class="linecons-doc"></i>
+                    <span class="title">Reportes</span>
                 </a>
+                <ul>
+                    <li>
+                        <a href="#">
+                            <span class="title">Libro de compras y ventas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="title">Ventas mensuales</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="title">Almacenes</span>
+                        </a>
+                    </li>                    
+                </ul>                
             </li>
+            <li>
+                <a href="#">
+                    <i class="linecons-fire"></i>
+                    <span class="title">Reportes r&aacute;pidos</span>
+                </a>
+                <ul>
+                    <li>
+                        <a href="#">
+                            <span class="title">Ventas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="title">Almacenes</span>
+                        </a>
+                    </li>                 
+                </ul>                 
+            </li>            
 
         </ul>
     </li>
