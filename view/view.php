@@ -369,12 +369,6 @@ $errorWebPageProperty = $property["general"]["error"];
 
                         <ul class="dropdown-menu user-profile-menu list-unstyled">
                             <li>
-                                <a href="#settings">
-                                    <i class="fa-wrench"></i>
-                                    Configuraciones
-                                </a>
-                            </li>
-                            <li>
                                 <a href="#profile">
                                     <i class="fa-user"></i>
                                     Mi Perfil
