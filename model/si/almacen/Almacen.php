@@ -106,14 +106,23 @@
                                         `almacen` ,
                                         `descripcion` ,
                                         `fk_id_grupo` ,
+                                        (select grupo
+                                        from grupo
+                                        where pk_id_grupo=a.fk_id_grupo
+                                        and estado_registro='A') grupo,
                                         `fk_id_sistema_valoracion_inventario` ,
+                                        (select descripcion
+                                        from catalogo
+                                        where pk_id_catalogo=a.fk_id_sistema_valoracion_inventario
+                                        and estado_registro='A'
+                                        and catalogo='sistema_valoracion_inventario') sistema_valoracion_inventario,
                                         date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
                                         `usuario_transaccion` ,
                                         `estado_registro` ,
                                         `transaccion_creacion` ,
                                         `transaccion_modificacion` ,
                                         `fk_id_empresa`
-                                from almacen
+                                from almacen a
                                 where `estado_registro`='A'
                                 ";
 
@@ -225,7 +234,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_baja(?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call almacen_baja(?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);  
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
