@@ -138,7 +138,7 @@ DELIMITER ;
 -- Volcando estructura para procedimiento almacen_baja
 DROP PROCEDURE IF EXISTS `almacen_baja`;
 DELIMITER //
-CREATE  PROCEDURE `almacen_baja`( `pk_id_almacen` INT(11),                                 
+CREATE  PROCEDURE `almacen_baja`( `pi_pk_id_almacen` INT(11),                                 
 											`pi_usuario_transaccion` INT(11) ,											
 											`pi_transaccion_modificacion` INT(11) ,
 											`pi_fk_id_empresa` INT(11),

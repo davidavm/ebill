@@ -145,7 +145,7 @@ DELIMITER ;
 -- Volcando estructura para procedimiento grupo_baja
 DROP PROCEDURE IF EXISTS `grupo_baja`;
 DELIMITER //
-CREATE  PROCEDURE `grupo_baja`( `pk_id_grupo` INT(11),                                 
+CREATE  PROCEDURE `grupo_baja`( `pi_pk_id_grupo` INT(11),                                 
 											`pi_usuario_transaccion` INT(11) ,											
 											`pi_transaccion_modificacion` INT(11) ,
 											`pi_fk_id_empresa` INT(11),
