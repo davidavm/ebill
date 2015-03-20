@@ -16,7 +16,7 @@ $("form#formObject").validate({
                            alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
                           },
                     almacen: {required: " Este campo debe ser llenado.",
-                           alfanumer+icoespacio: " Ingrese Letras y n&uacute;meros."
+                           alfanumericoespacio: " Ingrese Letras y n&uacute;meros."
                           }                        
                    }
 });
