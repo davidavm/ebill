@@ -5,7 +5,7 @@ $("form#formObject").validate({
                         required: true,
                         alfanumericoespacio: true
                        },
-                alamcen: {
+                almacen: {
                         required: true,
                         alfanumerico: true
                        }
