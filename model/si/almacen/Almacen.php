@@ -131,6 +131,39 @@
             }            
         }
 
+        
+        /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function isExist( $dato ){
+            $result = false;
+            $query = NULL;
+            $aux = NULL;
+            try{
+                $query = "select count(1) existe
+                          from almacen
+                          where estado_registro = 'A' 
+                          and ( almacen = ?  )";
+
+                $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
+                $aux = $resultAux[0];
+                $result = $aux["existe"]==0 ? false : true;
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+        
+        
     /**
      * The implementation method for insert data to the instance data Base.
      *
