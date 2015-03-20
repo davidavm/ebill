@@ -376,12 +376,8 @@ if ($action == 'list') {
                                         ?> ></option>
                                         <?php
                                         
-                                        if($action == 'edit_form' || $action == 'view_form'){
                                         $svi = new Catalogo($registry[$dbSystem]);
                                         $result = $svi->getCatalogo('sistema_valoracion_inventario');
-                                        
-                                        echo '<PRE>';
-                                        print_r($result);
                                         
                                         foreach ($result as $indice => $register) {
                                         ?>
@@ -391,8 +387,7 @@ if ($action == 'list') {
                                             }
                                         ?> ><?php echo $register["descripcion"]; ?></option>
                                         <?php
-                                        }
-                                        }
+                                        }                                       
                                         ?>
                                     </select>                                    
                                 </div>                            
