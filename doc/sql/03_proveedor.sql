@@ -165,7 +165,7 @@ BEGIN
 									
 									`transaccion_modificacion` = `pi_transaccion_modificacion` ,
 									`fk_id_empresa` = `pi_fk_id_empresa` 	
-					where pk_id_proveedor=pk_id_proveedor;			
+					where pk_id_proveedor=pi_pk_id_proveedor;			
 									 
 	      
       SET po_resultado = pk_id_proveedor;
@@ -181,7 +181,7 @@ DELIMITER ;
 -- Volcando estructura para procedimiento usuario_baja
 DROP PROCEDURE IF EXISTS proveedor_baja;
 DELIMITER //
-CREATE  PROCEDURE proveedor_baja( pk_id_proveedor INT(11),                                 
+CREATE  PROCEDURE proveedor_baja( pi_pk_id_proveedor INT(11),                                 
 											pi_usuario_transaccion INT(11) ,											
 											pi_transaccion_modificacion INT(11) ,
 											pi_fk_id_empresa INT(11),
@@ -213,7 +213,7 @@ BEGIN
 									estado_registro ='E',
 									transaccion_modificacion  =pi_transaccion_modificacion,
 									fk_id_empresa=pi_fk_id_empresa 	
-					where pk_id_proveedor=pk_id_proveedor;			
+					where pk_id_proveedor=pi_pk_id_proveedor;			
 									 
 	      
       SET po_resultado = pk_id_proveedor;
