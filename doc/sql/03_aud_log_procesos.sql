@@ -14,8 +14,10 @@ CREATE TABLE aud_log_procesos (
   param_value text,
   package text,
   operacion text,
-  sql text,
+  sql_text text,
   sql_data text,
+  error_code varchar(10) default null,
+  error_text text default null,
   PRIMARY KEY (id_log)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tabla de registro de logs';
 

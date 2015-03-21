@@ -15,17 +15,24 @@ CREATE  PROCEDURE `almacen_alta`( `pi_cod_almacen` VARCHAR(255) ,
 											`pi_fk_id_empresa` INT(11),
 											OUT po_resultado INT)
 BEGIN
-	DECLARE v_id INT;
-    DECLARE v_res INT;
+        DECLARE v_id INT;
+        DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
+
+        DECLARE code VARCHAR(5) DEFAULT '00000';
+        DECLARE msg TEXT;
+        DECLARE result TEXT;
 	
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
-    BEGIN		
+          BEGIN		
 		ROLLBACK;
+                GET DIAGNOSTICS CONDITION 1
+                code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT;
 		SET po_resultado = -1;
-		CALL audit_update(v_res, current_timestamp(), 'ERROR: PROCESO TERMINO CON ERRORES', v_cant_reg, 'N', @resultado);
-	END;
+		SET result = CONCAT('ERROR: PROCESO TERMINO CON ERRORES code: ',code,' msg: ',msg);
+		CALL audit_update(v_res, current_timestamp(),result , v_cant_reg, 'N', @resultado);
+	  END;
 	
 	SET nombre_proceso ='almacen_alta';
 	
@@ -34,7 +41,8 @@ BEGIN
 	-- REGISTRO DE LOG
 	CALL `audit_insert`(nombre_proceso, current_timestamp(), @resultado);
 	SELECT @resultado INTO v_res;
-
+      
+    
       INSERT INTO almacen (`cod_almacen`  ,
 											`almacen`  ,
 											`descripcion`  ,
@@ -60,7 +68,7 @@ BEGIN
 											`pi_transaccion_modificacion`,
 											`pi_fk_id_empresa`             
 		        					);
-	      
+
       SET po_resultado = LAST_INSERT_ID();
 	  SET v_cant_reg = ROW_COUNT();
 	  
@@ -70,7 +78,6 @@ BEGIN
 
 END//
 DELIMITER ;
-
 
 -- Volcando estructura para procedimiento almacen_modif
 DROP PROCEDURE IF EXISTS `almacen_modif`;
