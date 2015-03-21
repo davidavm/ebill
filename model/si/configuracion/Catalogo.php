@@ -45,6 +45,8 @@
      const ALL = -1;
      const VALUE = 1;
      const NONE = 0;
+     const SYSTEM = -2; // Devuelve el catalogo de todos los valores del sistema y de la empresa especifica
+
      // Operations
      const INSERT = "INSERT TABLE Catalogo";
      const UPDATE = "UPDATE TABLE Catalogo";
@@ -89,7 +91,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idCatalogo = self::ALL){
+        public function getList($idCatalogo = self::ALL, $idEmpresa = self::SYSTEM ){
             $result = NULL;
             $query = NULL;            
             try{
@@ -98,12 +100,22 @@
                          "WHERE  estado_registro = 'A' ";                         
 
                 if( $idCatalogo != self::ALL){
-                $query = $query." AND id_catalogo = ? ";
-                $result = DataBase::getArrayListQuery($query, array($idCatalogo), $this->instanceDataBase);
-                }
-                else{
+                    if ($idEmpresa != self::SYSTEM) {
+                    $query = $query." AND id_catalogo = ? ";
+                    $query = $query . " AND ( fk_id_empresa = ? OR fk_id_empresa IS NULL ) ";
+                    $result = DataBase::getArrayListQuery($query, array($idCatalogo, $idEmpresa), $this->instanceDataBase);
+                    } else if ($idEmpresa != self::SYSTEM ) {
+                    $query = $query." AND id_catalogo = ? ";
+                    $result = DataBase::getArrayListQuery($query, array($idCatalogo), $this->instanceDataBase);    
+                    }                
+                } else if ($idEmpresa != self::SYSTEM) {                    
+                    $query = $query . " AND ( fk_id_empresa = ? OR fk_id_empresa IS NULL ) ";
+                    $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);    
+                } else{
+        
                 $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
                 }
+                
                 return $result;
             }
             catch(PDOException $e){
@@ -122,7 +134,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getCatalogo($catalog = self::ALL){
+        public function getCatalogo($catalog = self::ALL, $idEmpresa = self::SYSTEM ){
             $result = NULL;
             $query = NULL;            
             try{
@@ -131,11 +143,19 @@
                          "WHERE  estado_registro = 'A' ";                         
 
                 if( $catalog != self::ALL){
-                $query = $query." AND catalogo = ? order by orden asc ";
-                $result = DataBase::getArrayListQuery($query, array($catalog), $this->instanceDataBase);
+                    if( $idEmpresa != self::SYSTEM ){
+                        $query = $query." AND catalogo = ? AND ( fk_id_empresa = ? OR fk_id_empresa IS NULL ) order by orden asc ";
+                        $result = DataBase::getArrayListQuery($query, array($catalog, $idEmpresa), $this->instanceDataBase);    
+                    } else{
+                        $query = $query." AND catalogo = ? order by orden asc ";
+                        $result = DataBase::getArrayListQuery($query, array($catalog), $this->instanceDataBase);
+                    }
+                } else if( $idEmpresa != self::SYSTEM ){
+                        $query = $query." AND ( fk_id_empresa = ? OR fk_id_empresa IS NULL ) order by orden asc ";
+                        $result = DataBase::getArrayListQuery($query, array($catalog), $this->instanceDataBase);
                 }
                 else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
                 }
                 return $result;
             }
@@ -155,15 +175,20 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getCatalogoHijos($catalogChildren, $idFather){
+        public function getCatalogoHijos($catalogChildren, $idFather, $idEmpresa = self::SYSTEM){
             $result = NULL;
             $query = NULL;            
             try{
-                $query = "select pk_id_catalogo, descripcion
+                $query = "select pk_id_catalogo, descripcion, catalogo, negocio, orden, dependencia, fecha_transaccion, comentario, usuario_transaccion, estado_registro, cnf_base, transaccion_creacion, transaccion_modificacion, fk_id_empresa 
                          from   catalogo 
-                         where  estado_registro = 'A' 
-                          and catalogo = ? and dependencia = ? order by orden asc ";
-                $result = DataBase::getArrayListQuery($query, array($catalogChildren, $idFather), $this->instanceDataBase);
+                         where  estado_registro = 'A' ";
+                if( $idEmpresa != self::SYSTEM){
+                    $query = $query . " and catalogo = ? and dependencia = ? and ( fk_id_empresa = ? or fk_id_empresa is null ) order by orden asc ";
+                    $result = DataBase::getArrayListQuery($query, array($catalogChildren, $idFather, $idEmpresa ), $this->instanceDataBase);    
+                } else{
+                    $query = $query . " and catalogo = ? and dependencia = ? order by orden asc ";
+                    $result = DataBase::getArrayListQuery($query, array($catalogChildren, $idFather ), $this->instanceDataBase);                        
+                }
                 return $result;
             }
             catch(PDOException $e){

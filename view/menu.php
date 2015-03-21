@@ -203,7 +203,7 @@
     </li>
 
     <li>
-        <a href="forms-native.html">
+        <a href="index.php?page=/si/security/users&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
             <img src="<?php echo IMG_RELATIVE_PATH . "ebil/iconos/provider.png"; ?>">
             <span class="title">Seguridad</span>
         </a>
@@ -214,16 +214,23 @@
                     <span class="title">Manejo de empresas</span>
                 </a>
             </li>
+
+            <li>
+                <a href="index.php?page=/si/security/people&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                    <i class="linecons-thumbs-up"></i>
+                    <span class="title">Manejo de personas</span>
+                </a>
+            </li>
             
             <li>
-                <a href="#">
+                <a href="index.php?page=/si/security/users&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <i class="linecons-user"></i>
                     <span class="title">Manejo de usuarios</span>
                 </a>
             </li>
             
             <li>
-                <a href="#">
+                <a href="index.php?page=/si/security/changepwd&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <i class="linecons-key"></i>
                     <span class="title">Cambiar mi contrase&nacute;a</span>
                 </a>

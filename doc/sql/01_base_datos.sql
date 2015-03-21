@@ -4,7 +4,7 @@
 -- Project :      EBIL
 -- Author :       wallejlla
 --
--- Date Created : Friday, March 13, 2015 07:30:35
+-- Date Created : Friday, March 20, 2015 14:04:57
 -- Target DBMS : MySQL 5.x
 --
 
@@ -572,6 +572,11 @@ CREATE TABLE persona(
     fk_tipo_documento_identidad       INT,
     numero_identidad                  VARCHAR(255),
     fk_departamento_expedicion_doc    INT,
+    direccion                         TEXT,
+    telefono1                         VARCHAR(255),
+    telefono2                         VARCHAR(255),
+    telefono3                         VARCHAR(255),
+    fk_id_archivo_foto                INT,
     fecha_transaccion                 DATETIME        NOT NULL,
     usuario_transaccion               INT,
     estado_registro                   VARCHAR(32),
@@ -800,11 +805,6 @@ ALTER TABLE actividad_economica ADD CONSTRAINT Refcatalogo255
 -- TABLE: almacen 
 --
 
-ALTER TABLE almacen ADD CONSTRAINT Refusuario315 
-    FOREIGN KEY (usuario_transaccion)
-    REFERENCES usuario(pk_id_usuario)
-;
-
 ALTER TABLE almacen ADD CONSTRAINT Refgrupo382 
     FOREIGN KEY (fk_id_grupo)
     REFERENCES grupo(pk_id_grupo)
@@ -813,6 +813,11 @@ ALTER TABLE almacen ADD CONSTRAINT Refgrupo382
 ALTER TABLE almacen ADD CONSTRAINT Refcatalogo384 
     FOREIGN KEY (fk_id_sistema_valoracion_inventario)
     REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE almacen ADD CONSTRAINT Refusuario315 
+    FOREIGN KEY (usuario_transaccion)
+    REFERENCES usuario(pk_id_usuario)
 ;
 
 ALTER TABLE almacen ADD CONSTRAINT Refconstante328 
@@ -855,14 +860,14 @@ ALTER TABLE archivo ADD CONSTRAINT Reftransaccion_log218
     REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
 
-ALTER TABLE archivo ADD CONSTRAINT Refempresa240 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
 ALTER TABLE archivo ADD CONSTRAINT Refcatalogo310 
     FOREIGN KEY (fk_id_tipo_archivo)
     REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE archivo ADD CONSTRAINT Refempresa240 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
 ;
 
 ALTER TABLE archivo ADD CONSTRAINT Reftransaccion_log311 
@@ -935,11 +940,6 @@ ALTER TABLE campo_entrada ADD CONSTRAINT Refusuario193
     REFERENCES usuario(pk_id_usuario)
 ;
 
-ALTER TABLE campo_entrada ADD CONSTRAINT Refconstante203 
-    FOREIGN KEY (estado_registro)
-    REFERENCES constante(pk_id_constante)
-;
-
 ALTER TABLE campo_entrada ADD CONSTRAINT Refcatalogo303 
     FOREIGN KEY (fk_tipo_entrada_formulario)
     REFERENCES catalogo(pk_id_catalogo)
@@ -948,6 +948,11 @@ ALTER TABLE campo_entrada ADD CONSTRAINT Refcatalogo303
 ALTER TABLE campo_entrada ADD CONSTRAINT Refcatalogo304 
     FOREIGN KEY (fk_id_entidad_campo_entrada)
     REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE campo_entrada ADD CONSTRAINT Refconstante203 
+    FOREIGN KEY (estado_registro)
+    REFERENCES constante(pk_id_constante)
 ;
 
 ALTER TABLE campo_entrada ADD CONSTRAINT Reftransaccion_log215 
@@ -1060,6 +1065,16 @@ ALTER TABLE carga_datos ADD CONSTRAINT Refcatalogo314
 -- TABLE: catalogo 
 --
 
+ALTER TABLE catalogo ADD CONSTRAINT Refconstante2 
+    FOREIGN KEY (estado_registro)
+    REFERENCES constante(pk_id_constante)
+;
+
+ALTER TABLE catalogo ADD CONSTRAINT Refconstante3 
+    FOREIGN KEY (cnf_base)
+    REFERENCES constante(pk_id_constante)
+;
+
 ALTER TABLE catalogo ADD CONSTRAINT Refusuario171 
     FOREIGN KEY (usuario_transaccion)
     REFERENCES usuario(pk_id_usuario)
@@ -1078,16 +1093,6 @@ ALTER TABLE catalogo ADD CONSTRAINT Reftransaccion_log173
 ALTER TABLE catalogo ADD CONSTRAINT Refempresa264 
     FOREIGN KEY (fk_id_empresa)
     REFERENCES empresa(pk_id_empresa)
-;
-
-ALTER TABLE catalogo ADD CONSTRAINT Refconstante2 
-    FOREIGN KEY (estado_registro)
-    REFERENCES constante(pk_id_constante)
-;
-
-ALTER TABLE catalogo ADD CONSTRAINT Refconstante3 
-    FOREIGN KEY (cnf_base)
-    REFERENCES constante(pk_id_constante)
 ;
 
 
@@ -1200,14 +1205,14 @@ ALTER TABLE compra ADD CONSTRAINT Reftipo_compra394
 -- TABLE: constante 
 --
 
-ALTER TABLE constante ADD CONSTRAINT Refempresa265 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
 ALTER TABLE constante ADD CONSTRAINT Refconstante1 
     FOREIGN KEY (cnf_base)
     REFERENCES constante(pk_id_constante)
+;
+
+ALTER TABLE constante ADD CONSTRAINT Refempresa265 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
 ;
 
 
@@ -1345,11 +1350,6 @@ ALTER TABLE empresa ADD CONSTRAINT Refcatalogo290
 -- TABLE: factura 
 --
 
-ALTER TABLE factura ADD CONSTRAINT Refusuario326 
-    FOREIGN KEY (usuario_transaccion)
-    REFERENCES usuario(pk_id_usuario)
-;
-
 ALTER TABLE factura ADD CONSTRAINT Refcatalogo396 
     FOREIGN KEY (fk_id_formato_dato_recargo)
     REFERENCES catalogo(pk_id_catalogo)
@@ -1358,6 +1358,11 @@ ALTER TABLE factura ADD CONSTRAINT Refcatalogo396
 ALTER TABLE factura ADD CONSTRAINT Refcatalogo397 
     FOREIGN KEY (fk_id_formato_dato_descuento)
     REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE factura ADD CONSTRAINT Refusuario326 
+    FOREIGN KEY (usuario_transaccion)
+    REFERENCES usuario(pk_id_usuario)
 ;
 
 ALTER TABLE factura ADD CONSTRAINT Refcatalogo398 
@@ -1465,11 +1470,6 @@ ALTER TABLE formato_factura ADD CONSTRAINT Refcatalogo262
 -- TABLE: grupo 
 --
 
-ALTER TABLE grupo ADD CONSTRAINT Refusuario316 
-    FOREIGN KEY (usuario_transaccion)
-    REFERENCES usuario(pk_id_usuario)
-;
-
 ALTER TABLE grupo ADD CONSTRAINT Refgrupo380 
     FOREIGN KEY (fk_id_grupo_padre)
     REFERENCES grupo(pk_id_grupo)
@@ -1478,6 +1478,11 @@ ALTER TABLE grupo ADD CONSTRAINT Refgrupo380
 ALTER TABLE grupo ADD CONSTRAINT Refcatalogo381 
     FOREIGN KEY (fk_id_tipo_grupo)
     REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE grupo ADD CONSTRAINT Refusuario316 
+    FOREIGN KEY (usuario_transaccion)
+    REFERENCES usuario(pk_id_usuario)
 ;
 
 ALTER TABLE grupo ADD CONSTRAINT Refconstante329 
@@ -1525,11 +1530,6 @@ ALTER TABLE item ADD CONSTRAINT Reftransaccion_log229
     REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
 
-ALTER TABLE item ADD CONSTRAINT Refempresa241 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
 ALTER TABLE item ADD CONSTRAINT Refcampo_entrada305 
     FOREIGN KEY (fk_id_unidad_medida)
     REFERENCES campo_entrada(pk_id_campo_entrada)
@@ -1545,10 +1545,20 @@ ALTER TABLE item ADD CONSTRAINT Refarchivo309
     REFERENCES archivo(pk_id_archivo)
 ;
 
+ALTER TABLE item ADD CONSTRAINT Refempresa241 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
+;
+
 
 -- 
 -- TABLE: menu 
 --
+
+ALTER TABLE menu ADD CONSTRAINT Refmenu411 
+    FOREIGN KEY (fk_id_menu_father)
+    REFERENCES menu(pk_id_menu)
+;
 
 ALTER TABLE menu ADD CONSTRAINT Refusuario321 
     FOREIGN KEY (usuario_transaccion)
@@ -1575,20 +1585,10 @@ ALTER TABLE menu ADD CONSTRAINT Refempresa373
     REFERENCES empresa(pk_id_empresa)
 ;
 
-ALTER TABLE menu ADD CONSTRAINT Refmenu411 
-    FOREIGN KEY (fk_id_menu_father)
-    REFERENCES menu(pk_id_menu)
-;
-
 
 -- 
 -- TABLE: movimiento 
 --
-
-ALTER TABLE movimiento ADD CONSTRAINT Refusuario318 
-    FOREIGN KEY (usuario_transaccion)
-    REFERENCES usuario(pk_id_usuario)
-;
 
 ALTER TABLE movimiento ADD CONSTRAINT Refcatalogo385 
     FOREIGN KEY (fk_id_sistema_valoracion_inventario)
@@ -1605,9 +1605,9 @@ ALTER TABLE movimiento ADD CONSTRAINT Refalmacen387
     REFERENCES almacen(pk_id_almacen)
 ;
 
-ALTER TABLE movimiento ADD CONSTRAINT Refconstante331 
-    FOREIGN KEY (estado_registro)
-    REFERENCES constante(pk_id_constante)
+ALTER TABLE movimiento ADD CONSTRAINT Refusuario318 
+    FOREIGN KEY (usuario_transaccion)
+    REFERENCES usuario(pk_id_usuario)
 ;
 
 ALTER TABLE movimiento ADD CONSTRAINT Reffactura400 
@@ -1620,19 +1620,24 @@ ALTER TABLE movimiento ADD CONSTRAINT Refitem401
     REFERENCES item(pk_id_item)
 ;
 
+ALTER TABLE movimiento ADD CONSTRAINT Refconstante331 
+    FOREIGN KEY (estado_registro)
+    REFERENCES constante(pk_id_constante)
+;
+
 ALTER TABLE movimiento ADD CONSTRAINT Refcompra407 
     FOREIGN KEY (fk_id_compra)
     REFERENCES compra(pk_id_compra)
 ;
 
-ALTER TABLE movimiento ADD CONSTRAINT Reftransaccion_log344 
-    FOREIGN KEY (transaccion_creacion)
-    REFERENCES transaccion_log(pk_id_transaccion_log)
-;
-
 ALTER TABLE movimiento ADD CONSTRAINT Refcatalogo408 
     FOREIGN KEY (fk_id_motivo_movimiento)
     REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE movimiento ADD CONSTRAINT Reftransaccion_log344 
+    FOREIGN KEY (transaccion_creacion)
+    REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
 
 ALTER TABLE movimiento ADD CONSTRAINT Reftransaccion_log357 
@@ -1675,21 +1680,6 @@ ALTER TABLE permiso ADD CONSTRAINT Refusuario100
 -- TABLE: persona 
 --
 
-ALTER TABLE persona ADD CONSTRAINT Refcatalogo181 
-    FOREIGN KEY (fk_departamento_expedicion_doc)
-    REFERENCES catalogo(pk_id_catalogo)
-;
-
-ALTER TABLE persona ADD CONSTRAINT Refcatalogo182 
-    FOREIGN KEY (fk_tipo_documento_identidad)
-    REFERENCES catalogo(pk_id_catalogo)
-;
-
-ALTER TABLE persona ADD CONSTRAINT Refempresa232 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
 ALTER TABLE persona ADD CONSTRAINT Reftransaccion_log27 
     FOREIGN KEY (transaccion_modificacion)
     REFERENCES transaccion_log(pk_id_transaccion_log)
@@ -1705,9 +1695,29 @@ ALTER TABLE persona ADD CONSTRAINT Reftransaccion_log35
     REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
 
+ALTER TABLE persona ADD CONSTRAINT Refcatalogo181 
+    FOREIGN KEY (fk_departamento_expedicion_doc)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE persona ADD CONSTRAINT Refcatalogo182 
+    FOREIGN KEY (fk_tipo_documento_identidad)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
 ALTER TABLE persona ADD CONSTRAINT Refusuario109 
     FOREIGN KEY (usuario_transaccion)
     REFERENCES usuario(pk_id_usuario)
+;
+
+ALTER TABLE persona ADD CONSTRAINT Refempresa232 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
+;
+
+ALTER TABLE persona ADD CONSTRAINT Refarchivo414 
+    FOREIGN KEY (fk_id_archivo_foto)
+    REFERENCES archivo(pk_id_archivo)
 ;
 
 
@@ -1735,11 +1745,6 @@ ALTER TABLE proveedor ADD CONSTRAINT Reftransaccion_log226
     REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
 
-ALTER TABLE proveedor ADD CONSTRAINT Refempresa238 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
 ALTER TABLE proveedor ADD CONSTRAINT Refcampo_entrada307 
     FOREIGN KEY (fk_id_rubro)
     REFERENCES campo_entrada(pk_id_campo_entrada)
@@ -1748,6 +1753,11 @@ ALTER TABLE proveedor ADD CONSTRAINT Refcampo_entrada307
 ALTER TABLE proveedor ADD CONSTRAINT Refcampo_entrada308 
     FOREIGN KEY (fk_id_ubicacion_geografica)
     REFERENCES campo_entrada(pk_id_campo_entrada)
+;
+
+ALTER TABLE proveedor ADD CONSTRAINT Refempresa238 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
 ;
 
 
@@ -1845,25 +1855,20 @@ ALTER TABLE tipo_compra ADD CONSTRAINT Refcatalogo393
 -- TABLE: transaccion_log 
 --
 
-ALTER TABLE transaccion_log ADD CONSTRAINT Refempresa247 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
 ALTER TABLE transaccion_log ADD CONSTRAINT Refusuario11 
     FOREIGN KEY (fk_id_usuario)
     REFERENCES usuario(pk_id_usuario)
+;
+
+ALTER TABLE transaccion_log ADD CONSTRAINT Refempresa247 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
 ;
 
 
 -- 
 -- TABLE: usuario 
 --
-
-ALTER TABLE usuario ADD CONSTRAINT Refempresa244 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
 
 ALTER TABLE usuario ADD CONSTRAINT Refconstante31 
     FOREIGN KEY (cnf_base)
@@ -1893,6 +1898,11 @@ ALTER TABLE usuario ADD CONSTRAINT Refpersona61
 ALTER TABLE usuario ADD CONSTRAINT Refusuario96 
     FOREIGN KEY (usuario_transaccion)
     REFERENCES usuario(pk_id_usuario)
+;
+
+ALTER TABLE usuario ADD CONSTRAINT Refempresa244 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
 ;
 
 
@@ -1940,11 +1950,6 @@ ALTER TABLE usuario_permiso ADD CONSTRAINT Refpermiso413
 -- TABLE: usuario_rol 
 --
 
-ALTER TABLE usuario_rol ADD CONSTRAINT Refempresa245 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
 ALTER TABLE usuario_rol ADD CONSTRAINT Refusuario28 
     FOREIGN KEY (fk_id_usuario)
     REFERENCES usuario(pk_id_usuario)
@@ -1973,6 +1978,11 @@ ALTER TABLE usuario_rol ADD CONSTRAINT Reftransaccion_log42
 ALTER TABLE usuario_rol ADD CONSTRAINT Refusuario97 
     FOREIGN KEY (usuario_transaccion)
     REFERENCES usuario(pk_id_usuario)
+;
+
+ALTER TABLE usuario_rol ADD CONSTRAINT Refempresa245 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
 ;
 
 
