@@ -279,7 +279,7 @@ if ($action == 'list') {
                 </div>
                 <div class="panel-body">
 
-                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-check-square-o"></i></span> deben ser llenados de manera obligatoria.</p> </br>
+                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-pencil-square-o "></i></span> deben ser llenados de manera obligatoria.</p> </br>
 
                     <form name="formObject" id="formObject" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=<?php
                     if ($action == 'insert_form') {
@@ -331,7 +331,7 @@ if ($action == 'list') {
                                 <label for="grupo">Grupo</label> 
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="grupo" name="grupo" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["grupo"] . "\" " : NULL); ?>/>
                                 </div>
@@ -340,7 +340,7 @@ if ($action == 'list') {
                                 <label for="descripcion">Descripci&oacute;n:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="descripcion" name="descripcion" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
                                 </div>
