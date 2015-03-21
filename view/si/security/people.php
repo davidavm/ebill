@@ -92,7 +92,7 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-university"></i> Personas</h1>
+            <h1 class="title"><i class="fa-male"></i> Personas</h1>
             <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de personas.</p>
         </div>
 
@@ -174,12 +174,12 @@ if ($action == 'list') {
                         <tfoot>
                             <tr>
                                 <th></th>
-                                <th>Nombre completo</th>
-                                <th>Nombre corto</th>
-                                <th>Razon Social</th>
-                                <th>Nit</th>
+                                <th>Nombres</th>
+                                <th>Apellido Paterno</th>
+                                <th>Apellido Materno</th>
+                                <th>Identificaci&oacute;n</th>
                                 <th>Modificaci&oacute;n</th>
-                                <th>Acciones</th>   
+                                <th>Acciones</th>                    
                             </tr>
                         </tfoot>
                         <tbody>
@@ -189,15 +189,15 @@ if ($action == 'list') {
                                 ?>
                                 <tr>
                                     <td style="width: 25px;"></td>
-                                    <td><?php echo $register['empresa']; ?></td>
-                                    <td><?php echo $register['nombre_corto']; ?></td>
-                                    <td><?php echo $register['razon_social']; ?></td>
-                                    <td><?php echo $register['nit']; ?></td>
+                                    <td><?php echo $register['nombres']; ?></td>
+                                    <td><?php echo $register['apellido_paterno']; ?></td>
+                                    <td><?php echo $register['apellido_materno']; ?></td>
+                                    <td><?php echo $register['tipo_documento_identidad']." ".$register['tipo_documento_identidad']." ".$register['departamento_expedicion_doc']; ?></td>
                                     <td style="width: 120px;"><?php echo $register['fecha_transaccion']; ?></td>
                                     <td style="width: 80px; text-align: center">
-                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_empresa']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&idObject=<?php echo $register['pk_id_empresa']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_empresa']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -230,7 +230,7 @@ if ($action == 'list') {
     <!-- Action insert, view or edit -->
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-university"></i> Personas</h1>
+            <h1 class="title"><i class="fa-male"></i> Personas</h1>
             <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Persona.</p>
         </div>
         <div class="breadcrumb-env">
@@ -256,7 +256,7 @@ if ($action == 'list') {
                 </div>
                 <div class="panel-body">
 
-                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-exclamation-triangle"></i></span> deben ser llenados de manera obligatoria.</p> </br>
+                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-check-square-o"></i></span> deben ser llenados de manera obligatoria.</p> </br>
 
                     <form name="formObject" id="formObject" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=<?php
                     if ($action == 'insert_form') {
@@ -280,7 +280,7 @@ if ($action == 'list') {
                                 <label for="empresa">Nombre <strong>completo</strong> de la Persona:</label>                                
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-exclamation-triangle" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="empresa" name="empresa" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["empresa"] . "\" " : NULL); ?>/>
                                 </div>
@@ -289,7 +289,7 @@ if ($action == 'list') {
                                 <label for="nombre_corto">Nombre <strong>corto</strong> de la Persona utilizado como dominio:</label> <a class="fa fa-question-circle" style="cursor: pointer" tabindex="0" data-toggle="popover" data-trigger="focus" title="Dominio de la Persona" data-content="Este dato le servira para poder acceder al sistema de la siguiente manera: usuario@dominio. Por ejemplo si su empresa tiene el dominio 'miempresa' los usuarios de su empresa deberan ingresar al sistema colocando usuario1@miempresa"></a>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-exclamation-triangle" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="nombre_corto" name="nombre_corto" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nombre_corto"] . "\" " : NULL); ?>/>
                                 </div>
@@ -298,7 +298,7 @@ if ($action == 'list') {
                                 <label for="razon_social">Raz&oacute;n Social:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-exclamation-triangle" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="razon_social" name="razon_social" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["razon_social"] . "\" " : NULL); ?>/>
                                 </div>
@@ -307,7 +307,7 @@ if ($action == 'list') {
                                 <label for="nit">NIT:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-exclamation-triangle" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="nit" name="nit" maxlength="64" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nit"] . "\" " : NULL); ?>/>
                                 </div>
@@ -316,7 +316,7 @@ if ($action == 'list') {
                                 <label for="direccion">Direcci&oacute;n (Domicilio tributario):</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-exclamation-triangle" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>
                                     <input id="direccion" name="direccion" maxlength="1024" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["direccion"] . "\" " : NULL); ?>/>
                                 </div>                            
