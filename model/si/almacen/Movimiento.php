@@ -100,27 +100,25 @@
             $query = null;
             try{
                 $query = " 	
-                        select
-                            `pk_id_item` ,
-                             `codigo_item` ,
-                             `codigo_fabrica` ,
-                             `descripcion` ,
-                             `caracteristicas_especiales` ,
-                             `fk_id_unidad_medida` ,
+                       select
+                        `pk_id_movimiento` ,
                              `cantidad` ,
                              `costo_unitario` ,
                              `precio_unitario` ,
-                             `fecha_vencimiento` ,
-                             `saldo_minimo` ,
-                             `fk_id_proveedor` ,
-                             `fk_id_archivo_imagen` ,
+                             `fk_id_tipo_movimiento` ,
+                             `fk_id_sistema_valoracion_inventario` ,
+                             `fk_id_almacen` ,
+                             `fk_id_item` ,
+                             `fk_id_motivo_movimiento` ,
+                             `fk_id_factura` ,
+                             `fk_id_compra` ,
                              date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
                              `usuario_transaccion` ,
                              `estado_registro` ,
                              `transaccion_creacion` ,
                              `transaccion_modificacion` ,
                              `fk_id_empresa`
-                        from item
+                             from movimiento
                         where `estado_registro`='A'
                         ";
 
