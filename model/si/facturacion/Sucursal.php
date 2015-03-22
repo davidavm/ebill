@@ -100,29 +100,22 @@
             $query = null;
             try{
                 $query = " 	
-                                select 
-                                `pk_id_almacen` ,
-                                        `cod_almacen` ,
-                                        `almacen` ,
-                                        `descripcion` ,
-                                        `fk_id_grupo` ,
-                                        (select grupo
-                                        from grupo
-                                        where pk_id_grupo=a.fk_id_grupo
-                                        and estado_registro='A') grupo,
-                                        `fk_id_sistema_valoracion_inventario` ,
-                                        (select descripcion
-                                        from catalogo
-                                        where pk_id_catalogo=a.fk_id_sistema_valoracion_inventario
-                                        and estado_registro='A'
-                                        and catalogo='sistema_valoracion_inventario') sistema_valoracion_inventario,
-                                        date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
-                                        `usuario_transaccion` ,
-                                        `estado_registro` ,
-                                        `transaccion_creacion` ,
-                                        `transaccion_modificacion` ,
-                                        `fk_id_empresa`
-                                from almacen a
+                                  select 
+                                    `pk_id_sucursal` ,
+                                         `sucursal` ,
+                                         `razon_social` ,
+                                         `numero` ,
+                                         `direccion`,
+                                         `telefono1` ,
+                                         `teefono2` ,
+                                         `telefono3` ,
+                                         date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
+                                         `usuario_transaccion` ,
+                                         `estado_registro` ,
+                                         `transaccion_creacion` ,
+                                         `transaccion_modificacion` ,
+                                         `fk_id_empresa`
+                                         from sucursal
                                 where `estado_registro`='A'
                                 ";
 
