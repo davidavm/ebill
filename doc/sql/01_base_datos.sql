@@ -323,6 +323,7 @@ CREATE TABLE dosificacion(
     fk_id_sucursal               INT,
     fk_id_actividad_economica    INT,
     numero_correlativo           VARCHAR(128),
+    llave_dosificacion           TEXT,
     fecha_limite_emision         DATETIME        NOT NULL,
     fecha_ingreso                DATETIME        NOT NULL,
     numero_autorizacion          INT,
@@ -374,34 +375,37 @@ CREATE TABLE empresa(
 --
 
 CREATE TABLE factura(
-    pk_id_factura                       INT               AUTO_INCREMENT,
-    fk_id_sucursal                      INT,
-    fecha_factura                       DATETIME          NOT NULL,
-    nit                                 VARCHAR(255),
-    categoria                           VARCHAR(255),
-    razon_social                        VARCHAR(255),
-    descuento                           DECIMAL(15, 5)    NOT NULL,
-    fk_id_formato_dato_descuento        INT,
-    recargo                             DECIMAL(15, 5)    NOT NULL,
-    fk_id_formato_dato_recargo          INT,
-    ice                                 DECIMAL(15, 5)    NOT NULL,
-    excentos                            DECIMAL(15, 5)    NOT NULL,
-    fk_id_opcion_tipo_venta             INT,
-    cantidad_dias                       INT,
-    codigo_control                      CHAR(10),
-    cantidad                            DECIMAL(15, 5)    NOT NULL,
-    unidad                              VARCHAR(255),
-    fk_id_dato_entrada_buscar_unidad    INT,
-    detalle                             TEXT,
-    precio_unitario                     DECIMAL(15, 5)    NOT NULL,
-    total                               CHAR(10),
-    sujeto_descuento_fiscal             DECIMAL(15, 5)    NOT NULL,
-    fecha_transaccion                   DATETIME          NOT NULL,
-    usuario_transaccion                 INT,
-    estado_registro                     VARCHAR(32),
-    transaccion_creacion                INT,
-    transaccion_modificacion            INT,
-    fk_id_empresa                       INT,
+      `pk_id_factura` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_id_sucursal` int(11) DEFAULT NULL,
+  `numero_autorizacion` int(11) DEFAULT NULL,
+  `llave_dosificacion` text,
+  `fecha_limite_emision` date DEFAULT NULL,
+  `fecha_factura` datetime NOT NULL,
+  `nit` varchar(255) DEFAULT NULL,
+  `categoria` varchar(255) DEFAULT NULL,
+  `razon_social` varchar(255) DEFAULT NULL,
+  `descuento` decimal(15,5) NOT NULL,
+  `fk_id_formato_dato_descuento` int(11) DEFAULT NULL,
+  `recargo` decimal(15,5) NOT NULL,
+  `fk_id_formato_dato_recargo` int(11) DEFAULT NULL,
+  `ice` decimal(15,5) NOT NULL,
+  `excentos` decimal(15,5) NOT NULL,
+  `fk_id_opcion_tipo_venta` int(11) DEFAULT NULL,
+  `cantidad_dias` int(11) DEFAULT NULL,
+  `codigo_control` char(10) DEFAULT NULL,
+  `cantidad` decimal(15,5) NOT NULL,
+  `unidad` varchar(255) DEFAULT NULL,
+  `fk_id_dato_entrada_buscar_unidad` int(11) DEFAULT NULL,
+  `detalle` text,
+  `precio_unitario` decimal(15,5) NOT NULL,
+  `total` char(10) DEFAULT NULL,
+  `sujeto_descuento_fiscal` decimal(15,5) NOT NULL,
+  `fecha_transaccion` datetime NOT NULL,
+  `usuario_transaccion` int(11) DEFAULT NULL,
+  `estado_registro` varchar(32) DEFAULT NULL,
+  `transaccion_creacion` int(11) DEFAULT NULL,
+  `transaccion_modificacion` int(11) DEFAULT NULL,
+  `fk_id_empresa` int(11) DEFAULT NULL,
     PRIMARY KEY (pk_id_factura)
 )ENGINE=INNODB
 ;
@@ -762,6 +766,42 @@ CREATE TABLE usuario_rol(
     fk_id_empresa               INT,
     PRIMARY KEY (pk_id_usuario_rol)
 )ENGINE=INNODB
+;
+
+CREATE TABLE factura_detalle(
+    pk_id_factura_detalle               INT               AUTO_INCREMENT,
+    fk_id_factura                       INT,
+    fk_id_empresa                       INT,
+    descuento                           DECIMAL(15, 5)    NOT NULL,
+    fk_id_formato_dato_descuento        INT,
+    recargo                             DECIMAL(15, 5)    NOT NULL,
+    fk_id_formato_dato_recargo          INT,
+    ice                                 DECIMAL(15, 5)    NOT NULL,
+    excentos                            DECIMAL(15, 5)    NOT NULL,
+    cantidad                            DECIMAL(15, 5)    NOT NULL,
+    unidad                              VARCHAR(255),
+    fk_id_dato_entrada_buscar_unidad    INT,
+    detalle                             TEXT,
+    precio_unitario                     DECIMAL(15, 5)    NOT NULL,
+    total                               CHAR(10),
+    sujeto_descuento_fiscal             DECIMAL(15, 5)    NOT NULL,
+    fecha_transaccion                   DATETIME          NOT NULL,
+    usuario_transaccion                 INT               AUTO_INCREMENT,
+    estado_registro                     VARCHAR(32),
+    transaccion_creacion                INT               AUTO_INCREMENT,
+    transaccion_modificacion            INT               AUTO_INCREMENT,
+    PRIMARY KEY (pk_id_factura_detalle), 
+    CONSTRAINT Reffactura414 FOREIGN KEY (fk_id_factura)
+    REFERENCES factura(pk_id_factura),
+    CONSTRAINT Refempresa415 FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa),
+    CONSTRAINT Refcatalogo416 FOREIGN KEY (fk_id_formato_dato_descuento)
+    REFERENCES catalogo(pk_id_catalogo),
+    CONSTRAINT Refcatalogo417 FOREIGN KEY (fk_id_formato_dato_recargo)
+    REFERENCES catalogo(pk_id_catalogo),
+    CONSTRAINT Refdato_entrada_buscar418 FOREIGN KEY (fk_id_dato_entrada_buscar_unidad)
+    REFERENCES dato_entrada_buscar(pk_id_dato_entrada_buscar)
+)ENGINE=MYISAM
 ;
 
 
