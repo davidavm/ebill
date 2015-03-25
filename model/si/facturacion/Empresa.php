@@ -141,7 +141,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function isExist( $dato ){
+        public function isExist( $datos ){
             $result = false;
             $query = NULL;
             $aux = NULL;
@@ -151,7 +151,7 @@
                           where estado_registro = 'A' 
                           and ( nombre_corto = ? or razon_social = ? or nit = ? )";
 
-                $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
+                $resultAux = DataBase::getArrayListQuery($query, $datos, $this->instanceDataBase);
                 $aux = $resultAux[0];
                 $result = $aux["existe"]==0 ? false : true;
                 return $result;
@@ -172,7 +172,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function insert($data){
+        public function insert($datos){
             $result = null;
             $query = null;
             try{
@@ -181,23 +181,23 @@
                 $gbd=$this->instanceDataBase;
                   
                 $sentencia = $gbd->prepare("call empresa_alta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
-                $sentencia->bindParam(1, $data[0], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(2, $data[1], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(3, $data[2], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(4, $data[3], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(5, $data[4], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(6, $data[5], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(7, $data[6], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(8, $data[7], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(9, $data[8], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(10, $data[9], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(11, $data[10], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(12, $data[11], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(13, $data[12], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(14, $data[13], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(15, $data[14], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(16, $data[15], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(17, $data[16], PDO::PARAM_STR, 4000);                                 
+                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(11, $datos[10], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(12, $datos[11], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(13, $datos[12], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(14, $datos[13], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(15, $datos[14], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(16, $datos[15], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000);                                 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -225,7 +225,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function delete($data){
+        public function delete($datos){
             $result = null;
             $query = null;
             try{
@@ -234,9 +234,9 @@
                 $gbd=$this->instanceDataBase;
                   
                 $sentencia = $gbd->prepare("call empresa_baja(?,?,?,@resultado);  ");
-                $sentencia->bindParam(1, $data[0], PDO::PARAM_STR, 4000);  
-                $sentencia->bindParam(2, $data[1], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(3, $data[2], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);  
+                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -264,7 +264,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function update($data){
+        public function update($datos){
             $result = null;
             $query = null;
             try{
@@ -273,23 +273,23 @@
                 $gbd=$this->instanceDataBase;
                   
                 $sentencia = $gbd->prepare("call empresa_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
-                $sentencia->bindParam(1, $data[0], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(2, $data[1], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(3, $data[2], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(4, $data[3], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(5, $data[4], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(6, $data[5], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(7, $data[6], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(8, $data[7], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(9, $data[8], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(10, $data[9], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(11, $data[10], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(12, $data[11], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(13, $data[12], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(14, $data[13], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(15, $data[14], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(16, $data[15], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(17, $data[16], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(11, $datos[10], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(12, $datos[11], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(13, $datos[12], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(14, $datos[13], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(15, $datos[14], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(16, $datos[15], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000); 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();

@@ -26,7 +26,7 @@ if ($action == 'insert') {
         if ($object->isExist(array($_POST["almacen"]))) {
             $messageErrorTransaction = "No se puede ingresar un Almacen que ya existe. Revise los datos de Almacen.";
         } else {
-            $idTransaccion = $transaction->insert(array(Almacen::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
+            $idTransaccion = $transaction->insert(array(Almacen::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
             $data = array($_POST["cod_almacen"], 
                           $_POST["almacen"], 
                           $_POST["descripcion"], 
@@ -51,7 +51,7 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Almacen::DELETE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+        $idTransaccion = $transaction->insert(array(Almacen::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], 
                       $_SESSION["authenticated_id_user"], 
                       $idTransaccion,
@@ -80,7 +80,7 @@ if ($action == 'edit') {
         if (($object->isExist(array($_POST["almacen"]))) && ($objectEdit["almacen"] != $_POST["almacen"] )) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar un Almacen que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Almacen::UPDATE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+            $idTransaccion = $transaction->insert(array(Almacen::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"], 
                            $_POST["cod_almacen"],
                            $_POST["almacen"], 

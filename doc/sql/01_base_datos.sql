@@ -4,7 +4,7 @@
 -- Project :      EBIL
 -- Author :       wallejlla
 --
--- Date Created : Wednesday, March 25, 2015 10:06:52
+-- Date Created : Wednesday, March 25, 2015 13:55:12
 -- Target DBMS : MySQL 5.x
 --
 
@@ -191,6 +191,7 @@ CREATE TABLE catalogo(
     negocio                     TEXT,
     orden                       INT,
     dependencia                 INT,
+    abreviacion                 VARCHAR(32),
     fecha_transaccion           DATETIME        NOT NULL,
     comentario                  TEXT,
     usuario_transaccion         INT,
@@ -365,24 +366,6 @@ CREATE TABLE empresa(
     transaccion_creacion          INT,
     transaccion_modificacion      INT,
     PRIMARY KEY (pk_id_empresa)
-)ENGINE=INNODB
-;
-
-
-
--- 
--- TABLE: Entity16_5 
---
-
-CREATE TABLE Entity16_5(
-    pk_id_                      INT            AUTO_INCREMENT,
-    fecha_transaccion           DATETIME       NOT NULL,
-    usuario_transaccion         INT,
-    estado_registro             VARCHAR(32),
-    transaccion_creacion        INT,
-    transaccion_modificacion    INT,
-    fk_id_empresa               INT,
-    PRIMARY KEY (pk_id_)
 )ENGINE=INNODB
 ;
 
@@ -1399,36 +1382,6 @@ ALTER TABLE empresa ADD CONSTRAINT Refcatalogo289
 ALTER TABLE empresa ADD CONSTRAINT Refcatalogo290 
     FOREIGN KEY (fk_tipo_razon_social)
     REFERENCES catalogo(pk_id_catalogo)
-;
-
-
--- 
--- TABLE: Entity16_5 
---
-
-ALTER TABLE Entity16_5 ADD CONSTRAINT Reftransaccion_log363 
-    FOREIGN KEY (transaccion_modificacion)
-    REFERENCES transaccion_log(pk_id_transaccion_log)
-;
-
-ALTER TABLE Entity16_5 ADD CONSTRAINT Refempresa370 
-    FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa)
-;
-
-ALTER TABLE Entity16_5 ADD CONSTRAINT Refusuario324 
-    FOREIGN KEY (usuario_transaccion)
-    REFERENCES usuario(pk_id_usuario)
-;
-
-ALTER TABLE Entity16_5 ADD CONSTRAINT Refconstante337 
-    FOREIGN KEY (estado_registro)
-    REFERENCES constante(pk_id_constante)
-;
-
-ALTER TABLE Entity16_5 ADD CONSTRAINT Reftransaccion_log350 
-    FOREIGN KEY (transaccion_creacion)
-    REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
 
 

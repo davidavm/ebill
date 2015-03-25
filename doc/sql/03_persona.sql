@@ -22,12 +22,19 @@ BEGIN
     DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
+        
+        DECLARE code VARCHAR(5) DEFAULT '00000';
+        DECLARE msg TEXT;
+        DECLARE result TEXT;
 	
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
 		ROLLBACK;
+                GET DIAGNOSTICS CONDITION 1
+                code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT;
 		SET po_resultado = -1;
-		CALL audit_update(v_res, current_timestamp(), 'ERROR: PROCESO TERMINO CON ERRORES', v_cant_reg, 'N', @resultado);
+		SET result = CONCAT('ERROR: PROCESO TERMINO CON ERRORES code: ',code,' msg: ',msg);
+		CALL audit_update(v_res, current_timestamp(),result , v_cant_reg, 'N', @resultado);
 	END;
 	
 	SET nombre_proceso ='persona_alta';
@@ -110,12 +117,19 @@ BEGIN
     DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
+
+        DECLARE code VARCHAR(5) DEFAULT '00000';
+        DECLARE msg TEXT;
+        DECLARE result TEXT;
 	
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
 		ROLLBACK;
+                GET DIAGNOSTICS CONDITION 1
+                code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT;
 		SET po_resultado = -1;
-		CALL audit_update(v_res, current_timestamp(), 'ERROR: PROCESO TERMINO CON ERRORES', v_cant_reg, 'N', @resultado);
+		SET result = CONCAT('ERROR: PROCESO TERMINO CON ERRORES code: ',code,' msg: ',msg);
+		CALL audit_update(v_res, current_timestamp(),result , v_cant_reg, 'N', @resultado);
 	END;
 	
 	SET nombre_proceso ='persona_modif';
@@ -170,12 +184,19 @@ BEGIN
     DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
+
+        DECLARE code VARCHAR(5) DEFAULT '00000';
+        DECLARE msg TEXT;
+        DECLARE result TEXT;
 	
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
 		ROLLBACK;
+                GET DIAGNOSTICS CONDITION 1
+                code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT;
 		SET po_resultado = -1;
-		CALL audit_update(v_res, current_timestamp(), 'ERROR: PROCESO TERMINO CON ERRORES', v_cant_reg, 'N', @resultado);
+		SET result = CONCAT('ERROR: PROCESO TERMINO CON ERRORES code: ',code,' msg: ',msg);
+		CALL audit_update(v_res, current_timestamp(),result , v_cant_reg, 'N', @resultado);
 	END;
 	
 	SET nombre_proceso ='persona_baja';

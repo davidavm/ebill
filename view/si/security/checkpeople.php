@@ -18,7 +18,10 @@ $("form#formObject").validate({
                        },
                 fk_departamento_expedicion_doc: {
                         required: true
-                       }
+                       },
+                fk_id_empresa: {
+                        required: true
+                       }                       
                        
          },
          messages: {
@@ -34,7 +37,9 @@ $("form#formObject").validate({
                            digitos: " Ingrese d&iacute;gitos."
                           },
                     fk_departamento_expedicion_doc: {required: "Seleccione un valor de la lista."
-                          }                          
+                          },
+                    fk_id_empresa: {required: "Seleccione un valor de la lista."
+                          }  
                    }
 });
 

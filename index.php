@@ -236,7 +236,14 @@ if (isset($_GET["security_administrator"])) {
             $_SESSION["authenticated_role"] = $user_data_login[0]["rol"];
             $_SESSION["authenticated_id_role"] = $user_data_login[0]["fk_id_rol"];
             $_SESSION["authenticated_id_user_role"] = $user_data_login[0]["pk_id_usuario_rol"];
-            $_SESSION["authenticated_id_empresa"] = $user_data_login[0]["fk_id_empresa"];
+            // Manejo de datos de la empresa
+            if($_SESSION["authenticated_user"] == 'root' && $_SESSION["authenticated_role"] = 'Superusuario'){
+                $_SESSION["authenticated_id_empresa"] = -1; // Empresa de configuracion
+                $_SESSION["authenticated_empresa"] = "Penta Group SRL - Ebil - Configuraci&oacute;n";
+            } else{
+                $_SESSION["authenticated_id_empresa"] = $user_data_login[0]["fk_id_empresa"];
+            }
+            
         }
     }
 }
