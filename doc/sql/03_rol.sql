@@ -3,13 +3,13 @@
 DROP PROCEDURE IF EXISTS `rol_alta`;
 DELIMITER //
 CREATE  PROCEDURE `rol_alta`(
-									`rol` VARCHAR(128) ,
-									`descripcion` VARCHAR(255) ,
+									`pi_rol` VARCHAR(128) ,
+									`pi_descripcion` VARCHAR(255) ,
 									
-									`usuario_transaccion` INT(11) ,
+									`pi_usuario_transaccion` INT(11) ,
 									
-									`transaccion_creacion` INT(11) ,
-									`transaccion_modificacion` INT(11),
+									`pi_transaccion_creacion` INT(11) ,
+									`pi_transaccion_modificacion` INT(11),
 									OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
@@ -46,13 +46,13 @@ BEGIN
 									)	
 									VALUES
 										(
-										`rol` ,
-										`descripcion`  ,
+										`pi_rol` ,
+										`pi_descripcion`  ,
 										current_timestamp()  ,
-										`usuario_transaccion`  ,
+										`pi_usuario_transaccion`  ,
 										'A' ,
-										`transaccion_creacion`  ,
-										`transaccion_modificacion`                
+										`pi_transaccion_creacion`  ,
+										`pi_transaccion_modificacion`                
 							);
 	      
       SET po_resultado = LAST_INSERT_ID();
@@ -70,13 +70,13 @@ DELIMITER ;
  Volcando estructura para procedimiento rol_modif
 DROP PROCEDURE IF EXISTS `rol_modif`;
 DELIMITER //
-CREATE  PROCEDURE `rol_modif`( `pk_id_rol` INT(11) ,
-								`rol` VARCHAR(128) ,
-								`descripcion` VARCHAR(255) ,
+CREATE  PROCEDURE `rol_modif`( `pi_pk_id_rol` INT(11) ,
+								`pi_rol` VARCHAR(128) ,
+								`pi_descripcion` VARCHAR(255) ,
 								
-								`usuario_transaccion` INT(11) ,
+								`pi_usuario_transaccion` INT(11) ,
 								
-								`transaccion_modificacion` INT(11),												
+								`pi_transaccion_modificacion` INT(11),												
 									OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
