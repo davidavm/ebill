@@ -167,27 +167,45 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idUsuario = self::ALL){
+        public function getList($idUsuario = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
-                $query = "select a.pk_id_usuario, a.usuario, a.llave, a.fk_id_persona, a.cnf_base, a.fecha_transaccion, a.usuario_transaccion, a.estado_registro, a.transaccion_creacion, a.transaccion_modificacion, a.fk_id_empresa, 
-                        b.nombres, b.apellido_paterno, b.apellido_materno, b.fk_tipo_documento_identidad, b.numero_identidad, b.fk_departamento_expedicion_doc, c.fk_id_rol, d.rol, c.pk_id_usuario_rol 
-                        from usuario a, persona b, usuario_rol c, rol d 
+                $query = "select a.pk_id_usuario, a.usuario, a.llave, a.fk_id_persona, a.cnf_base, 
+                        a.fecha_transaccion, a.usuario_transaccion, a.estado_registro, 
+                        a.transaccion_creacion, a.transaccion_modificacion, a.fk_id_empresa, 
+                        b.nombres, b.apellido_paterno, b.apellido_materno, 
+                        b.fk_tipo_documento_identidad, (select abreviacion from catalogo where pk_id_catalogo = b.fk_tipo_documento_identidad) tipo_documento_identidad,
+                        b.numero_identidad, 
+                        b.fk_departamento_expedicion_doc, (select abreviacion from catalogo where pk_id_catalogo = b.fk_departamento_expedicion_doc) departamento_expedicion_doc, 
+                        c.fk_id_rol, d.rol, c.pk_id_usuario_rol,
+                        e.empresa, e.nombre_corto, e.nit
+                        from usuario a, persona b, usuario_rol c, rol d, empresa e 
                         where a.estado_registro = 'A'  
                         and b.estado_registro = 'A' 
                         and a.fk_id_persona = b.pk_id_persona 
                         and c.estado_registro = 'A' 
                         and c.fk_id_usuario = a.pk_id_usuario 
                         and d.estado_registro = 'A' 
-                        and c.fk_id_rol = d.pk_id_rol ";
+                        and c.fk_id_rol = d.pk_id_rol 
+                        and e.estado_registro = 'A'
+                        and a.fk_id_empresa = e.pk_id_empresa ";
 
                 if( $idUsuario != self::ALL){
-                $query = $query." and a.pk_id_usuario = ?";
-                $result = DataBase::getArrayListQuery($query, array($idUsuario), $this->instanceDataBase);
-                }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    if( $idEmpresa != self::ALL){
+                        $query = $query." and a.pk_id_usuario = ? and a.fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idUsuario, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." and a.pk_id_usuario = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idUsuario), $this->instanceDataBase);
+                    }                
+                } else{
+                    if( $idEmpresa != self::ALL){
+                        $query = $query." and a.fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
                 }
                 return $result;
             }

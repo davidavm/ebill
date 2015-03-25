@@ -96,7 +96,7 @@ DELIMITER ;
 -- modificacion persona
 DROP PROCEDURE IF EXISTS persona_modif;
 DELIMITER //
-CREATE  PROCEDURE persona_modif(  pk_id_persona INT(11),
+CREATE  PROCEDURE persona_modif(  pi_pk_id_persona INT(11),
 												pi_nombres VARCHAR(255) ,
 												pi_apellido_paterno VARCHAR(255),
 												pi_apellido_materno VARCHAR(255) ,
@@ -174,7 +174,7 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS persona_baja;
 DELIMITER //
-CREATE  PROCEDURE persona_baja(   pk_id_persona INT(11),																							
+CREATE  PROCEDURE persona_baja(   pi_pk_id_persona INT(11),																							
 												pi_usuario_transaccion INT(11) ,												
 												pi_transaccion_modificacion INT(11) ,
 												pi_fk_id_empresa INT(11),

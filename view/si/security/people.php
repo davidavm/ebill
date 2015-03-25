@@ -43,7 +43,7 @@ if ($action == 'insert') {
 if ($action == 'delete') {
     try {
         $idTransaccion = $transaction->insert(array(Persona::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-        $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion);        
+        $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));        
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
         }
@@ -62,13 +62,13 @@ if ($action == 'edit') {
         $objectEdit = NULL;
         $result = $object->getList($_GET["idObject"]);
         $objectEdit = $result[0];
-        if (($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) && ($objectEdit["nombre_corto"] != $_POST["nombre_corto"] || $objectEdit["razon_social"] != $_POST["razon_social"] || $objectEdit["nit"] != $_POST["nit"])) {
+        if (($object->isExist(array($_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) && ($objectEdit["fk_tipo_documento_identidad"] != $_POST["fk_tipo_documento_identidad"] || $objectEdit["numero_identidad"] != $_POST["numero_identidad"] || $objectEdit["fk_departamento_expedicion_doc"] != $_POST["fk_departamento_expedicion_doc"] || $objectEdit["fk_id_empresa"] != ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) )) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Persona que ya existe.";
         } else {
             $idTransaccion = $transaction->insert(array(Persona::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-            $data = array($_GET["idObject"], $_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion);            
+            $data = array($_GET["idObject"], $_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], NULL, $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
             if( $object->update($data) == -1 ){
-                throw new Exception("Error en el INSERT hacia la Base de datos.");
+                throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
             $messageOkTransaction = "El registro fue modificado correctamente.";
         }
@@ -118,7 +118,7 @@ if ($action == 'list') {
                     <div class="col-md-3">
                         <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkpeople&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
-                                <i class="linecons-shop"></i>
+                                <i class="linecons-thumbs-up"></i>
                                 <span>Agregar Persona</span>
                             </button>
                         </form>
@@ -204,8 +204,8 @@ if ($action == 'list') {
                                     <td style="width: 130px;"><?php echo $register['fecha_transaccion']; ?></td>
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkpeople&action=edit_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_persona']; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?'&fk_id_empresa='.$register['fk_id_empresa']:$_SESSION["authenticated_id_empresa"]); ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php

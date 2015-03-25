@@ -69,7 +69,7 @@ if ($action == 'edit') {
             $idTransaccion = $transaction->insert(array(Empresa::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"], $_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion);            
             if( $object->update($data) == -1 ){
-                throw new Exception("Error en el INSERT hacia la Base de datos.");
+                throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
             $messageOkTransaction = "El registro fue modificado correctamente.";
         }

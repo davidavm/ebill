@@ -99,25 +99,9 @@
             $result = null;
             $query = null;
             try{
-                $query = " 	
-                                  select 
-                                    `pk_id_sucursal` ,
-                                         `sucursal` ,
-                                         `razon_social` ,
-                                         `numero` ,
-                                         `direccion`,
-                                         `telefono1` ,
-                                         `teefono2` ,
-                                         `telefono3` ,
-                                         date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
-                                         `usuario_transaccion` ,
-                                         `estado_registro` ,
-                                         `transaccion_creacion` ,
-                                         `transaccion_modificacion` ,
-                                         `fk_id_empresa`
-                                         from sucursal
-                                where `estado_registro`='A'
-                                ";
+                $query = "select pk_id_rol, rol, descripcion, fecha_transaccion, usuario_transaccion, estado_registro, transaccion_creacion, transaccion_modificacion
+                          from   rol
+                          where  estado_registro='A' and rol != 'Superusuario' ";
 
                 if( $idRol != self::ALL){
                 $query = $query." and a.pk_id_rol = ?";
