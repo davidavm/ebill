@@ -768,10 +768,27 @@ CREATE TABLE usuario_rol(
 )ENGINE=INNODB
 ;
 
+--
+-- ER/Studio 8.0 SQL Code Generation
+-- Company :      wallejlla
+-- Project :      EBIL
+-- Author :       wallejlla
+--
+-- Date Created : Tuesday, March 24, 2015 21:41:34
+-- Target DBMS : MySQL 5.x
+--
+
+DROP TABLE factura_detalle
+;
+-- 
+-- TABLE: factura_detalle 
+--
+
 CREATE TABLE factura_detalle(
     pk_id_factura_detalle               INT               AUTO_INCREMENT,
     fk_id_factura                       INT,
     fk_id_empresa                       INT,
+    fk_id_item                          INT,
     descuento                           DECIMAL(15, 5)    NOT NULL,
     fk_id_formato_dato_descuento        INT,
     recargo                             DECIMAL(15, 5)    NOT NULL,
@@ -844,6 +861,13 @@ ALTER TABLE factura_detalle ADD CONSTRAINT Reftransaccion_log422
     FOREIGN KEY (transaccion_modificacion)
     REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Refitem423 
+    FOREIGN KEY (fk_id_item)
+    REFERENCES item(pk_id_item)
+;
+
+
 
 
 
