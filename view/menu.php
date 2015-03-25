@@ -70,7 +70,9 @@
             <li>
                 <a href="#">
                     <i class="linecons-money"></i>
+                    <a href="index.php?page=/si/billing/invoices&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <span class="title">Facturar</span>
+                    </a>
                 </a>
             </li>
             
