@@ -140,7 +140,7 @@ CREATE  PROCEDURE `bancarizacion_modif`(`pi_pk_id_bancarizacion` INT(11) ,
 									
 									`pi_usuario_transaccion` INT(11) ,
 									
-									`pi_transaccion_creacion` INT(11) ,
+									
 									`pi_transaccion_modificacion` INT(11) ,
 									`pi_fk_id_empresa` INT(11),							
 									OUT po_resultado INT)
