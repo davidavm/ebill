@@ -101,23 +101,24 @@
             try{
                 $query = " 	
                            select 
-                                `pk_id_dosificacion` ,
-                                `fk_id_sucursal` ,
+                                pk_id_dosificacion ,
+                                fk_id_sucursal ,
                                 (select sucursal from sucursal  where pk_id_sucursal=fk_id_sucursal ) sucursal,
                                  (select direccion from empresa  where pk_id_empresa=fk_id_empresa ) direccion,
-                                `fk_id_actividad_economica` ,
-                                `numero_correlativo` ,
-                                `fecha_limite_emision` ,
-                                `fecha_ingreso` ,
-                                `numero_autorizacion` ,
-                                date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
-                                `usuario_transaccion` ,
-                                `estado_registro` ,
-                                `transaccion_creacion` ,
-                                `transaccion_modificacion` ,
-                                `fk_id_empresa`
-                          from dosificacion
-                          where `estado_registro`='A'
+                                fk_id_actividad_economica ,
+                                numero_correlativo ,
+                                fecha_limite_emision ,
+                                fecha_ingreso ,
+                                llave_dosificacion,
+                                numero_autorizacion ,
+                                date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
+                                usuario_transaccion ,
+                                estado_registro ,
+                                transaccion_creacion ,
+                                transaccion_modificacion ,
+                                fk_id_empresa
+                          from dosificacion a
+                          where estado_registro='A'
                                 ";
 
                 if( $idDosificacion != self::ALL){

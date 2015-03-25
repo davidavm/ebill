@@ -101,30 +101,36 @@
             $query = null;
             try{
                 $query = " 	
-                             `pk_id_factura_detalle`,
-  `fk_id_factura`,
-  `fk_id_empresa`,
-  `descuento`,
-  `fk_id_formato_dato_descuento`,
-  `recargo`,
-  `fk_id_formato_dato_recargo`,
-  `ice`,
-  `excentos`,
-  `cantidad`,
-  `unidad`,
-  `fk_id_dato_entrada_buscar_unidad`,
-  `detalle`,
-  `precio_unitario`,
-  `total`,
-  `sujeto_descuento_fiscal`,
-  `fecha_transaccion`,
-  `usuario_transaccion`,
-  `estado_registro`,
-  `transaccion_creacion`,
-  `transaccion_modificacion`
-  `fk_id_empresa`
-                          from factura_detalle a
-                          where `estado_registro`='A'
+                             select  a.pk_id_factura_detalle,
+  a.fk_id_factura,
+  a.fk_id_empresa,
+  a.descuento,
+  a.fk_id_formato_dato_descuento,
+  a.recargo,
+  a.fk_id_formato_dato_recargo,
+   a.fk_id_item,
+    b.codigo_item,
+  b.codigo_fabrica,
+  b.descripcion,
+  b.caracteristicas_especiales,
+  b.fk_id_unidad_medida,
+  a.ice,
+  a.excentos,
+  a.cantidad,
+  a.unidad,
+  a.fk_id_dato_entrada_buscar_unidad,
+  a.detalle,
+  a.precio_unitario,
+  a.total,
+  a.sujeto_descuento_fiscal,
+  a.fecha_transaccion,
+  a.usuario_transaccion,
+  a.estado_registro,
+  a.transaccion_creacion,
+  a.transaccion_modificacion,
+  a.fk_id_empresa
+ from factura_detalle a left join item b on ( a.fk_id_item=b.pk_id_item)
+                          where a.estado_registro='A'
                                 ";
 
                 if( $idDosificacion != self::ALL){
@@ -146,30 +152,36 @@
             $query = null;
             try{
                 $query = " 	
-                             `pk_id_factura_detalle`,
-  `fk_id_factura`,
-  `fk_id_empresa`,
-  `descuento`,
-  `fk_id_formato_dato_descuento`,
-  `recargo`,
-  `fk_id_formato_dato_recargo`,
-  `ice`,
-  `excentos`,
-  `cantidad`,
-  `unidad`,
-  `fk_id_dato_entrada_buscar_unidad`,
-  `detalle`,
-  `precio_unitario`,
-  `total`,
-  `sujeto_descuento_fiscal`,
-  `fecha_transaccion`,
-  `usuario_transaccion`,
-  `estado_registro`,
-  `transaccion_creacion`,
-  `transaccion_modificacion`
-  `fk_id_empresa`
-                          from factura_detalle a
-                          where `estado_registro`='A'
+                          select  a.pk_id_factura_detalle,
+  a.fk_id_factura,
+  a.fk_id_empresa,
+  a.descuento,
+  a.fk_id_formato_dato_descuento,
+  a.recargo,
+  a.fk_id_formato_dato_recargo,
+   a.fk_id_item,
+    b.codigo_item,
+  b.codigo_fabrica,
+  b.descripcion,
+  b.caracteristicas_especiales,
+  b.fk_id_unidad_medida,
+  a.ice,
+  a.excentos,
+  a.cantidad,
+  a.unidad,
+  a.fk_id_dato_entrada_buscar_unidad,
+  a.detalle,
+  a.precio_unitario,
+  a.total,
+  a.sujeto_descuento_fiscal,
+  a.fecha_transaccion,
+  a.usuario_transaccion,
+  a.estado_registro,
+  a.transaccion_creacion,
+  a.transaccion_modificacion,
+  a.fk_id_empresa
+ from factura_detalle a left join item b on ( a.fk_id_item=b.pk_id_item)
+                          where a.estado_registro='A'
                                 ";
 
          
