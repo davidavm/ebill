@@ -786,23 +786,65 @@ CREATE TABLE factura_detalle(
     total                               CHAR(10),
     sujeto_descuento_fiscal             DECIMAL(15, 5)    NOT NULL,
     fecha_transaccion                   DATETIME          NOT NULL,
-    usuario_transaccion                 INT               AUTO_INCREMENT,
+    usuario_transaccion                 INT               NOT NULL,
     estado_registro                     VARCHAR(32),
-    transaccion_creacion                INT               AUTO_INCREMENT,
-    transaccion_modificacion            INT               AUTO_INCREMENT,
-    PRIMARY KEY (pk_id_factura_detalle), 
-    CONSTRAINT Reffactura414 FOREIGN KEY (fk_id_factura)
-    REFERENCES factura(pk_id_factura),
-    CONSTRAINT Refempresa415 FOREIGN KEY (fk_id_empresa)
-    REFERENCES empresa(pk_id_empresa),
-    CONSTRAINT Refcatalogo416 FOREIGN KEY (fk_id_formato_dato_descuento)
-    REFERENCES catalogo(pk_id_catalogo),
-    CONSTRAINT Refcatalogo417 FOREIGN KEY (fk_id_formato_dato_recargo)
-    REFERENCES catalogo(pk_id_catalogo),
-    CONSTRAINT Refdato_entrada_buscar418 FOREIGN KEY (fk_id_dato_entrada_buscar_unidad)
-    REFERENCES dato_entrada_buscar(pk_id_dato_entrada_buscar)
-)ENGINE=MYISAM
+    transaccion_creacion                INT,
+    transaccion_modificacion            INT,
+    PRIMARY KEY (pk_id_factura_detalle)
+)ENGINE=INNODB
 ;
+
+
+
+-- 
+-- TABLE: factura_detalle 
+--
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Reffactura414 
+    FOREIGN KEY (fk_id_factura)
+    REFERENCES factura(pk_id_factura)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Refempresa415 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Refcatalogo416 
+    FOREIGN KEY (fk_id_formato_dato_descuento)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Refcatalogo417 
+    FOREIGN KEY (fk_id_formato_dato_recargo)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Refdato_entrada_buscar418 
+    FOREIGN KEY (fk_id_dato_entrada_buscar_unidad)
+    REFERENCES dato_entrada_buscar(pk_id_dato_entrada_buscar)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Refusuario419 
+    FOREIGN KEY (usuario_transaccion)
+    REFERENCES usuario(pk_id_usuario)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Refconstante420 
+    FOREIGN KEY (estado_registro)
+    REFERENCES constante(pk_id_constante)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Reftransaccion_log421 
+    FOREIGN KEY (transaccion_creacion)
+    REFERENCES transaccion_log(pk_id_transaccion_log)
+;
+
+ALTER TABLE factura_detalle ADD CONSTRAINT Reftransaccion_log422 
+    FOREIGN KEY (transaccion_modificacion)
+    REFERENCES transaccion_log(pk_id_transaccion_log)
+;
+
 
 
 
