@@ -95,7 +95,7 @@
             $result = NULL;
             $query = NULL;            
             try{
-                $query = "SELECT pk_id_catalogo, descripcion, catalogo, negocio, orden, dependencia, abreviacion, fecha_transaccion, comentario, usuario_transaccion, estado_registro, cnf_base, transaccion_creacion, transaccion_modificacion, fk_id_empresa ".
+                $query = "SELECT pk_id_catalogo, descripcion, catalogo, negocio, orden, dependencia, fecha_transaccion, comentario, usuario_transaccion, estado_registro, cnf_base, transaccion_creacion, transaccion_modificacion, fk_id_empresa ".
                          "FROM   catalogo ".
                          "WHERE  estado_registro = 'A' ";                         
 
@@ -138,7 +138,7 @@
             $result = NULL;
             $query = NULL;            
             try{
-                $query = "SELECT pk_id_catalogo, descripcion, catalogo, negocio, orden, dependencia, abreviacion, fecha_transaccion, comentario, usuario_transaccion, estado_registro, cnf_base, transaccion_creacion, transaccion_modificacion, fk_id_empresa ".
+                $query = "SELECT pk_id_catalogo, descripcion, catalogo, negocio, orden, dependencia, fecha_transaccion, comentario, usuario_transaccion, estado_registro, cnf_base, transaccion_creacion, transaccion_modificacion, fk_id_empresa ".
                          "FROM   catalogo ".
                          "WHERE  estado_registro = 'A' ";                         
 
@@ -179,7 +179,7 @@
             $result = NULL;
             $query = NULL;            
             try{
-                $query = "select pk_id_catalogo, descripcion, catalogo, negocio, orden, dependencia, abreviacion, fecha_transaccion, comentario, usuario_transaccion, estado_registro, cnf_base, transaccion_creacion, transaccion_modificacion, fk_id_empresa 
+                $query = "select pk_id_catalogo, descripcion, catalogo, negocio, orden, dependencia, fecha_transaccion, comentario, usuario_transaccion, estado_registro, cnf_base, transaccion_creacion, transaccion_modificacion, fk_id_empresa 
                          from   catalogo 
                          where  estado_registro = 'A' ";
                 if( $idEmpresa != self::SYSTEM){
