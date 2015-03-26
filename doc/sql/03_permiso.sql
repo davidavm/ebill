@@ -129,7 +129,7 @@ DROP PROCEDURE IF EXISTS `permiso_baja`;
 DELIMITER //
 CREATE  PROCEDURE `permiso_baja`( `pi_pk_id_permiso` INT(11),                                 
 											`pi_usuario_transaccion` INT(11) ,											
-											`pi_transaccion_modificacion` INT(11),
+											`pi_transaccion_modificacion` INT(11)
 											OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
