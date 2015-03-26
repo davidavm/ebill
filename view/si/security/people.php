@@ -23,12 +23,11 @@ $messageOkTransaction = "";
 // If action is insert
 if ($action == 'insert') {
     try {
-        if ($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) {
+        if ($object->isExist(array($_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) {
             $messageErrorTransaction = "No se puede ingresar una Persona que ya existe. Revise los datos de Nombre corto, Razon Social o Nit.";
         } else {
-            $idTransaccion = $transaction->insert(array(Persona::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
-            $data = array($_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion);
-            
+            $idTransaccion = $transaction->insert(array(Persona::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])) );                       
+            $data = array($_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
             }
@@ -43,13 +42,8 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-<<<<<<< HEAD
         $idTransaccion = $transaction->insert(array(Persona::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));        
-=======
-        $idTransaccion = $transaction->insert(array(Persona::DELETE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
-        $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion);        
->>>>>>> origin/master
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
         }
@@ -71,13 +65,8 @@ if ($action == 'edit') {
         if (($object->isExist(array($_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) && ($objectEdit["fk_tipo_documento_identidad"] != $_POST["fk_tipo_documento_identidad"] || $objectEdit["numero_identidad"] != $_POST["numero_identidad"] || $objectEdit["fk_departamento_expedicion_doc"] != $_POST["fk_departamento_expedicion_doc"] || $objectEdit["fk_id_empresa"] != ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) )) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Persona que ya existe.";
         } else {
-<<<<<<< HEAD
             $idTransaccion = $transaction->insert(array(Persona::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"], $_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], NULL, $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
-=======
-            $idTransaccion = $transaction->insert(array(Persona::UPDATE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
-            $data = array($_GET["idObject"], $_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion);            
->>>>>>> origin/master
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
@@ -109,7 +98,7 @@ if ($action == 'list') {
         <div class="breadcrumb-env">
             <ol class="breadcrumb bc-1">
                 <li>
-                    <a href="#"><i class="fa-home"></i>Inicio</a>
+                    <a href="index.php"><i class="fa-home"></i>Inicio</a>
                 </li>
                 <li>
                     <a href="#">Seguridad</a>
@@ -173,9 +162,12 @@ if ($action == 'list') {
                             <tr>
                                 <th></th>
                                 <th>Nombres</th>
-                                <th>Apellido Paterno</th>
-                                <th>Apellido Materno</th>
+                                <th>Primer Apellido</th>
+                                <th>Segundo Apellido</th>
                                 <th>Identificaci&oacute;n</th>
+                                <?php if( $_SESSION["authenticated_id_empresa"] == -1 ){ ?>
+                                <th>Empresa</th>
+                                <?php } ?>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
                             </tr>
@@ -185,16 +177,19 @@ if ($action == 'list') {
                             <tr>
                                 <th></th>
                                 <th>Nombres</th>
-                                <th>Apellido Paterno</th>
-                                <th>Apellido Materno</th>
+                                <th>Primer Apellido</th>
+                                <th>Segundo Apellido</th>
                                 <th>Identificaci&oacute;n</th>
+                                <?php if( $_SESSION["authenticated_id_empresa"] == -1 ){ ?>
+                                <th>Empresa</th>
+                                <?php } ?>                                
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
                             </tr>
                         </tfoot>
                         <tbody>
                             <?php
-                            $result = $object->getList();
+                            $result = $object->getList(Persona::ALL, ($_SESSION["authenticated_id_empresa"]==-1?Persona::ALL:$_SESSION["authenticated_id_empresa"]) );
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>
@@ -202,8 +197,11 @@ if ($action == 'list') {
                                     <td><?php echo $register['nombres']; ?></td>
                                     <td><?php echo $register['apellido_paterno']; ?></td>
                                     <td><?php echo $register['apellido_materno']; ?></td>
-                                    <td><?php echo $register['tipo_documento_identidad']." ".$register['tipo_documento_identidad']." ".$register['departamento_expedicion_doc']; ?></td>
-                                    <td style="width: 120px;"><?php echo $register['fecha_transaccion']; ?></td>
+                                    <td><?php echo $register['tipo_documento_identidad']." ".$register['numero_identidad']." ".$register['departamento_expedicion_doc']; ?></td>
+                                    <?php if( $_SESSION["authenticated_id_empresa"] == -1 ){ ?>
+                                    <td><?php echo $register['empresa']; ?></td>
+                                    <?php } ?>
+                                    <td style="width: 130px;"><?php echo $register['fecha_transaccion']; ?></td>
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
                                         <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkpeople&action=edit_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -266,7 +264,7 @@ if ($action == 'list') {
                 </div>
                 <div class="panel-body">
 
-                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-check-square-o"></i></span> deben ser llenados de manera obligatoria.</p> </br>
+                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-pencil-square-o "></i></span> deben ser llenados de manera obligatoria.</p> </br>
 
                     <form name="formObject" id="formObject" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=<?php
                     if ($action == 'insert_form') {
@@ -281,92 +279,84 @@ if ($action == 'list') {
                           $result = NULL;
                           $objectEdit = NULL;
                           if ($action == 'edit_form' || $action == 'view_form') {
-                              $result = $object->getList($_GET["idObject"]);
+                              $result = $object->getList($_GET["idObject"], ($_SESSION["authenticated_id_empresa"]==-1?Persona::ALL:$_SESSION["authenticated_id_empresa"]) );
                               $objectEdit = $result[0];
                           }
                           ?>
                         <div class="row col-margin">
-                            <div class="form-group col-lg-6">                            
-                                <label for="empresa">Nombre <strong>completo</strong> de la Persona:</label>                                
+                            <div class="form-group col-lg-4">                            
+                                <label for="nombres">Nombres:</label>                                
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="empresa" name="empresa" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["empresa"] . "\" " : NULL); ?>/>
+                                    <input id="nombres" name="nombres" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nombres"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
-                            <div class="form-group col-lg-6">
-                                <label for="nombre_corto">Nombre <strong>corto</strong> de la Persona utilizado como dominio:</label> <a class="fa fa-question-circle" style="cursor: pointer" tabindex="0" data-toggle="popover" data-trigger="focus" title="Dominio de la Persona" data-content="Este dato le servira para poder acceder al sistema de la siguiente manera: usuario@dominio. Por ejemplo si su empresa tiene el dominio 'miempresa' los usuarios de su empresa deberan ingresar al sistema colocando usuario1@miempresa"></a>
+                            <div class="form-group col-lg-4">
+                                <label for="apellido_paterno">Primer apellido:</label> 
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="nombre_corto" name="nombre_corto" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nombre_corto"] . "\" " : NULL); ?>/>
+                                    <input id="apellido_paterno" name="apellido_paterno" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["apellido_paterno"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>    
-                            <div class="form-group col-lg-6">
-                                <label for="razon_social">Raz&oacute;n Social:</label>
+                            <div class="form-group col-lg-4">
+                                <label for="apellido_materno">Segundo apellido:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-square-o" data-toggle="tooltip" data-placement="top" title="Campo Opcional."></span>
                                     </span>                            
-                                    <input id="razon_social" name="razon_social" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["razon_social"] . "\" " : NULL); ?>/>
+                                    <input id="apellido_materno" name="apellido_materno" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["apellido_materno"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>  
-                            <div class="form-group col-lg-6">
-                                <label for="nit">NIT:</label>
+                            <div class="form-group col-lg-4">
+                                <label for="fk_tipo_documento_identidad">Tipo de documento identidad:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span  class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Obligatorio, seleccione un valor."></span>                                        
+                                    </span>
+                                    <select id="fk_tipo_documento_identidad" name="fk_tipo_documento_identidad" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_tipo_documento_identidad"] == NULL) ) { 
+                                            echo ' selected="selected" ';
+                                        }
+                                        ?> ></option>
+                                        <?php
+                                        $tipo_documento_identidad = new Catalogo($registry[$dbSystem]);
+                                        $result = $tipo_documento_identidad->getCatalogo('tipo_documento_identidad');
+                                        foreach ($result as $indice => $register) {
+                                        ?>
+                                        <option value="<?php echo $register["pk_id_catalogo"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_tipo_documento_identidad"] == $register["pk_id_catalogo"]) ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $register["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>                            
+                            </div>                               
+                            <div class="form-group col-lg-4">
+                                <label for="numero_identidad">Numero de identidad:</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="nit" name="nit" maxlength="64" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nit"] . "\" " : NULL); ?>/>
+                                    <input id="numero_identidad" name="numero_identidad" maxlength="64" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["numero_identidad"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
-                            <div class="form-group col-lg-12">
-                                <label for="direccion">Direcci&oacute;n (Domicilio tributario):</label>                                    
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
-                                    </span>
-                                    <input id="direccion" name="direccion" maxlength="1024" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["direccion"] . "\" " : NULL); ?>/>
-                                </div>                            
-                            </div>     
                             <div class="form-group col-lg-4">
-                                <label for="telefono1">Tel&eacute;fonos/Celulares:</label>                                    
+                                <label for="fk_departamento_expedicion_doc">Departamento de expedici&oacute;n de documento:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 1"></span>                                        
+                                        <span  class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Obligatorio, seleccione un valor."></span>                                        
                                     </span>
-                                    <input id="telefono1" name="telefono1" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono1"] . "\" " : NULL); ?>/>
-                                </div>                            
-                            </div>  
-                            <div class="form-group col-lg-4">
-                                <label for="telefono2">&nbsp;</label>                                    
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 2"></span>
-                                    </span>
-                                    <input id="telefono2" name="telefono2" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono2"] . "\" " : NULL); ?>/>
-                                </div>                            
-                            </div> 
-                            <div class="form-group col-lg-4">
-                                <label for="telefono3">&nbsp;</label>                                    
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 3"></span>
-                                    </span>
-                                    <input id="telefono3" name="telefono3" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono3"] . "\" " : NULL); ?>/>
-                                </div>                            
-                            </div>                             
-                            <div class="form-group col-lg-6">
-                                <label for="fk_id_departamento">Departamento:</label>                                    
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
-                                    </span>
-                                    <select id="fk_id_departamento" name="fk_id_departamento" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
-                                        <option value="-1" <?php 
-                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_departamento"] == NULL) ) { 
+                                    <select id="fk_departamento_expedicion_doc" name="fk_departamento_expedicion_doc" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_departamento_expedicion_doc"] == NULL) ) { 
                                             echo ' selected="selected" ';
                                         }
                                         ?> ></option>
@@ -376,7 +366,7 @@ if ($action == 'list') {
                                         foreach ($result as $indice => $register) {
                                         ?>
                                         <option value="<?php echo $register["pk_id_catalogo"]; ?>" <?php 
-                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_departamento"] == $register["pk_id_catalogo"]) ) {
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_departamento_expedicion_doc"] == $register["pk_id_catalogo"]) ) {
                                                 echo ' selected="selected" ';
                                             }
                                         ?> ><?php echo $register["descripcion"]; ?></option>
@@ -385,37 +375,78 @@ if ($action == 'list') {
                                         ?>
                                     </select>                                     
                                 </div>                            
-                            </div>                             
-                            <div class="form-group col-lg-6">
-                                <label for="fk_id_municipio">Municipio:</label>                                    
+                            </div>                               
+                            <div class="form-group col-lg-12">
+                                <label for="direccion">Direcci&oacute;n o ubicaci&oacute;n del domicilio:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>
+                                        <span class="fa fa-square-o" data-toggle="tooltip" data-placement="top" title="Campo opcional."></span>
                                     </span>
-                                    <select id="fk_id_municipio" name="fk_id_municipio" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
-                                        <option value="-1" <?php 
-                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_municipio"] == NULL) ) { 
+                                    <input id="direccion" name="direccion" maxlength="1024" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["direccion"] . "\" " : NULL); ?>/>
+                                </div>                            
+                            </div>     
+                            <div class="form-group col-lg-4">
+                                <label for="telefono1">Tel&eacute;fonos/Celulares:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Opcional, Telefono/Celular 1"></span>                                        
+                                    </span>
+                                    <input id="telefono1" name="telefono1" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono1"] . "\" " : NULL); ?>/>
+                                </div>                            
+                            </div>  
+                            <div class="form-group col-lg-4">
+                                <label for="telefono2">&nbsp;</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Opcional, Telefono/Celular 2"></span>
+                                    </span>
+                                    <input id="telefono2" name="telefono2" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono2"] . "\" " : NULL); ?>/>
+                                </div>                            
+                            </div> 
+                            <div class="form-group col-lg-4">
+                                <label for="telefono3">&nbsp;</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Opcional, Telefono/Celular 3"></span>
+                                    </span>
+                                    <input id="telefono3" name="telefono3" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono3"] . "\" " : NULL); ?>/>
+                                </div>                            
+                            </div>
+                            <?php 
+                            if( $_SESSION["authenticated_id_empresa"] == -1 ){
+                            ?>
+                            <div class="form-group col-lg-8">
+                                <label for="fk_id_empresa">Empresa:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Obligatorio, seleccione un valor."></span>                                        
+                                    </span>
+                                    <select id="fk_id_empresa" name="fk_id_empresa" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_empresa"] == NULL) ) { 
                                             echo ' selected="selected" ';
                                         }
                                         ?> ></option>
                                         <?php
-                                        if($action == 'edit_form' || $action == 'view_form'){
-                                        $municipio = new Catalogo($registry[$dbSystem]);
-                                        $result = $municipio->getCatalogo('municipio');
+                                        $empresa = new Empresa($registry[$dbSystem]);
+                                        $result = $empresa->getList(Empresa::ALL);
                                         foreach ($result as $indice => $register) {
                                         ?>
-                                        <option value="<?php echo $register["pk_id_catalogo"]; ?>" <?php 
-                                            if ( $objectEdit["fk_id_municipio"] == $register["pk_id_catalogo"] )  {
+                                        <option value="<?php echo $register["pk_id_empresa"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_empresa"] == $register["pk_id_empresa"]) ) {
                                                 echo ' selected="selected" ';
                                             }
-                                        ?> ><?php echo $register["descripcion"]; ?></option>
+                                        ?> ><?php echo $register["empresa"]." ( <strong>Dominio</strong>: ".$register["nombre_corto"].", <strong>NIT</strong>: ".$register["nit"]." )"; ?></option>
                                         <?php
                                         }
-                                        }
                                         ?>
-                                    </select>                                    
+                                    </select>                                     
                                 </div>                            
-                            </div>   
+                            </div>  
+                            <?php
+                            }
+                            ?>
+                            </br>
                         </div>                            
                         <div class="row">
                         <div class="col-md-12">
