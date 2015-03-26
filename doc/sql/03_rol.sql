@@ -10,7 +10,7 @@ CREATE  PROCEDURE `rol_alta`(
 									
 									`pi_transaccion_creacion` INT(11) ,
 									`pi_transaccion_modificacion` INT(11),
-									OUT po_resultado INT )
+									OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;
@@ -67,7 +67,7 @@ DELIMITER ;
 
 
 
--- Volcando estructura para procedimiento rol_modif
+ Volcando estructura para procedimiento rol_modif
 DROP PROCEDURE IF EXISTS `rol_modif`;
 DELIMITER //
 CREATE  PROCEDURE `rol_modif`( `pi_pk_id_rol` INT(11) ,
