@@ -26,7 +26,7 @@ if ($action == 'insert') {
         if ($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) {
             $messageErrorTransaction = "No se puede ingresar una Empresa que ya existe. Revise los datos de Nombre corto, Razon Social o Nit.";
         } else {
-            $idTransaccion = $transaction->insert(array(Empresa::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
+            $idTransaccion = $transaction->insert(array(Empresa::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
             $data = array($_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion);
             
             if( $object->insert($data) == -1 ){
@@ -43,7 +43,7 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Empresa::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]) ));
+        $idTransaccion = $transaction->insert(array(Empresa::DELETE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
         $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion);        
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
@@ -66,7 +66,7 @@ if ($action == 'edit') {
         if (($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) && ($objectEdit["nombre_corto"] != $_POST["nombre_corto"] || $objectEdit["razon_social"] != $_POST["razon_social"] || $objectEdit["nit"] != $_POST["nit"])) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Empresa que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Empresa::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+            $idTransaccion = $transaction->insert(array(Empresa::UPDATE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
             $data = array($_GET["idObject"], $_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion);            
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");
@@ -256,7 +256,7 @@ if ($action == 'list') {
                 </div>
                 <div class="panel-body">
 
-                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-pencil-square-o "></i></span> deben ser llenados de manera obligatoria.</p> </br>
+                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-check-square-o"></i></span> deben ser llenados de manera obligatoria.</p> </br>
 
                     <form name="formObject" id="formObject" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=<?php
                     if ($action == 'insert_form') {
@@ -280,7 +280,7 @@ if ($action == 'list') {
                                 <label for="empresa">Nombre <strong>completo</strong> de la Empresa:</label>                                
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="empresa" name="empresa" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["empresa"] . "\" " : NULL); ?>/>
                                 </div>
@@ -289,7 +289,7 @@ if ($action == 'list') {
                                 <label for="nombre_corto">Nombre <strong>corto</strong> de la Empresa utilizado como dominio:</label> <a class="fa fa-question-circle" style="cursor: pointer" tabindex="0" data-toggle="popover" data-trigger="focus" title="Dominio de la Empresa" data-content="Este dato le servira para poder acceder al sistema de la siguiente manera: usuario@dominio. Por ejemplo si su empresa tiene el dominio 'miempresa' los usuarios de su empresa deberan ingresar al sistema colocando usuario1@miempresa"></a>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="nombre_corto" name="nombre_corto" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nombre_corto"] . "\" " : NULL); ?>/>
                                 </div>
@@ -298,7 +298,7 @@ if ($action == 'list') {
                                 <label for="razon_social">Raz&oacute;n Social:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="razon_social" name="razon_social" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["razon_social"] . "\" " : NULL); ?>/>
                                 </div>
@@ -307,7 +307,7 @@ if ($action == 'list') {
                                 <label for="nit">NIT:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="nit" name="nit" maxlength="64" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nit"] . "\" " : NULL); ?>/>
                                 </div>
@@ -316,7 +316,7 @@ if ($action == 'list') {
                                 <label for="direccion">Direcci&oacute;n (Domicilio tributario):</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>
                                     <input id="direccion" name="direccion" maxlength="1024" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["direccion"] . "\" " : NULL); ?>/>
                                 </div>                            
@@ -325,7 +325,7 @@ if ($action == 'list') {
                                 <label for="telefono1">Tel&eacute;fonos/Celulares:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Opcional, Telefono/Celular 1"></span>                                        
+                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 1"></span>                                        
                                     </span>
                                     <input id="telefono1" name="telefono1" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono1"] . "\" " : NULL); ?>/>
                                 </div>                            
@@ -334,7 +334,7 @@ if ($action == 'list') {
                                 <label for="telefono2">&nbsp;</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Opcional, Telefono/Celular 2"></span>
+                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 2"></span>
                                     </span>
                                     <input id="telefono2" name="telefono2" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono2"] . "\" " : NULL); ?>/>
                                 </div>                            
@@ -343,7 +343,7 @@ if ($action == 'list') {
                                 <label for="telefono3">&nbsp;</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Opcional, Telefono/Celular 3"></span>
+                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 3"></span>
                                     </span>
                                     <input id="telefono3" name="telefono3" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono3"] . "\" " : NULL); ?>/>
                                 </div>                            
@@ -352,7 +352,7 @@ if ($action == 'list') {
                                 <label for="fk_id_departamento">Departamento:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Opcional, seleccione un valor."></span>                                        
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
                                     </span>
                                     <select id="fk_id_departamento" name="fk_id_departamento" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
                                         <option value="-1" <?php 
@@ -380,7 +380,7 @@ if ($action == 'list') {
                                 <label for="fk_id_municipio">Municipio:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Opcional, seleccione un valor."></span>
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>
                                     </span>
                                     <select id="fk_id_municipio" name="fk_id_municipio" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
                                         <option value="-1" <?php 
