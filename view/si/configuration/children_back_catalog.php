@@ -23,7 +23,7 @@ $object = new Catalogo($registry[$dbSystem]);
 $list = $object->getCatalogoHijos($catalogoHijo, $idPadre);
 $result = array();
 foreach($list as $key => $value){
-   $result[$value["pk_id_catalogo"]]=$value["descripcion"];
+   $result[$value["pk_id_catalogo"]]=utf8_encode($value["descripcion"]);
 };
 echo json_encode($result);
 ?>

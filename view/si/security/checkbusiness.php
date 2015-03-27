@@ -42,20 +42,11 @@ $("form#formObject").validate({
                    }
 });
 
-    var fillSecondary = function(){
-        var selected = $('#fk_id_departamento').val();
-        $('#fk_id_municipio').empty();
-        $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
-           $.each(result, function(key,value){
-              $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
-           });
-        });
-    };
     $('#fk_id_departamento').change(function(){
-        var selected = $('#fk_id_departamento').val();
+        var selected = $('#fk_id_departamento').val();        
         $('#fk_id_municipio').empty();
         $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
-           $.each(result, function(key,value){
+           $.each(result, function(key,value){              
               $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
            });
         });

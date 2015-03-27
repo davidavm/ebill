@@ -26,7 +26,7 @@ if ($action == 'insert') {
         if ($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) {
             $messageErrorTransaction = "No se puede ingresar una Empresa que ya existe. Revise los datos de Nombre corto, Razon Social o Nit.";
         } else {
-            $idTransaccion = $transaction->insert(array(Empresa::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
+            $idTransaccion = $transaction->insert(array(Empresa::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
             $data = array($_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion);
             
             if( $object->insert($data) == -1 ){
@@ -43,7 +43,7 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Empresa::DELETE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+        $idTransaccion = $transaction->insert(array(Empresa::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion);        
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
@@ -66,7 +66,7 @@ if ($action == 'edit') {
         if (($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) && ($objectEdit["nombre_corto"] != $_POST["nombre_corto"] || $objectEdit["razon_social"] != $_POST["razon_social"] || $objectEdit["nit"] != $_POST["nit"])) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Empresa que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Empresa::UPDATE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+            $idTransaccion = $transaction->insert(array(Empresa::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"], $_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion);            
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");

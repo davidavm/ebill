@@ -22,7 +22,7 @@ $object = new Persona($registry[$dbSystem]);
 $list = $object->getList(Persona::ALL, $idPadre);
 $result = array();
 foreach($list as $key => $value){
-   $result[$value["pk_id_persona"]]=$value["nombres"]." ".$value["apellido_paterno"]." ".$value["apellido_materno"]." (".$value["tipo_documento_identidad"]." ".$value["numero_identidad"]." ".$value["departamento_expedicion_doc"].")";
+   $result[$value["pk_id_persona"]]=utf8_encode($value["nombres"]." ".$value["apellido_paterno"]." ".$value["apellido_materno"]." (".$value["tipo_documento_identidad"]." ".$value["numero_identidad"]." ".$value["departamento_expedicion_doc"].")");
 };
 echo json_encode($result);
 ?>

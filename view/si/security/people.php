@@ -454,18 +454,18 @@ if ($action == 'list') {
                             if ($action == 'view_form') {
                                 ?>                                           
                                 <a href="index.php?page=<?php echo $routeFull; ?>" class="btn btn-warning btn-icon btn-icon-standalone">
-                                    <i class="linecons-shop"></i>
+                                    <i class="linecons-thumbs-up"></i>
                                     <span>Aceptar</span>
                                 </a>
                                 <?php
                             } else {
                                 ?>
                                 <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
-                                    <i class="linecons-shop"></i>
+                                    <i class="linecons-thumbs-up"></i>
                                     <span>Guardar</span>
                                 </button>
                                 <a href="index.php?page=<?php echo $routeFull; ?>" class="btn btn-blue btn-icon btn-icon-standalone">
-                                    <i class="linecons-shop"></i>
+                                    <i class="linecons-thumbs-up"></i>
                                     <span>Cancelar</span>
                                 </a>                                    
                                 <?php
