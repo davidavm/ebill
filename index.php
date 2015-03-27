@@ -229,14 +229,23 @@ if (isset($_GET["security_administrator"])) {
     if ($_GET["security_administrator"] == 'login' && isset($_POST["user"]) && isset($_POST["password"])) {
         $security_in = 1; // Si entro al logueo
         $user = new Usuario($registry[$dbSystem]);
-        if (($user->getLoginUsuario($_POST["user"], $_POST["password"]) == 1)) {
+        if (($user->getLoginUsuario($_POST["user"], $_POST["password"]) == 1)) {            
             $_SESSION["authenticated_id_user"] = $user->getIdUsuario($_POST["user"], $_POST["password"]);            
+            if($_POST["user"]=='root'){
+            $user_data_login = $user->getListRoot($_SESSION["authenticated_id_user"]);
+            $_SESSION["authenticated_user"] = $user_data_login[0]["usuario"];
+            $_SESSION["authenticated_role"] = $user_data_login[0]["rol"];
+            $_SESSION["authenticated_id_role"] = $user_data_login[0]["fk_id_rol"];
+            $_SESSION["authenticated_id_user_role"] = $user_data_login[0]["pk_id_usuario_rol"];    
+            $_SESSION["authenticated_id_empresa"] = -1;
+            } else{
             $user_data_login = $user->getList($_SESSION["authenticated_id_user"]);
             $_SESSION["authenticated_user"] = $user_data_login[0]["usuario"];
             $_SESSION["authenticated_role"] = $user_data_login[0]["rol"];
             $_SESSION["authenticated_id_role"] = $user_data_login[0]["fk_id_rol"];
             $_SESSION["authenticated_id_user_role"] = $user_data_login[0]["pk_id_usuario_rol"];
             $_SESSION["authenticated_id_empresa"] = $user_data_login[0]["fk_id_empresa"];
+            }
         }
     }
 }

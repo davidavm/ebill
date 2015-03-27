@@ -1,9 +1,9 @@
 $("form#formObject").validate({
 
         rules: {
-                empresa: {
+                usuario: {
                         required: true,
-                        alfanumericoespacio: true
+                        alfanumerico: true
                        },
                 nombre_corto: {
                         required: true,
