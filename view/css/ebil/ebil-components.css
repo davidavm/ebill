@@ -200,7 +200,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  padding-right: 30px;
+  padding-right: 33px;
   font-size: 12px;
   line-height: 40px;
   color: rgba(255, 255, 255, 0.7);
@@ -214,7 +214,7 @@ form label.error {
   top: 0;
   right: 0;
   bottom: 0;
-  padding-right: 30px;
+  padding-right: 33px;
   font-size: 12px;
   line-height: 33px;
   color: rgba(243, 115, 115, 0.7);
