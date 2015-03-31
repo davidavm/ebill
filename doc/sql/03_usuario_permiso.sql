@@ -1,5 +1,3 @@
-
-
 -- Volcando estructura para procedimiento permiso_alta
 DROP PROCEDURE IF EXISTS `usuario_permiso_alta`;
 DELIMITER //
