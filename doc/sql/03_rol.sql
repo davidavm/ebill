@@ -67,7 +67,7 @@ DELIMITER ;
 
 
 
- Volcando estructura para procedimiento rol_modif
+-- Volcando estructura para procedimiento rol_modif
 DROP PROCEDURE IF EXISTS `rol_modif`;
 DELIMITER //
 CREATE  PROCEDURE `rol_modif`( `pi_pk_id_rol` INT(11) ,
