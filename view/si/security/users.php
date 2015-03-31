@@ -23,13 +23,13 @@ $messageOkTransaction = "";
 // If action is insert
 if ($action == 'insert') {
     try {
-        if ($object->isExist(array($_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) {
-            $messageErrorTransaction = "No se puede ingresar una Usuario que ya existe. Revise los datos de Nombre corto, Razon Social o Nit.";
+        if ($object->isExist(array($_POST["usuario"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) {
+            $messageErrorTransaction = "No se puede ingresar una Usuario que ya existe. Revise los datos de Usuario y Empresa.";
         } else {
             $idTransaccion = $transaction->insert(array(Usuario::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])) );                       
-            $data = array($_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
-            if( $object->insert($data) == -1 ){
-                throw new Exception("Error en el INSERT hacia la Base de datos.");
+            $data = array($_POST["usuario"], $_POST["llave"], $_POST["fk_id_persona"], 'NOBASE', $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]), $_POST["fk_id_rol"]);            
+            if( $object->insert($data)  == -1 ){
+                throw new Exception("Error en el INSERT de usuario hacia la Base de datos.");
             }
             $messageOkTransaction = "El registro fue ingresado correctamente.";
         }
@@ -43,10 +43,10 @@ if ($action == 'insert') {
 if ($action == 'delete') {
     try {
         $idTransaccion = $transaction->insert(array(Usuario::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-        $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));        
+        $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]), $_GET["pk_id_usuario_rol"]);        
         if( $object->delete($data) == -1 ){
-            throw new Exception("Error en el DELETE hacia la Base de datos.");
-        }
+            throw new Exception("Error en el DELETE usuario hacia la Base de datos.");
+        } 
         $messageOkTransaction = "El registro fue eliminado correctamente.";
     } catch (Exception $e) {
         $messageErrorTransaction = "Existio un error al querer eliminar los datos.";
@@ -62,11 +62,11 @@ if ($action == 'edit') {
         $objectEdit = NULL;
         $result = $object->getList($_GET["idObject"]);
         $objectEdit = $result[0];
-        if (($object->isExist(array($_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) && ($objectEdit["fk_tipo_documento_identidad"] != $_POST["fk_tipo_documento_identidad"] || $objectEdit["numero_identidad"] != $_POST["numero_identidad"] || $objectEdit["fk_departamento_expedicion_doc"] != $_POST["fk_departamento_expedicion_doc"] || $objectEdit["fk_id_empresa"] != ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) )) {
-            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Usuario que ya existe.";
+        if (($object->isExist(array($_POST["usuario"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) && ($objectEdit["usuario"] != $_POST["usuario"] || $objectEdit["fk_id_empresa"] != ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) )) {
+            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar un Usuario que ya existe.";
         } else {
             $idTransaccion = $transaction->insert(array(Usuario::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-            $data = array($_GET["idObject"], $_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], NULL, $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
+            $data = array($_GET["idObject"], $_POST["usuario"], $_POST["llave"], $_POST["fk_id_persona"], 'NOBASE', $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]), $_POST["fk_id_rol"], $_GET["pk_id_usuario_rol"]);
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
@@ -204,8 +204,8 @@ if ($action == 'list') {
                                     <td style="width: 130px;"><?php echo $register['fecha_transaccion']; ?></td>
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_usuario']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkusers&action=edit_form&idObject=<?php echo $register['pk_id_usuario']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_usuario']; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?'&fk_id_empresa='.$register['fk_id_empresa']:$_SESSION["authenticated_id_empresa"]); ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkusers&action=edit_form&idObject=<?php echo $register['pk_id_usuario']; ?>&pk_id_usuario_rol=<?php echo$register['pk_id_usuario_rol']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_usuario']; ?>&pk_id_usuario_rol=<?php echo$register['pk_id_usuario_rol']; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?'&fk_id_empresa='.$register['fk_id_empresa']:$_SESSION["authenticated_id_empresa"]); ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -270,7 +270,7 @@ if ($action == 'list') {
                     if ($action == 'insert_form') {
                         echo "insert";
                     } else if ($action == 'edit_form') {
-                        echo "edit&idObject=" . $_GET["idObject"];
+                    echo "edit&idObject=" . $_GET["idObject"]."&pk_id_usuario_rol=".$_GET["pk_id_usuario_rol"];
                     } else {
                         echo 'view';
                     }
@@ -290,7 +290,7 @@ if ($action == 'list') {
                                     <span class="input-group-addon">
                                         <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="usuario" name="usuario" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nombres"] . "\" " : NULL); ?>/>
+                                    <input id="usuario" name="usuario" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["usuario"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
                             <div class="form-group col-lg-6">
@@ -299,7 +299,7 @@ if ($action == 'list') {
                                     <span class="input-group-addon">
                                         <span class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="llave" name="llave" maxlength="255" class="form-control" type="password" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["apellido_paterno"] . "\" " : NULL); ?>/>
+                                    <input id="llave" name="llave" maxlength="255" class="form-control" type="password" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["llave"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>    
                             <div class="form-group col-lg-6">

@@ -117,12 +117,14 @@ if ($action == 'list') {
             <div class="panel panel-success">
                 <div class="row">
                     <div class="col-md-3">
+                        <?php if( $_SESSION["authenticated_id_empresa"] == -1 ){ ?>
                         <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
                                 <i class="linecons-shop"></i>
                                 <span>Agregar Empresa</span>
                             </button>
                         </form>
+                        <?php } ?>
                     </div>   
                     <div class="col-md-9">
                         <!-- Mensajes de accion -->
@@ -184,7 +186,11 @@ if ($action == 'list') {
                         </tfoot>
                         <tbody>
                             <?php
+                            if( $_SESSION["authenticated_id_empresa"] == -1 ){ 
                             $result = $object->getList();
+                            } else{
+                            $result = array();    
+                            }
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>

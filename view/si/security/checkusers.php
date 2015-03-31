@@ -3,11 +3,12 @@ $("form#formObject").validate({
         rules: {
                 usuario: {
                         required: true,
-                        alfanumericosepsinesp: true
+                        alfanumerico: true,
+                        minlength: 4
                        },
                 llave: {
                         required: true,
-                        alfanumericosepsinesp: true
+                        minlength: 4
                        },
                 fk_id_rol: {
                         required: true
@@ -21,10 +22,11 @@ $("form#formObject").validate({
          },
          messages: {
                     usuario: {required: " Este campo debe ser llenado.",
-                           alfanumericosepsinesp: " Ingrese letras, n&uacute;meros o '-','_'"
+                           alfanumerico: " Ingrese letras o n&uacute;meros.",
+                           minlength: " Se debe tener al menos 4 caracteres."
                           },
                     llave: {required: " Este campo debe ser llenado.",
-                           alfanumericosepsinesp: " Ingrese letras, n&uacute;meros o '-','_'"
+                           minlength: " Se debe tener al menos 4 caracteres."
                           },
                     fk_id_rol: {required: " Seleccione un valor de la lista."
                           },

@@ -99,6 +99,19 @@
             $query = null;
             $resAux = null;
             try{
+                if( $role == self::ROLE_OPERATOR_DEFAULT ){
+                $query = "select count(1) login 
+                         from usuario a, rol b, usuario_rol c, empresa e 
+                         where a.estado_registro = 'A' 
+                         and concat(a.usuario,'@',e.nombre_corto) = ? 
+                         and a.llave = password(?) 
+                         and b.estado_registro = 'A' 
+                         and c.estado_registro = 'A' 
+                         and c.fk_id_usuario = a.pk_id_usuario 
+                         and c.fk_id_rol = b.pk_id_rol 
+                         and e.estado_registro = 'A'
+                         and a.fk_id_empresa = e.pk_id_empresa";
+                } elseif($role == self::ROLE_ROOT_DEFAULT){
                 $query = "select count(1) login 
                          from usuario a, rol b, usuario_rol c 
                          where a.estado_registro = 'A' 
@@ -107,8 +120,8 @@
                          and b.estado_registro = 'A' 
                          and c.estado_registro = 'A' 
                          and c.fk_id_usuario = a.pk_id_usuario 
-                         and c.fk_id_rol = b.pk_id_rol ";
-
+                         and c.fk_id_rol = b.pk_id_rol ";                    
+                }
                 $resultAux = DataBase::getArrayListQuery($query, array($user, $password), $this->instanceDataBase);
                 $aux = $resultAux[0];
                 $result = $aux["login"]==1 ? true : false;
@@ -135,6 +148,20 @@
             $query = null;
             $resAux = null;
             try{
+                if( $role == self::ROLE_OPERATOR_DEFAULT ){
+                $query = "select a.pk_id_usuario 
+                         from usuario a, rol b, usuario_rol c, empresa e 
+                         where a.estado_registro = 'A' 
+                         and concat(a.usuario,'@',e.nombre_corto) = ? 
+                         and a.llave = password(?) 
+                         and b.estado_registro = 'A' 
+                         and c.estado_registro = 'A' 
+                         and c.fk_id_usuario = a.pk_id_usuario 
+                         and c.fk_id_rol = b.pk_id_rol 
+                         and e.estado_registro = 'A'
+                         and a.fk_id_empresa = e.pk_id_empresa";
+                }
+                elseif( $role == self::ROLE_ROOT_DEFAULT){
                 $query = "select a.pk_id_usuario 
                          from usuario a, rol b, usuario_rol c 
                          where a.estado_registro = 'A' 
@@ -143,7 +170,8 @@
                          and b.estado_registro = 'A' 
                          and c.estado_registro = 'A' 
                          and c.fk_id_usuario = a.pk_id_usuario 
-                         and c.fk_id_rol = b.pk_id_rol ";
+                         and c.fk_id_rol = b.pk_id_rol ";                    
+                }
                 
                 $resultAux = DataBase::getArrayListQuery($query, array($user, $password), $this->instanceDataBase);
 
@@ -277,7 +305,7 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_alta(?,?,?,?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call usuario_alta(?,?,?,?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -286,6 +314,7 @@
                 $sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -320,7 +349,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_baja(?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call usuario_baja(?,?,?,?,?, @resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);  
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -359,7 +388,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_modif(?,?,?,?,?,?,?,?,?,@resultado); ");
+                $sentencia = $gbd->prepare("call usuario_modif(?,?,?,?,?,?,?,?,?,?,@resultado); ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -369,6 +398,7 @@
                 $sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000); 
             
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -385,6 +415,39 @@
                 throw $e;
             }              
         }
+
+    /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function isExist( $datos ){
+            $result = false;
+            $query = NULL;
+            $aux = NULL;
+            try{
+                $query = "select count(1) existe
+                          from usuario
+                          where estado_registro = 'A' 
+                          and usuario = ? 
+                          and fk_id_empresa = ? ";
+
+                $resultAux = DataBase::getArrayListQuery($query, $datos, $this->instanceDataBase);
+                $aux = $resultAux[0];
+                $result = $aux["existe"]==0 ? false : true;
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+        
      // }}}
     }
 ?>

@@ -199,6 +199,15 @@ $errorWebPageProperty = $property["general"]["error"];
     <body class="page-body horizontal-menu-skin-ebil">
         
     <!-- START Panel Superior -->
+        <?php
+        $userDetail = new Usuario($registry[$dbSystem]);
+        if( $_SESSION["authenticated_id_empresa"] == -1 ){
+            $userDetailData = $userDetail->getListRoot($_SESSION["authenticated_id_user"]);    
+        }else{
+            $userDetailData = $userDetail->getList($_SESSION["authenticated_id_user"]);
+        }
+        $userCompanyData = $userDetailData[0];
+        ?>
         <div class="settings-pane">
 
             <a href="#" data-toggle="settings-pane" data-animate="true">
@@ -209,7 +218,7 @@ $errorWebPageProperty = $property["general"]["error"];
 
                 <div class="row">
 
-                    <div class="col-md-4">
+                    <div class="col-md-8">
 
                         <div class="user-info">
 
@@ -221,15 +230,23 @@ $errorWebPageProperty = $property["general"]["error"];
 
                             <div class="user-details">
                                 <h3>
-                                    <a href="extra-profile.html">Juan Peres</a>
+                                    <a href="extra-profile.html"><?php echo $userCompanyData["nombres"]." ".$userCompanyData["apellido_paterno"]." ".$userCompanyData["apellido_materno"]." (".$userCompanyData["tipo_documento_identidad"]." ".$userCompanyData["numero_identidad"]." ".$userCompanyData["departamento_expedicion_doc"]." )"; ?></a>
                                     <span class="user-status is-online"></span>
                                 </h3>
-
-                                <p class="user-title">Administrador</p>
+                                <h4>
+                                    <?php
+                                    if( $_SESSION["authenticated_id_empresa"] != -1 ){
+                                     echo "Empresa: ".$userCompanyData["empresa"]." ( Dominio: ".$userCompanyData["nombre_corto"]." NIT: ".$userCompanyData["nit"]." )"; 
+                                    } else{
+                                     echo "Empresa: Penta Group SRL ( Dominio: pentagroup NIT: S/N )";    
+                                    }
+                                     ?>
+                                </h4>                                
+                                <p class="user-title"><strong>Usuario:</strong> <?php echo $userCompanyData["usuario"]; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Rol:</strong> <?php echo $userCompanyData["rol"]; ?> </p>
 
                                 <div class="user-links">
-                                    <a href="#" class="btn btn-primary">Información</a>
-                                    <a href="#" class="btn btn-warning">Editar Perfil</a>
+                                    <a href="#" class="btn btn-warning">Cambiar Contrase&nacute;a</a>
+                                    <a href="index.php?page=exit&menu=exit" class="btn btn-blue">Salir del Sistema</a>
                                 </div>
 
                             </div>
@@ -237,33 +254,7 @@ $errorWebPageProperty = $property["general"]["error"];
                         </div>
 
                     </div>
-
-                    <div class="col-md-8 link-blocks-env">
-
-                        <div class="links-block left-sep">
-                            <h4>
-                                <span>Notificaciones</span>
-                            </h4>
-
-                            <ul class="list-unstyled">
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk1" />
-                                    <label for="sp-chk1">Mensajes</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk2" />
-                                    <label for="sp-chk2">Eventos</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk3" />
-                                    <label for="sp-chk3">Actualizaciones</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk4" />
-                                    <label for="sp-chk4">Servidor</label>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="col-md-4 link-blocks-env">
 
                         <div class="links-block left-sep">
                             <h4>
@@ -362,7 +353,7 @@ $errorWebPageProperty = $property["general"]["error"];
                         <a href="#" data-toggle="dropdown">
                             <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-1.png"; ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span>
-                                Juan Peres
+                                <?php echo(isset($_SESSION["authenticated_person"])?$_SESSION["authenticated_person"]:NULL); ?>
                                 <i class="fa-angle-down"></i>
                             </span>
                         </a>
