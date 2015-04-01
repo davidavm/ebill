@@ -223,14 +223,14 @@ $errorWebPageProperty = $property["general"]["error"];
                         <div class="user-info">
 
                             <div class="user-image">
-                                <a href="extra-profile.html">
+                                <a href="index.php?page=/si/security/view_profile&idObject=<?php echo $userCompanyData["fk_id_persona"]; ?>">
                                     <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-2.png"; ?>" class="img-responsive img-circle" />
                                 </a>
                             </div>
 
                             <div class="user-details">
                                 <h3>
-                                    <a href="extra-profile.html"><?php echo $userCompanyData["nombres"]." ".$userCompanyData["apellido_paterno"]." ".$userCompanyData["apellido_materno"]." (".$userCompanyData["tipo_documento_identidad"]." ".$userCompanyData["numero_identidad"]." ".$userCompanyData["departamento_expedicion_doc"]." )"; ?></a>
+                                    <a href="index.php?page=/si/security/view_profile&idObject=<?php echo $userCompanyData["fk_id_persona"]; ?>"><?php echo $userCompanyData["nombres"]." ".$userCompanyData["apellido_paterno"]." ".$userCompanyData["apellido_materno"]." (".$userCompanyData["tipo_documento_identidad"]." ".$userCompanyData["numero_identidad"]." ".$userCompanyData["departamento_expedicion_doc"]." )"; ?></a>
                                     <span class="user-status is-online"></span>
                                 </h3>
                                 <h4>
@@ -258,34 +258,34 @@ $errorWebPageProperty = $property["general"]["error"];
 
                         <div class="links-block left-sep">
                             <h4>
-                                <a href="#">
+                                <a href="index.php?page=/si/configuration/help_system">
                                     <span>Ayuda</span>
                                 </a>
                             </h4>
 
                             <ul class="list-unstyled">
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/contact_support">
                                         <i class="fa-angle-right"></i>
-                                        Centro de soporte
+                                        Contacto para el soporte
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/service_terms_ use">
                                         <i class="fa-angle-right"></i>
-                                        Protocolo
+                                        Terminos del servicio
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/privacy_policy">
                                         <i class="fa-angle-right"></i>
-                                        Acerca del dominio
+                                        Politica de privacidad
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/help_system">
                                         <i class="fa-angle-right"></i>
-                                        Terminos de servicio
+                                        Ayuda para el uso del sistema
                                     </a>
                                 </li>
                             </ul>
@@ -307,7 +307,7 @@ $errorWebPageProperty = $property["general"]["error"];
 
                 <!-- Navbar Brand -->
                 <div class="navbar-brand">
-                    <a href="dashboard-1.html" class="logo">
+                    <a href="index.php" class="logo">
                         <img src="<?php echo IMG_RELATIVE_PATH . "ebil/logo_ebil.png"; ?>" width="100" alt="" class="hidden-xs" />
                         <img src="<?php echo IMG_RELATIVE_PATH . "ebil/logo-collapsed@2x.png"; ?>" width="45" alt="" class="visible-xs" />
                     </a>
@@ -360,13 +360,13 @@ $errorWebPageProperty = $property["general"]["error"];
 
                         <ul class="dropdown-menu user-profile-menu list-unstyled">
                             <li>
-                                <a href="#profile">
+                                <a href="index.php?page=/si/security/view_profile&idObject=<?php echo $userCompanyData["fk_id_persona"]; ?>">
                                     <i class="fa-user"></i>
                                     Mi Perfil
                                 </a>
                             </li>
                             <li>
-                                <a href="#help">
+                                <a href="index.php?page=/si/configuration/help_system">
                                     <i class="fa-info"></i>
                                     Ayuda
                                 </a>
