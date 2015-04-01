@@ -16,8 +16,8 @@ $routeFull = $route . "&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=
             <li>
                 <a href="index.php"><i class="fa-home"></i>Inicio</a>
             </li>
-            <li>
-                <a href="#">Contacto soporte</a>
+            <li class="active">
+                Contacto soporte
             </li>
         </ol>
     </div>

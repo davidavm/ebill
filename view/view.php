@@ -245,7 +245,7 @@ $errorWebPageProperty = $property["general"]["error"];
                                 <p class="user-title"><strong>Usuario:</strong> <?php echo $userCompanyData["usuario"]; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Rol:</strong> <?php echo $userCompanyData["rol"]; ?> </p>
 
                                 <div class="user-links">
-                                    <a href="#" class="btn btn-warning">Cambiar Contrase&nacute;a</a>
+                                    <a href="index.php?page=/si/security/changepwd&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkchangepwd" class="btn btn-warning">Cambiar Contrase&nacute;a</a>
                                     <a href="index.php?page=exit&menu=exit" class="btn btn-blue">Salir del Sistema</a>
                                 </div>
 

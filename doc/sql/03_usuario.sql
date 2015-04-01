@@ -193,6 +193,58 @@ BEGIN
 END//
 DELIMITER ;
 
+-- Volcando estructura para procedimiento usuario_modif
+DROP PROCEDURE IF EXISTS usuario_modif_pwd;
+DELIMITER //
+CREATE  PROCEDURE usuario_modif_pwd( pi_llave VARCHAR(255),
+											pi_usuario_transaccion INT(11) ,											
+											pi_transaccion_modificacion INT(11) ,
+											pi_pk_id_usuario INT(11) ,
+											OUT po_resultado INT)
+BEGIN
+	DECLARE v_id INT;
+    DECLARE v_res INT;
+	DECLARE v_cant_reg INT default 0;
+	DECLARE nombre_proceso VARCHAR(250);
+        DECLARE aux_llave VARCHAR(250);
+
+        DECLARE code VARCHAR(5) DEFAULT '00000';
+        DECLARE msg TEXT;
+        DECLARE result TEXT;
+	
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
+    BEGIN		
+		ROLLBACK;
+                GET DIAGNOSTICS CONDITION 1
+                code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT;
+		SET po_resultado = -1;
+		SET result = CONCAT('ERROR: PROCESO TERMINO CON ERRORES code: ',code,' msg: ',msg);
+		CALL audit_update(v_res, current_timestamp(),result , v_cant_reg, 'N', @resultado);
+	END;
+	
+	SET nombre_proceso ='usuario_modif_pwd';
+	
+	START TRANSACTION;
+          
+	-- REGISTRO DE LOG
+	CALL audit_insert(nombre_proceso, current_timestamp(), @resultado);
+	SELECT @resultado INTO v_res;
+
+      update usuario set 						llave  = password(pi_llave),
+									fecha_transaccion = current_timestamp(),
+									usuario_transaccion =pi_usuario_transaccion ,
+									transaccion_modificacion  =pi_transaccion_modificacion
+					where pk_id_usuario = pi_pk_id_usuario;			
+	      
+      SET po_resultado = pi_pk_id_usuario;
+	  SET v_cant_reg = ROW_COUNT();
+
+      COMMIT;
+
+      CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
+	
+END//
+DELIMITER ;
 
 -- Volcando estructura para procedimiento usuario_baja
 DROP PROCEDURE IF EXISTS usuario_baja;

@@ -416,6 +416,46 @@
             }              
         }
 
+     /**
+     * The implementation method for update data to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function updatePassword($datos){
+           
+            try{
+                $id=-1;                       
+         
+                $gbd=$this->instanceDataBase;
+                  
+                $sentencia = $gbd->prepare("call usuario_modif_pwd(?,?,?,?,@resultado); ");
+                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
+            
+                // llamar al procedimiento almacenado
+                $sentencia->execute();
+               
+                  $query = "select @resultado as resultado";
+                $result = DataBase::getArrayListQuery($query, array(),$this->instanceDataBase);                                 
+                
+                if(count($result)>0)
+                   $id = $result[0]['resultado'];
+                
+                return $id;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }              
+        }
+        
     /**
      * The implementation method for query to the instance data Base.
      *
