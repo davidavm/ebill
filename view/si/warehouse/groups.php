@@ -26,7 +26,7 @@ if ($action == 'insert') {
         if ($object->isExist(array($_POST["grupo"]))) {
             $messageErrorTransaction = "No se puede ingresar un Grupo que ya existe. Revise los datos de Grupo.";
         } else {
-            $idTransaccion = $transaction->insert(array(Grupo::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
+            $idTransaccion = $transaction->insert(array(Grupo::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
             $data = array($_POST["fk_id_grupo_padre"], 
                           $_POST["grupo"], 
                           $_POST["descripcion"], 
@@ -50,7 +50,7 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Grupo::DELETE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+        $idTransaccion = $transaction->insert(array(Grupo::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], 
                       $_SESSION["authenticated_id_user"], 
                       $idTransaccion,
@@ -79,7 +79,7 @@ if ($action == 'edit') {
         if (($object->isExist(array($_POST["grupo"]))) && ($objectEdit["grupo"] != $_POST["grupo"] )) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar un Grupo que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Grupo::UPDATE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+            $idTransaccion = $transaction->insert(array(Grupo::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"], 
                            $_POST["fk_id_grupo_padre"],
                            $_POST["grupo"], 
@@ -279,7 +279,7 @@ if ($action == 'list') {
                 </div>
                 <div class="panel-body">
 
-                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-check-square-o"></i></span> deben ser llenados de manera obligatoria.</p> </br>
+                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-pencil-square-o "></i></span> deben ser llenados de manera obligatoria.</p> </br>
 
                     <form name="formObject" id="formObject" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=<?php
                     if ($action == 'insert_form') {
@@ -331,7 +331,7 @@ if ($action == 'list') {
                                 <label for="grupo">Grupo</label> 
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="grupo" name="grupo" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["grupo"] . "\" " : NULL); ?>/>
                                 </div>
@@ -340,7 +340,7 @@ if ($action == 'list') {
                                 <label for="descripcion">Descripci&oacute;n:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
                                     <input id="descripcion" name="descripcion" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
                                 </div>

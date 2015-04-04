@@ -232,7 +232,7 @@
             </li>
             
             <li>
-                <a href="index.php?page=/si/security/changepwd&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                <a href="index.php?page=/si/security/changepwd&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkchangepwd">
                     <i class="linecons-key"></i>
                     <span class="title">Cambiar mi contrase&nacute;a</span>
                 </a>

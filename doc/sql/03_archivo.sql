@@ -3,19 +3,19 @@
 DROP PROCEDURE IF EXISTS `archivo_alta`;
 DELIMITER //
 CREATE  PROCEDURE `archivo_alta`(
-										`nombre` VARCHAR(255) ,
-										`extension` VARCHAR(32),
-										`bytes` DECIMAL(15,5) ,
-										`ruta` VARCHAR(255) ,
-										`ruta2` VARCHAR(255) ,
-										`fk_id_tipo_archivo` INT(11) ,
-										
-										`usuario_transaccion` INT(11),
-										
-										`transaccion_creacion` INT(11) ,
-										`transaccion_modificacion` INT(11) ,
-										`fk_id_empresa` INT(11),
-											OUT po_resultado INT)
+                                `pi_nombre` VARCHAR(255) ,
+                                `pi_extension` VARCHAR(32),
+                                `pi_bytes` DECIMAL(15,5) ,
+                                `pi_ruta` VARCHAR(255) ,
+                                `pi_ruta2` VARCHAR(255) ,
+                                `pi_fk_id_tipo_archivo` INT(11) ,
+
+                                `pi_usuario_transaccion` INT(11),
+
+                                `pi_transaccion_creacion` INT(11) ,
+                                `pi_transaccion_modificacion` INT(11) ,
+                                `pi_fk_id_empresa` INT(11),
+                                        OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;
@@ -56,18 +56,18 @@ BEGIN
                                 )	
 										VALUES
 										(
-										`nombre`  ,
-										`extension` ,
-										`bytes`  ,
-										`ruta`  ,
-										`ruta2`  ,
-										`fk_id_tipo_archivo`  ,
+										`pi_nombre`  ,
+										`pi_extension` ,
+										`pi_bytes`  ,
+										`pi_ruta`  ,
+										`pi_ruta2`  ,
+										`pi_fk_id_tipo_archivo`  ,
 										current_timestamp()  ,
-										`usuario_transaccion` ,
+										`pi_usuario_transaccion` ,
 										'A'  ,
-										`transaccion_creacion`  ,
-										`transaccion_modificacion`  ,
-										`fk_id_empresa`                
+										`pi_transaccion_creacion`  ,
+										`pi_transaccion_modificacion`  ,
+										`pi_fk_id_empresa`                
 							);
 	      
       SET po_resultado = LAST_INSERT_ID();
@@ -85,19 +85,19 @@ DELIMITER ;
 -- Volcando estructura para procedimiento grupo_modif
 DROP PROCEDURE IF EXISTS `archivo_modif`;
 DELIMITER //
-CREATE  PROCEDURE `archivo_modif`( `pk_id_archivo` INT(11) ,
-									`nombre` VARCHAR(255) ,
-									`extension` VARCHAR(32) ,
-									`bytes` DECIMAL(15,5),
-									`ruta` VARCHAR(255) ,
-									`ruta2` VARCHAR(255) ,
-									`fk_id_tipo_archivo` INT(11) ,
-									
-									`usuario_transaccion` INT(11) ,
-									
-									`transaccion_modificacion` INT(11) ,
-									`fk_id_empresa` INT(11),												
-									OUT po_resultado INT)
+CREATE  PROCEDURE `archivo_modif`( `pi_pk_id_archivo` INT(11) ,
+                                    `pi_nombre` VARCHAR(255) ,
+                                    `pi_extension` VARCHAR(32) ,
+                                    `pi_bytes` DECIMAL(15,5),
+                                    `pi_ruta` VARCHAR(255) ,
+                                    `pi_uta2` VARCHAR(255) ,
+                                    `pi_fk_id_tipo_archivo` INT(11) ,
+
+                                    `pi_usuario_transaccion` INT(11) ,
+
+                                    `pi_transaccion_modificacion` INT(11) ,
+                                    `pi_fk_id_empresa` INT(11),												
+                                    OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;

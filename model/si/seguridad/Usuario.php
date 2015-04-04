@@ -99,6 +99,19 @@
             $query = null;
             $resAux = null;
             try{
+                if( $role == self::ROLE_OPERATOR_DEFAULT ){
+                $query = "select count(1) login 
+                         from usuario a, rol b, usuario_rol c, empresa e 
+                         where a.estado_registro = 'A' 
+                         and concat(a.usuario,'@',e.nombre_corto) = ? 
+                         and a.llave = password(?) 
+                         and b.estado_registro = 'A' 
+                         and c.estado_registro = 'A' 
+                         and c.fk_id_usuario = a.pk_id_usuario 
+                         and c.fk_id_rol = b.pk_id_rol 
+                         and e.estado_registro = 'A'
+                         and a.fk_id_empresa = e.pk_id_empresa";
+                } elseif($role == self::ROLE_ROOT_DEFAULT){
                 $query = "select count(1) login 
                          from usuario a, rol b, usuario_rol c 
                          where a.estado_registro = 'A' 
@@ -107,8 +120,8 @@
                          and b.estado_registro = 'A' 
                          and c.estado_registro = 'A' 
                          and c.fk_id_usuario = a.pk_id_usuario 
-                         and c.fk_id_rol = b.pk_id_rol ";
-
+                         and c.fk_id_rol = b.pk_id_rol ";                    
+                }
                 $resultAux = DataBase::getArrayListQuery($query, array($user, $password), $this->instanceDataBase);
                 $aux = $resultAux[0];
                 $result = $aux["login"]==1 ? true : false;
@@ -135,6 +148,20 @@
             $query = null;
             $resAux = null;
             try{
+                if( $role == self::ROLE_OPERATOR_DEFAULT ){
+                $query = "select a.pk_id_usuario 
+                         from usuario a, rol b, usuario_rol c, empresa e 
+                         where a.estado_registro = 'A' 
+                         and concat(a.usuario,'@',e.nombre_corto) = ? 
+                         and a.llave = password(?) 
+                         and b.estado_registro = 'A' 
+                         and c.estado_registro = 'A' 
+                         and c.fk_id_usuario = a.pk_id_usuario 
+                         and c.fk_id_rol = b.pk_id_rol 
+                         and e.estado_registro = 'A'
+                         and a.fk_id_empresa = e.pk_id_empresa";
+                }
+                elseif( $role == self::ROLE_ROOT_DEFAULT){
                 $query = "select a.pk_id_usuario 
                          from usuario a, rol b, usuario_rol c 
                          where a.estado_registro = 'A' 
@@ -143,7 +170,8 @@
                          and b.estado_registro = 'A' 
                          and c.estado_registro = 'A' 
                          and c.fk_id_usuario = a.pk_id_usuario 
-                         and c.fk_id_rol = b.pk_id_rol ";
+                         and c.fk_id_rol = b.pk_id_rol ";                    
+                }
                 
                 $resultAux = DataBase::getArrayListQuery($query, array($user, $password), $this->instanceDataBase);
 
@@ -167,12 +195,76 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idUsuario = self::ALL){
+        public function getList($idUsuario = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
-                $query = "select a.pk_id_usuario, a.usuario, a.llave, a.fk_id_persona, a.cnf_base, a.fecha_transaccion, a.usuario_transaccion, a.estado_registro, a.transaccion_creacion, a.transaccion_modificacion, a.fk_id_empresa, 
-                        b.nombres, b.apellido_paterno, b.apellido_materno, b.fk_tipo_documento_identidad, b.numero_identidad, b.fk_departamento_expedicion_doc, c.fk_id_rol, d.rol, c.pk_id_usuario_rol 
+                $query = "select a.pk_id_usuario, a.usuario, a.llave, a.fk_id_persona, a.cnf_base, 
+                        a.fecha_transaccion, a.usuario_transaccion, a.estado_registro, 
+                        a.transaccion_creacion, a.transaccion_modificacion, a.fk_id_empresa, 
+                        b.nombres, b.apellido_paterno, b.apellido_materno, 
+                        b.fk_tipo_documento_identidad, (select abreviacion from catalogo where pk_id_catalogo = b.fk_tipo_documento_identidad) tipo_documento_identidad,
+                        b.numero_identidad, 
+                        b.fk_departamento_expedicion_doc, (select abreviacion from catalogo where pk_id_catalogo = b.fk_departamento_expedicion_doc) departamento_expedicion_doc, 
+                        c.fk_id_rol, d.rol, c.pk_id_usuario_rol,
+                        e.empresa, e.nombre_corto, e.nit
+                        from usuario a, persona b, usuario_rol c, rol d, empresa e 
+                        where a.estado_registro = 'A'  
+                        and b.estado_registro = 'A' 
+                        and a.fk_id_persona = b.pk_id_persona 
+                        and c.estado_registro = 'A' 
+                        and c.fk_id_usuario = a.pk_id_usuario 
+                        and d.estado_registro = 'A' 
+                        and c.fk_id_rol = d.pk_id_rol 
+                        and e.estado_registro = 'A'
+                        and a.fk_id_empresa = e.pk_id_empresa ";
+
+                if( $idUsuario != self::ALL){
+                    if( $idEmpresa != self::ALL){
+                        $query = $query." and a.pk_id_usuario = ? and a.fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idUsuario, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." and a.pk_id_usuario = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idUsuario), $this->instanceDataBase);
+                    }                
+                } else{
+                    if( $idEmpresa != self::ALL){
+                        $query = $query." and a.fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
+                }
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+
+    /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function getListRoot($idUsuario = self::ALL){
+            $result = null;
+            $query = null;
+            try{
+                $query = "select a.pk_id_usuario, a.usuario, a.llave, a.fk_id_persona, a.cnf_base, 
+                        a.fecha_transaccion, a.usuario_transaccion, a.estado_registro, 
+                        a.transaccion_creacion, a.transaccion_modificacion, a.fk_id_empresa, 
+                        b.nombres, b.apellido_paterno, b.apellido_materno, 
+                        b.fk_tipo_documento_identidad, (select abreviacion from catalogo where pk_id_catalogo = b.fk_tipo_documento_identidad) tipo_documento_identidad,
+                        b.numero_identidad, 
+                        b.fk_departamento_expedicion_doc, (select abreviacion from catalogo where pk_id_catalogo = b.fk_departamento_expedicion_doc) departamento_expedicion_doc, 
+                        c.fk_id_rol, d.rol, c.pk_id_usuario_rol
                         from usuario a, persona b, usuario_rol c, rol d 
                         where a.estado_registro = 'A'  
                         and b.estado_registro = 'A' 
@@ -183,11 +275,10 @@
                         and c.fk_id_rol = d.pk_id_rol ";
 
                 if( $idUsuario != self::ALL){
-                $query = $query." and a.pk_id_usuario = ?";
-                $result = DataBase::getArrayListQuery($query, array($idUsuario), $this->instanceDataBase);
-                }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                        $query = $query." and a.pk_id_usuario = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idUsuario), $this->instanceDataBase);
+                } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
                 }
                 return $result;
             }
@@ -195,7 +286,7 @@
                 throw $e;
             }            
         }
-
+        
     /**
      * The implementation method for insert data to the instance data Base.
      *
@@ -214,7 +305,7 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_alta(?,?,?,?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call usuario_alta(?,?,?,?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -223,6 +314,7 @@
                 $sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -257,7 +349,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_baja(?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call usuario_baja(?,?,?,?,?, @resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);  
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -296,7 +388,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_modif(?,?,?,?,?,?,?,?,?,@resultado); ");
+                $sentencia = $gbd->prepare("call usuario_modif(?,?,?,?,?,?,?,?,?,?,@resultado); ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -306,6 +398,7 @@
                 $sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000); 
             
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -322,6 +415,79 @@
                 throw $e;
             }              
         }
+
+     /**
+     * The implementation method for update data to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function updatePassword($datos){
+           
+            try{
+                $id=-1;                       
+         
+                $gbd=$this->instanceDataBase;
+                  
+                $sentencia = $gbd->prepare("call usuario_modif_pwd(?,?,?,?,@resultado); ");
+                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
+            
+                // llamar al procedimiento almacenado
+                $sentencia->execute();
+               
+                  $query = "select @resultado as resultado";
+                $result = DataBase::getArrayListQuery($query, array(),$this->instanceDataBase);                                 
+                
+                if(count($result)>0)
+                   $id = $result[0]['resultado'];
+                
+                return $id;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }              
+        }
+        
+    /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function isExist( $datos ){
+            $result = false;
+            $query = NULL;
+            $aux = NULL;
+            try{
+                $query = "select count(1) existe
+                          from usuario
+                          where estado_registro = 'A' 
+                          and usuario = ? 
+                          and fk_id_empresa = ? ";
+
+                $resultAux = DataBase::getArrayListQuery($query, $datos, $this->instanceDataBase);
+                $aux = $resultAux[0];
+                $result = $aux["existe"]==0 ? false : true;
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+        
      // }}}
     }
 ?>

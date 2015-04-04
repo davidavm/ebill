@@ -1,63 +1,46 @@
 $("form#formObject").validate({
 
         rules: {
-                empresa: {
+                nombres: {
                         required: true,
                         alfanumericoespacio: true
                        },
-                nombre_corto: {
-                        required: true,
-                        alfanumerico: true
-                       },
-                razon_social: {
+                apellido_paterno: {
                         required: true,
                         alfanumericoespacio: true
                        },
-                nit: {
+                fk_tipo_documento_identidad: {
+                        required: true
+                       },
+                numero_identidad: {
                         required: true,
                         digitos: true
                        },
-                direccion: {
-                        required: true,
-                        alfanumericoespacio: true
-                       }
+                fk_departamento_expedicion_doc: {
+                        required: true
+                       },
+                fk_id_empresa: {
+                        required: true
+                       }                       
                        
          },
          messages: {
-                    empresa: {required: " Este campo debe ser llenado.",
+                    nombres: {required: " Este campo debe ser llenado.",
                            alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
                           },
-                    nombre_corto: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras y n&uacute;meros."
-                          },
-                    razon_social: {required: " Este campo debe ser llenado.",
+                    apellido_paterno: {required: " Este campo debe ser llenado.",
                            alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
                           },
-                    nit: {required: " Este campo debe ser llenado.",
-                    alfanumericoespacio: " Ingrese d&iacute;gitos."
+                    fk_tipo_documento_identidad: {required: " Seleccione un valor de la lista."
                           },
-                    direccion: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
-                          }                          
+                    numero_identidad: {required: " Este campo debe ser llenado.",
+                           digitos: " Ingrese d&iacute;gitos."
+                          },
+                    fk_departamento_expedicion_doc: {required: "Seleccione un valor de la lista."
+                          },
+                    fk_id_empresa: {required: "Seleccione un valor de la lista."
+                          }  
                    }
 });
 
-    var fillSecondary = function(){
-        var selected = $('#fk_id_departamento').val();
-        $('#fk_id_municipio').empty();
-        $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
-           $.each(result, function(key,value){
-              $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
-           });
-        });
-    };
-    $('#fk_id_departamento').change(function(){
-        var selected = $('#fk_id_departamento').val();
-        $('#fk_id_municipio').empty();
-        $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
-           $.each(result, function(key,value){
-              $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
-           });
-        });
-    });
 

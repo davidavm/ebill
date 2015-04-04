@@ -199,6 +199,15 @@ $errorWebPageProperty = $property["general"]["error"];
     <body class="page-body horizontal-menu-skin-ebil">
         
     <!-- START Panel Superior -->
+        <?php
+        $userDetail = new Usuario($registry[$dbSystem]);
+        if( $_SESSION["authenticated_id_empresa"] == -1 ){
+            $userDetailData = $userDetail->getListRoot($_SESSION["authenticated_id_user"]);    
+        }else{
+            $userDetailData = $userDetail->getList($_SESSION["authenticated_id_user"]);
+        }
+        $userCompanyData = $userDetailData[0];
+        ?>
         <div class="settings-pane">
 
             <a href="#" data-toggle="settings-pane" data-animate="true">
@@ -209,27 +218,35 @@ $errorWebPageProperty = $property["general"]["error"];
 
                 <div class="row">
 
-                    <div class="col-md-4">
+                    <div class="col-md-8">
 
                         <div class="user-info">
 
                             <div class="user-image">
-                                <a href="extra-profile.html">
+                                <a href="index.php?page=/si/security/view_profile&idObject=<?php echo $userCompanyData["fk_id_persona"]; ?>">
                                     <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-2.png"; ?>" class="img-responsive img-circle" />
                                 </a>
                             </div>
 
                             <div class="user-details">
                                 <h3>
-                                    <a href="extra-profile.html">Juan Peres</a>
+                                    <a href="index.php?page=/si/security/view_profile&idObject=<?php echo $userCompanyData["fk_id_persona"]; ?>"><?php echo $userCompanyData["nombres"]." ".$userCompanyData["apellido_paterno"]." ".$userCompanyData["apellido_materno"]." (".$userCompanyData["tipo_documento_identidad"]." ".$userCompanyData["numero_identidad"]." ".$userCompanyData["departamento_expedicion_doc"]." )"; ?></a>
                                     <span class="user-status is-online"></span>
                                 </h3>
-
-                                <p class="user-title">Administrador</p>
+                                <h4>
+                                    <?php
+                                    if( $_SESSION["authenticated_id_empresa"] != -1 ){
+                                     echo "Empresa: ".$userCompanyData["empresa"]." ( Dominio: ".$userCompanyData["nombre_corto"]." NIT: ".$userCompanyData["nit"]." )"; 
+                                    } else{
+                                     echo "Empresa: Penta Group SRL ( Dominio: pentagroup NIT: S/N )";    
+                                    }
+                                     ?>
+                                </h4>                                
+                                <p class="user-title"><strong>Usuario:</strong> <?php echo $userCompanyData["usuario"]; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Rol:</strong> <?php echo $userCompanyData["rol"]; ?> </p>
 
                                 <div class="user-links">
-                                    <a href="#" class="btn btn-primary">Información</a>
-                                    <a href="#" class="btn btn-warning">Editar Perfil</a>
+                                    <a href="index.php?page=/si/security/changepwd&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkchangepwd" class="btn btn-warning">Cambiar Contrase&nacute;a</a>
+                                    <a href="index.php?page=exit&menu=exit" class="btn btn-blue">Salir del Sistema</a>
                                 </div>
 
                             </div>
@@ -237,64 +254,38 @@ $errorWebPageProperty = $property["general"]["error"];
                         </div>
 
                     </div>
-
-                    <div class="col-md-8 link-blocks-env">
-
-                        <div class="links-block left-sep">
-                            <h4>
-                                <span>Notificaciones</span>
-                            </h4>
-
-                            <ul class="list-unstyled">
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk1" />
-                                    <label for="sp-chk1">Mensajes</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk2" />
-                                    <label for="sp-chk2">Eventos</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk3" />
-                                    <label for="sp-chk3">Actualizaciones</label>
-                                </li>
-                                <li>
-                                    <input type="checkbox" class="cbr cbr-primary" checked="checked" id="sp-chk4" />
-                                    <label for="sp-chk4">Servidor</label>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="col-md-4 link-blocks-env">
 
                         <div class="links-block left-sep">
                             <h4>
-                                <a href="#">
+                                <a href="index.php?page=/si/configuration/help_system">
                                     <span>Ayuda</span>
                                 </a>
                             </h4>
 
                             <ul class="list-unstyled">
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/contact_support">
                                         <i class="fa-angle-right"></i>
-                                        Centro de soporte
+                                        Contacto para el soporte
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/service_terms_ use">
                                         <i class="fa-angle-right"></i>
-                                        Protocolo
+                                        Terminos del servicio
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/privacy_policy">
                                         <i class="fa-angle-right"></i>
-                                        Acerca del dominio
+                                        Politica de privacidad
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#">
+                                    <a href="index.php?page=/si/configuration/help_system">
                                         <i class="fa-angle-right"></i>
-                                        Terminos de servicio
+                                        Ayuda para el uso del sistema
                                     </a>
                                 </li>
                             </ul>
@@ -316,7 +307,7 @@ $errorWebPageProperty = $property["general"]["error"];
 
                 <!-- Navbar Brand -->
                 <div class="navbar-brand">
-                    <a href="dashboard-1.html" class="logo">
+                    <a href="index.php" class="logo">
                         <img src="<?php echo IMG_RELATIVE_PATH . "ebil/logo_ebil.png"; ?>" width="100" alt="" class="hidden-xs" />
                         <img src="<?php echo IMG_RELATIVE_PATH . "ebil/logo-collapsed@2x.png"; ?>" width="45" alt="" class="visible-xs" />
                     </a>
@@ -362,20 +353,20 @@ $errorWebPageProperty = $property["general"]["error"];
                         <a href="#" data-toggle="dropdown">
                             <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-1.png"; ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span>
-                                Juan Peres
+                                <?php echo(isset($_SESSION["authenticated_person"])?$_SESSION["authenticated_person"]:NULL); ?>
                                 <i class="fa-angle-down"></i>
                             </span>
                         </a>
 
                         <ul class="dropdown-menu user-profile-menu list-unstyled">
                             <li>
-                                <a href="#profile">
+                                <a href="index.php?page=/si/security/view_profile&idObject=<?php echo $userCompanyData["fk_id_persona"]; ?>">
                                     <i class="fa-user"></i>
                                     Mi Perfil
                                 </a>
                             </li>
                             <li>
-                                <a href="#help">
+                                <a href="index.php?page=/si/configuration/help_system">
                                     <i class="fa-info"></i>
                                     Ayuda
                                 </a>

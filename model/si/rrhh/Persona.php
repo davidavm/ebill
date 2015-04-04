@@ -89,7 +89,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idPersona = self::ALL){
+        public function getList($idPersona = self::ALL, $idEmpresa = self::ALL ){
             $result = null;
             $query = null;
             try{
@@ -98,10 +98,10 @@
                                   apellido_paterno, 
                                   apellido_materno, 
                                   fk_tipo_documento_identidad, 
-                                  (select descripcion from catalogo where pk_id_catalogo = fk_tipo_documento_identidad) tipo_documento_identidad,
+                                  (select abreviacion from catalogo where pk_id_catalogo = fk_tipo_documento_identidad) tipo_documento_identidad,
                                   numero_identidad, 
                                   fk_departamento_expedicion_doc, 
-                                  (select descripcion from catalogo where pk_id_catalogo = fk_departamento_expedicion_doc) departamento_expedicion_doc,
+                                  (select abreviacion from catalogo where pk_id_catalogo = fk_departamento_expedicion_doc) departamento_expedicion_doc,
                                   direccion, 
                                   telefono1, 
                                   telefono2, 
@@ -112,16 +112,26 @@
                                   estado_registro, 
                                   transaccion_creacion, 
                                   transaccion_modificacion, 
-                                  fk_id_empresa
+                                  fk_id_empresa,
+                                  (select concat(nombre_corto,' (NIT: ',nit,')') from empresa where pk_id_empresa = fk_id_empresa) empresa
                            FROM   persona
                            WHERE  estado_registro = 'A' ";
 
                 if( $idPersona != self::ALL){
-                $query = $query." AND pk_id_persona = ?";
-                $result = DataBase::getArrayListQuery($query, array($idPersona), $this->instanceDataBase);
-                }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_persona = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idPersona, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_persona = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idPersona), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
                 }
                 return $result;
             }
@@ -142,7 +152,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function insert($data){
+        public function insert($datos){
             $result = null;
             $query = null;
             try{
@@ -195,7 +205,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function delete($data){
+        public function delete($datos){
             $result = null;
             $query = null;
             try{
@@ -236,7 +246,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function update($data){
+        public function update($datos){
             $result = null;
             $query = null;
             try{
@@ -274,9 +284,43 @@
             }
             catch(PDOException $e){
                 throw $e; 
-            }
-              
+            }                          
         }
+
+    /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function isExist( $datos ){
+            $result = false;
+            $query = NULL;
+            $aux = NULL;
+            try{
+                $query = "select count(1) existe
+                          from persona
+                          where estado_registro = 'A' 
+                          and fk_tipo_documento_identidad = ? 
+                          and numero_identidad = ? 
+                          and fk_departamento_expedicion_doc = ? 
+                          and fk_id_empresa = ? ";
+
+                $resultAux = DataBase::getArrayListQuery($query, $datos, $this->instanceDataBase);
+                $aux = $resultAux[0];
+                $result = $aux["existe"]==0 ? false : true;
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+     
      // }}}
     }
 ?>

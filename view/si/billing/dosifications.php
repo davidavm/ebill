@@ -221,9 +221,9 @@ if ($action == 'list') {
                                      <td style="width: 120px;"><?php echo $register['estado_registro']; ?></td>
                                      <td style="width: 120px;"><?php echo $register['fecha_ingreso']; ?></td>
                                     <td style="width: 80px; text-align: center">
-                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_dosificacion']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/warehouse/checkgroups&action=edit_form&idObject=<?php echo $register['pk_id_dosificacion']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_dosificacion']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_grupo']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/warehouse/checkgroups&action=edit_form&idObject=<?php echo $register['pk_id_grupo']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_grupo']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -319,7 +319,7 @@ if ($action == 'list') {
                                         $listaSucursales = $sucursal->getList();
                                         foreach ($listaSucursales as $item) {
                                         ?>
-                                        <option value="<?php echo $item["fk_id_sucursal"]; ?>" <?php 
+                                        <option value="<?php echo $item["pk_id_sucursal"]; ?>" <?php 
                                             if ( ($action == 'edit_form' || $action == 'view_form') ) {
                                                 echo ' selected="selected" ';
                                             }
@@ -364,7 +364,7 @@ if ($action == 'list') {
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="numero_correlativo" name="numero_correlativo" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["numero_correlativo"] . "\" " : NULL); ?>/>
+                                    <input id="numero_correlativo" name="numero_correlativo" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>  
                                <div class="form-group col-lg-6">
@@ -373,7 +373,7 @@ if ($action == 'list') {
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="numero_autorizacion" name="numero_autorizacion" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["numero_autorizacion"] . "\" " : NULL); ?>/>
+                                    <input id="numero_autorizacion" name="numero_autorizacion" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>  
                              <div class="form-group col-lg-6">
@@ -382,7 +382,7 @@ if ($action == 'list') {
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="llave_dosificacion" name="llave_dosificacion" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["llave_dosificacion"] . "\" " : NULL); ?>/>
+                                    <input id="numero_autorizacion" name="numero_autorizacion" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>  
                        <div class="form-group col-lg-6">
@@ -391,7 +391,7 @@ if ($action == 'list') {
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="fecha_limite_emision" name="fecha_limite_emision" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["fecha_limite_emision"] . "\" " : NULL); ?>/>
+                                    <input id="fecha_limite_emision" name="fecha_limite_emision" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>       
                         </div>                            

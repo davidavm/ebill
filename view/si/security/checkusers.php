@@ -1,62 +1,48 @@
 $("form#formObject").validate({
 
         rules: {
-                empresa: {
+                usuario: {
                         required: true,
-                        alfanumericoespacio: true
+                        alfanumerico: true,
+                        minlength: 4
                        },
-                nombre_corto: {
+                llave: {
                         required: true,
-                        alfanumerico: true
+                        minlength: 4
                        },
-                razon_social: {
-                        required: true,
-                        alfanumericoespacio: true
+                fk_id_rol: {
+                        required: true
                        },
-                nit: {
-                        required: true,
-                        digitos: true
+                fk_id_empresa: {
+                        required: true
                        },
-                direccion: {
-                        required: true,
-                        alfanumericoespacio: true
-                       }
-                       
+                fk_id_persona: {
+                        required: true
+                       }                       
          },
          messages: {
-                    empresa: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
+                    usuario: {required: " Este campo debe ser llenado.",
+                           alfanumerico: " Ingrese letras o n&uacute;meros.",
+                           minlength: " Se debe tener al menos 4 caracteres."
                           },
-                    nombre_corto: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras y n&uacute;meros."
+                    llave: {required: " Este campo debe ser llenado.",
+                           minlength: " Se debe tener al menos 4 caracteres."
                           },
-                    razon_social: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
+                    fk_id_rol: {required: " Seleccione un valor de la lista."
                           },
-                    nit: {required: " Este campo debe ser llenado.",
-                    alfanumericoespacio: " Ingrese d&iacute;gitos."
+                    fk_id_empresa: {required: " Seleccione un valor de la lista."
                           },
-                    direccion: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
+                    fk_id_persona: {required: " Seleccione un valor de la lista."
                           }                          
                    }
 });
 
-    var fillSecondary = function(){
-        var selected = $('#fk_id_departamento').val();
-        $('#fk_id_municipio').empty();
-        $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
+    $('#fk_id_empresa').change(function(){
+        var selected = $('#fk_id_empresa').val();
+        $('#fk_id_persona').empty();
+        $.getJSON("view/si/security/children_person_business.php?padre="+selected,function(result){
            $.each(result, function(key,value){
-              $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
-           });
-        });
-    };
-    $('#fk_id_departamento').change(function(){
-        var selected = $('#fk_id_departamento').val();
-        $('#fk_id_municipio').empty();
-        $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
-           $.each(result, function(key,value){
-              $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
+              $('#fk_id_persona').append('<option value="'+key+'">'+value+'</option>');              
            });
         });
     });

@@ -1,6 +1,6 @@
 <?php
 /**
-* Class Dosificacion.
+* Class UsuarioPermiso.
 *
 * Implementation of the class Usuario.
 *
@@ -19,7 +19,7 @@
 */
 
 /**
-* Class Dosificacion
+* Class UsuarioPermiso
 *
 * Implementation of class Usuario.
 *
@@ -34,8 +34,7 @@
 * @since      Available from the version  0.1 01-01-2015
 * @deprecated No
 */
-    class FacturaDetalle
-{
+    class UsuarioPermiso {
      // {{{ Constants
 
     /**
@@ -47,10 +46,10 @@
      const VALUE = 1;
      const NONE = 0;
      // Operations
-     const INSERT = "INSERT TABLE DOSIFICACION";
-     const UPDATE = "UPDATE TABLE DOSIFICACION";
-     const DELETE = "DELETE TABLE DOSIFICACION";
-     const SELECT = "SELECT TABLE DOSIFICACION";
+     const INSERT = "INSERT TABLE USUARIOPERMISO";
+     const UPDATE = "UPDATE TABLE USUARIOPERMISO";
+     const DELETE = "DELETE TABLE USUARIOPERMISO";
+     const SELECT = "SELECT TABLE USUARIOPERMISO";
 
      const ROLE_ADMINISTRATOR_DEFAULT = "Administrador"; // Rol Administrator
      const ROLE_ROOT_DEFAULT = "SuperUsuario"; // Rol Super Usuario
@@ -96,40 +95,28 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idDosificacion = self::ALL){
+        public function getList($idUsuarioPermiso = self::ALL){
             $result = null;
             $query = null;
             try{
                 $query = " 	
-                             `pk_id_factura_detalle`,
-  `fk_id_factura`,
-  `fk_id_empresa`,
-  `descuento`,
-  `fk_id_formato_dato_descuento`,
-  `recargo`,
-  `fk_id_formato_dato_recargo`,
-  `ice`,
-  `excentos`,
-  `cantidad`,
-  `unidad`,
-  `fk_id_dato_entrada_buscar_unidad`,
-  `detalle`,
-  `precio_unitario`,
-  `total`,
-  `sujeto_descuento_fiscal`,
-  `fecha_transaccion`,
-  `usuario_transaccion`,
-  `estado_registro`,
-  `transaccion_creacion`,
-  `transaccion_modificacion`
-  `fk_id_empresa`
-                          from factura_detalle a
-                          where `estado_registro`='A'
+                           select
+                                `pk_id_usuario_permiso` ,
+                                date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion, 
+                                `fk_id_usuario` ,
+                                `fk_id_permiso`,
+                                `usuario_transaccion`,
+                                `estado_registro` ,
+                                `transaccion_creacion` ,
+                                `transaccion_modificacion` ,
+                                `fk_id_empresa` 
+                                from usuario_permiso
+                                where `estado_registro`='A'
                                 ";
 
-                if( $idDosificacion != self::ALL){
-                $query = $query." and a.pk_id_factura_detalle = ?";
-                $result = DataBase::getArrayListQuery($query, array($idDosificacion), $this->instanceDataBase);
+                if( $idUsuarioPermiso != self::ALL){
+                $query = $query." and a.pk_id_usuario_permiso = ?";
+                $result = DataBase::getArrayListQuery($query, array($idUsuarioPermiso), $this->instanceDataBase);
                 }
                 else{
                 $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
@@ -141,47 +128,38 @@
             }            
         }
 
-           public function getListByInvoice($fk_id_factura ){
-            $result = null;
-            $query = null;
+        
+        /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function isExist( $dato ){
+            $result = false;
+            $query = NULL;
+            $aux = NULL;
             try{
-                $query = " 	
-                             `pk_id_factura_detalle`,
-  `fk_id_factura`,
-  `fk_id_empresa`,
-  `descuento`,
-  `fk_id_formato_dato_descuento`,
-  `recargo`,
-  `fk_id_formato_dato_recargo`,
-  `ice`,
-  `excentos`,
-  `cantidad`,
-  `unidad`,
-  `fk_id_dato_entrada_buscar_unidad`,
-  `detalle`,
-  `precio_unitario`,
-  `total`,
-  `sujeto_descuento_fiscal`,
-  `fecha_transaccion`,
-  `usuario_transaccion`,
-  `estado_registro`,
-  `transaccion_creacion`,
-  `transaccion_modificacion`
-  `fk_id_empresa`
-                          from factura_detalle a
-                          where `estado_registro`='A'
-                                ";
+                $query = "select count(1) existe
+                          from usuario_permiso
+                          where estado_registro = 'A' 
+                          and ( pk_id_usuario_permiso = ?  )";
 
-         
-                $query = $query." and a.fk_id_factura = ?";
-                $result = DataBase::getArrayListQuery($query, array($fk_id_factura), $this->instanceDataBase);
-                
+                $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
+                $aux = $resultAux[0];
+                $result = $aux["existe"]==0 ? false : true;
                 return $result;
             }
             catch(PDOException $e){
                 throw $e;
             }            
         }
+        
         
     /**
      * The implementation method for insert data to the instance data Base.
@@ -201,31 +179,14 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call factura_detalle_alta(?,?,?,?,?,?,?,?,?,?,@resultado);  ");
-         $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(11, $datos[10], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(12, $datos[11], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(13, $datos[12], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(14, $datos[13], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(15, $datos[14], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(16, $datos[15], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(18, $datos[17], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(19, $datos[18], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(20, $datos[19], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000);
-
-
-               
+                $sentencia = $gbd->prepare("call usuario_permiso_alta(?,?,?,?,?,?,@resultado);  ");
+                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000); 
+                
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
                
@@ -259,7 +220,7 @@ $sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000);
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call factura_detalle_baja(?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call usuario_permiso_baja(?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);  
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -297,30 +258,14 @@ $sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000);
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call factura_detalle_modif(?,?,?,?,?,?,?,?,?,?,@resultado); ");
-                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(11, $datos[10], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(12, $datos[11], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(13, $datos[12], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(14, $datos[13], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(15, $datos[14], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(16, $datos[15], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(18, $datos[17], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(19, $datos[18], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(20, $datos[19], PDO::PARAM_STR, 4000);
-$sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000);
-
-             
+                $sentencia = $gbd->prepare("call usuario_permiso_modif(?,?,?,?,?,?,@resultado); ");
+                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000); 
+                
               
                 // llamar al procedimiento almacenado
                 $sentencia->execute();

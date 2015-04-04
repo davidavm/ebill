@@ -1,63 +1,22 @@
-$("form#formObject").validate({
-
+ $("#formObject").validate({        
         rules: {
-                empresa: {
+                llave: {
                         required: true,
-                        alfanumericoespacio: true
+                        minlength: 4
                        },
-                nombre_corto: {
+                retypellave: {
                         required: true,
-                        alfanumerico: true
-                       },
-                razon_social: {
-                        required: true,
-                        alfanumericoespacio: true
-                       },
-                nit: {
-                        required: true,
-                        digitos: true
-                       },
-                direccion: {
-                        required: true,
-                        alfanumericoespacio: true
+                        minlength: 4,
+                        equalTo: "#llave"
                        }
-                       
          },
          messages: {
-                    empresa: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
-                          },
-                    nombre_corto: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras y n&uacute;meros."
-                          },
-                    razon_social: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
-                          },
-                    nit: {required: " Este campo debe ser llenado.",
-                    alfanumericoespacio: " Ingrese d&iacute;gitos."
-                          },
-                    direccion: {required: " Este campo debe ser llenado.",
-                           alfanumericoespacio: " Ingrese Letras, n&uacute;meros o espacios."
-                          }                          
+                   llave: {required: " El campo debe ser llenado.",
+                              minlength: " El campo debe tener al menos 4 caracteres."
+                          }, 
+                    retypellave: {required: " El campo debe ser llenado.",
+                            minlength: " El campo debe tener al menos 4 caracteres.",
+                            equalTo: " No concide con la Contrase&nacute;a, vuelva a escribirla."
+                          }                      
                    }
 });
-
-    var fillSecondary = function(){
-        var selected = $('#fk_id_departamento').val();
-        $('#fk_id_municipio').empty();
-        $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
-           $.each(result, function(key,value){
-              $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
-           });
-        });
-    };
-    $('#fk_id_departamento').change(function(){
-        var selected = $('#fk_id_departamento').val();
-        $('#fk_id_municipio').empty();
-        $.getJSON("view/si/configuration/children_back_catalog.php?hijos=municipio&padre="+selected,function(result){
-           $.each(result, function(key,value){
-              $('#fk_id_municipio').append('<option value="'+key+'">'+value+'</option>');              
-           });
-        });
-    });
-
