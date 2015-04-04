@@ -390,6 +390,35 @@ if ($action == 'list') {
                                     <input id="ice" name="ice" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["ice"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
+                              <div class="form-group col-lg-6">
+                                <label for="fk_id_tipo_grupo">Tipo Venta:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                    </span>
+                                    <select id="fk_id_opcion_tipo_venta" name="fk_id_opcion_tipo_venta" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="-1" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_opcion_tipo_venta"] == NULL) ) { 
+                                            echo ' selected="selected" ';
+                                        }
+                                        ?> ></option>
+                                        <?php
+                                        $catalogo = new Catalogo($registry[$dbSystem]);
+                                        $listCatalogo = $catalogo->getCatalogo('opcion_tipo_venta') ;
+                                        foreach ($listCatalogo as $item) {
+                                        ?>
+                                        <option value="<?php echo $item["pk_id_catalogo"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_opcion_tipo_venta"] == $item["pk_id_catalogo"])  ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $item["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>                            
+                            </div> 
+                           
                             <div class="form-group col-lg-6">
                                 <label for="descripcion">Exentos</label>
                                 <div class="input-group">
