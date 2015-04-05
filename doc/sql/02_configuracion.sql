@@ -29,19 +29,62 @@ commit;
 -- ROLES INICIALES
 INSERT INTO rol ( pk_id_rol, rol, descripcion, fecha_transaccion, usuario_transaccion, estado_registro,
 transaccion_creacion, transaccion_modificacion ) VALUES ( 
-1, 'Ninguno', 'Sin rol.',  CURRENT_TIMESTAMP()
+1, 'Administrador', 'Puede ejecutar toda la funcionalidad definida en el sistema.',  CURRENT_TIMESTAMP()
 , 1, 'A', 1, 1); 
+
 INSERT INTO rol ( pk_id_rol, rol, descripcion, fecha_transaccion, usuario_transaccion, estado_registro,
 transaccion_creacion, transaccion_modificacion ) VALUES ( 
 2, 'Superusuario', 'Rol de sistema para realizar cualquier tipo de operacion incluyendo seguridad y configuracion.',  CURRENT_TIMESTAMP()
 , 1, 'A', 1, 1); 
+
+INSERT INTO rol ( pk_id_rol, rol, descripcion, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion ) VALUES ( 
+3, 'Operador', 'Puede ejecutar parte de la funcionalidad del sistema. Esta funcionalidad esta definida por el Permiso.',  CURRENT_TIMESTAMP()
+, 1, 'A', 1, 1); 
+
 commit;
 
 -- PERMISOS BASICOS
 INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
 transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
-1, 'Todo',  CURRENT_TIMESTAMP(), 1, 'A'
-, 1, 1, 'Permite realizar cualquier operacion.'); 
+1, 'Facturacion',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con la facturacion y reportes de facturacion.'); 
+
+INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
+2, 'Almacen',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con las compras, almacenes y reportes de compras y almacenes.'); 
+
+INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
+3, 'Compras',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con las compras y reportes de compras.'); 
+
+INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
+4, 'Bancarizacion',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con la bancarizacion.'); 
+
+INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
+5, 'Proveedores',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con los proveedores del sistema.'); 
+
+INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
+6, 'Clientes',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con los clientes del sistema.'); 
+
+INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
+7, 'Reportes',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con reportes del sistema.'); 
+
+INSERT INTO permiso ( pk_id_permiso, permiso, fecha_transaccion, usuario_transaccion, estado_registro,
+transaccion_creacion, transaccion_modificacion, descripcion ) VALUES ( 
+8, 'Seguridad',  CURRENT_TIMESTAMP(), 1, 'A'
+, 1, 1, 'Permite realizar cualquier operacion relacionada con la seguridad del sistema.'); 
+
 commit;
 
 -- Permisos para el usuario/persona ROOT
@@ -648,5 +691,33 @@ INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependenc
 INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 536,'Otros','tipo_documento','bancarizacion',1,0,CURRENT_TIMESTAMP(),'Tipo de documento en la bancarizacion',null,'A','BASE',null,null,null);
 INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 537,'Compras','tipo_bancarizacion','bancarizacion',1,0,CURRENT_TIMESTAMP(),'Tipo de documento en la bancarizacion',null,'A','BASE',null,null,null);
 INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 538,'Ventas','tipo_bancarizacion','bancarizacion',2,0,CURRENT_TIMESTAMP(),'Tipo de documento en la bancarizacion',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 539,'Lectura','tipo_permiso','usuario',1,0,CURRENT_TIMESTAMP(),'tipo de permiso que solo es de visualizacion de datos',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 540,'Ejecucion','tipo_permiso','usuario',1,0,CURRENT_TIMESTAMP(),'tipo de permiso que es de ejecucion de opciones y visualizacion de datos',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 541,'Conectado','logged_in','usuario',1,0,CURRENT_TIMESTAMP(),'Usuario conectado al sistema',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 542,'Desconectado','logged_in','usuario',2,0,CURRENT_TIMESTAMP(),'Usuario desconectado del sistema',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 543,'Bloqueado','logged_in','usuario',3,0,CURRENT_TIMESTAMP(),'Usuario bloqueado en el sistema',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 544,'Internet','tipo_servicio_sistema','licencia',1,0,CURRENT_TIMESTAMP(),'Servicio del sistema por Internet.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 545,'Intranet','tipo_servicio_sistema','licencia',2,0,CURRENT_TIMESTAMP(),'Servicio del sistema por Intranet.',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 546,'Alquiler','tipo_contrato_sistema','licencia',1,0,CURRENT_TIMESTAMP(),'Contrato del sistema por alquiler.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 547,'Fijo','tipo_contrato_sistema','licencia',2,0,CURRENT_TIMESTAMP(),'Contrato del sistema de manera fija.',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 548,'Basico','paquete_sistema','licencia',1,0,CURRENT_TIMESTAMP(),'Paquete de sistema basico.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 549,'Profesional','paquete_sistema','licencia',2,0,CURRENT_TIMESTAMP(),'Paquete de sistema profesional.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 550,'Premium','paquete_sistema','licencia',3,0,CURRENT_TIMESTAMP(),'Paquete de sistema premium.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 551,'Gold','paquete_sistema','licencia',4,0,CURRENT_TIMESTAMP(),'Paquete de sistema gold.',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 552,'Mensual','tiempo_servicio_sistema','licencia',1,546,CURRENT_TIMESTAMP(),'Cobro mensual.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 553,'Semestral','tiempo_servicio_sistema','licencia',2,546,CURRENT_TIMESTAMP(),'Cobro semestral.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 554,'Anual','tiempo_servicio_sistema','licencia',3,546,CURRENT_TIMESTAMP(),'Cobro anual.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 555,'Fijo','tiempo_servicio_sistema','licencia',1,547,CURRENT_TIMESTAMP(),'Cobro fijo.',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 556,'Correcta','estado_autentificacion','licencia',1,0,CURRENT_TIMESTAMP(),'Autentificacion realizada de manera correcta.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 557,'Intento','estado_autentificacion','licencia',2,0,CURRENT_TIMESTAMP(),'Intento de autetificacion no correcta.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 558,'Correcto pero bloqueado','estado_autentificacion','licencia',3,0,CURRENT_TIMESTAMP(),'Autentificacion realizada de manera correcta pero con estado de cuenta bloqueada.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 559,'Intento pero bloqueado','estado_autentificacion','licencia',4,0,CURRENT_TIMESTAMP(),'Intento de autentificacion no correcta pero con estado de cuenta bloqueada.',null,'A','BASE',null,null,null);
 
 commit;

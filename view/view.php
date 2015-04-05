@@ -224,7 +224,17 @@ $errorWebPageProperty = $property["general"]["error"];
 
                             <div class="user-image">
                                 <a href="index.php?page=/si/security/view_profile&idObject=<?php echo $userCompanyData["fk_id_persona"]; ?>">
+                                    <?php                                 
+                                        if($userCompanyData["nombre_archivo_foto"] == NULL ){
+                                    ?>
                                     <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-2.png"; ?>" class="img-responsive img-circle" />
+                                    <?php
+                                        } else{
+                                    ?>
+                                    <img src="<?php echo UPLOAD_RELATIVE_PATH . "identification/".$userCompanyData["nombre_archivo_foto"]; ?>" alt="Usuario del sistema" class="img-responsive img-circle"/>        
+                                    <?php
+                                        }
+                                    ?>     
                                 </a>
                             </div>
 
@@ -350,8 +360,18 @@ $errorWebPageProperty = $property["general"]["error"];
                 <ul class="nav nav-userinfo navbar-right">
 
                     <li class="dropdown user-profile">
-                        <a href="#" data-toggle="dropdown">
-                            <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-1.png"; ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+                        <a href="#" data-toggle="dropdown">                            
+                                    <?php                                 
+                                        if($userCompanyData["nombre_archivo_foto"] == NULL ){
+                                    ?>
+                                    <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-1.png"; ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" height="28" />
+                                    <?php
+                                        } else{
+                                    ?>
+                                    <img src="<?php echo UPLOAD_RELATIVE_PATH . "identification/".$userCompanyData["nombre_archivo_foto"]; ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" height="28" />                                    
+                                    <?php
+                                        }
+                                    ?>                              
                             <span>
                                 <?php echo(isset($_SESSION["authenticated_person"])?$_SESSION["authenticated_person"]:NULL); ?>
                                 <i class="fa-angle-down"></i>

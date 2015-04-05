@@ -4,7 +4,7 @@
 -- Project :      EBIL
 -- Author :       wallejlla
 --
--- Date Created : Wednesday, March 25, 2015 13:55:12
+-- Date Created : Sunday, April 05, 2015 19:00:49
 -- Target DBMS : MySQL 5.x
 --
 
@@ -60,6 +60,7 @@ CREATE TABLE archivo(
     nombre                      VARCHAR(255),
     extension                   VARCHAR(32),
     bytes                       DECIMAL(15, 5)    NOT NULL,
+    mime                        VARCHAR(255),
     ruta                        VARCHAR(255),
     ruta2                       VARCHAR(255),
     fk_id_tipo_archivo          INT,
@@ -70,6 +71,29 @@ CREATE TABLE archivo(
     transaccion_modificacion    INT,
     fk_id_empresa               INT,
     PRIMARY KEY (pk_id_archivo)
+)ENGINE=INNODB
+;
+
+
+
+-- 
+-- TABLE: autentificacion_historia 
+--
+
+CREATE TABLE autentificacion_historia(
+    pk_id_autentificacion_historia    INT             AUTO_INCREMENT,
+    fecha_autentificacion             DATETIME        NOT NULL,
+    ip_cliente                        VARCHAR(255),
+    host_cliente                      CHAR(10),
+    ip_servidor                       VARCHAR(255),
+    host_servidor                     CHAR(10),
+    puerto_servidor                   INT,
+    navegador                         VARCHAR(255),
+    varios                            VARCHAR(255),
+    fk_estado_autentificacion         INT,
+    fk_id_usuario                     INT,
+    fk_id_empresa                     INT,
+    PRIMARY KEY (pk_id_autentificacion_historia)
 )ENGINE=INNODB
 ;
 
@@ -523,6 +547,61 @@ CREATE TABLE item(
 
 
 -- 
+-- TABLE: licencia 
+--
+
+CREATE TABLE licencia(
+    pk_id_licencia                INT             AUTO_INCREMENT,
+    licencia                      VARCHAR(255),
+    codigo_contrato               VARCHAR(255),
+    fecha_inicio_servicio         DATE            NOT NULL,
+    fecha_fin_servicio            DATE            NOT NULL,
+    fecha_transaccion             DATETIME        NOT NULL,
+    fk_tipo_servicio_sistema      INT,
+    fk_tipo_contrato_sistema      INT,
+    fk_tiempo_servicio_sistema    INT,
+    fk_paquete_sistema            INT,
+    usuario_transaccion           INT,
+    estado_registro               VARCHAR(32),
+    transaccion_creacion          INT,
+    transaccion_modificacion      INT,
+    fk_id_empresa                 INT,
+    PRIMARY KEY (pk_id_licencia)
+)ENGINE=INNODB
+;
+
+
+
+-- 
+-- TABLE: licencia_historia 
+--
+
+CREATE TABLE licencia_historia(
+    pk_id_licencia_historia       INT             AUTO_INCREMENT,
+    pk_id_licencia                INT,
+    licencia                      VARCHAR(255),
+    codigo_contrato               VARCHAR(255),
+    fecha_inicio_servicio         DATE            NOT NULL,
+    fecha_fin_servicio            DATE            NOT NULL,
+    fecha_transaccion             DATETIME        NOT NULL,
+    fk_tipo_servicio_sistema      INT,
+    fk_tipo_contrato_sistema      INT,
+    fk_tiempo_servicio_sistema    INT,
+    fk_paquete_sistema            INT,
+    usuario_transaccion           INT,
+    estado_registro               VARCHAR(32),
+    transaccion_creacion          INT,
+    transaccion_modificacion      INT,
+    fk_id_empresa                 INT,
+    fecha_inicio                  DATETIME        NOT NULL,
+    fecha_fin                     DATETIME        NOT NULL,
+    PRIMARY KEY (pk_id_licencia_historia)
+)ENGINE=INNODB
+;
+
+
+
+-- 
 -- TABLE: menu 
 --
 
@@ -752,6 +831,7 @@ CREATE TABLE usuario(
     token                       VARCHAR(255),
     ip_origination              VARCHAR(255),
     fk_id_persona               INT,
+    fk_logged_in                INT,
     cnf_base                    VARCHAR(32),
     fecha_transaccion           DATETIME        NOT NULL,
     usuario_transaccion         INT,
@@ -774,6 +854,7 @@ CREATE TABLE usuario_permiso(
     fecha_transaccion           DATETIME       NOT NULL,
     fk_id_usuario               INT,
     fk_id_permiso               INT,
+    fk_tipo_permiso             INT,
     usuario_transaccion         INT,
     estado_registro             VARCHAR(32),
     transaccion_creacion        INT,
@@ -912,6 +993,26 @@ ALTER TABLE archivo ADD CONSTRAINT Reftransaccion_log218
 ALTER TABLE archivo ADD CONSTRAINT Refempresa240 
     FOREIGN KEY (fk_id_empresa)
     REFERENCES empresa(pk_id_empresa)
+;
+
+
+-- 
+-- TABLE: autentificacion_historia 
+--
+
+ALTER TABLE autentificacion_historia ADD CONSTRAINT Refusuario427 
+    FOREIGN KEY (fk_id_usuario)
+    REFERENCES usuario(pk_id_usuario)
+;
+
+ALTER TABLE autentificacion_historia ADD CONSTRAINT Refempresa428 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
+;
+
+ALTER TABLE autentificacion_historia ADD CONSTRAINT Refcatalogo429 
+    FOREIGN KEY (fk_estado_autentificacion)
+    REFERENCES catalogo(pk_id_catalogo)
 ;
 
 
@@ -1204,14 +1305,14 @@ ALTER TABLE compra ADD CONSTRAINT Refcatalogo391
     REFERENCES catalogo(pk_id_catalogo)
 ;
 
-ALTER TABLE compra ADD CONSTRAINT Refcatalogo392 
-    FOREIGN KEY (fk_id_formato_dato_descuento)
-    REFERENCES catalogo(pk_id_catalogo)
-;
-
 ALTER TABLE compra ADD CONSTRAINT Refempresa377 
     FOREIGN KEY (fk_id_empresa)
     REFERENCES empresa(pk_id_empresa)
+;
+
+ALTER TABLE compra ADD CONSTRAINT Refcatalogo392 
+    FOREIGN KEY (fk_id_formato_dato_descuento)
+    REFERENCES catalogo(pk_id_catalogo)
 ;
 
 ALTER TABLE compra ADD CONSTRAINT Reftipo_compra394 
@@ -1641,6 +1742,66 @@ ALTER TABLE item ADD CONSTRAINT Refempresa241
 
 
 -- 
+-- TABLE: licencia 
+--
+
+ALTER TABLE licencia ADD CONSTRAINT Reftransaccion_log363 
+    FOREIGN KEY (transaccion_modificacion)
+    REFERENCES transaccion_log(pk_id_transaccion_log)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Refempresa370 
+    FOREIGN KEY (fk_id_empresa)
+    REFERENCES empresa(pk_id_empresa)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Refusuario324 
+    FOREIGN KEY (usuario_transaccion)
+    REFERENCES usuario(pk_id_usuario)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Refconstante337 
+    FOREIGN KEY (estado_registro)
+    REFERENCES constante(pk_id_constante)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Reftransaccion_log350 
+    FOREIGN KEY (transaccion_creacion)
+    REFERENCES transaccion_log(pk_id_transaccion_log)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Refcatalogo422 
+    FOREIGN KEY (fk_tiempo_servicio_sistema)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Refcatalogo423 
+    FOREIGN KEY (fk_tipo_servicio_sistema)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Refcatalogo424 
+    FOREIGN KEY (fk_tipo_contrato_sistema)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE licencia ADD CONSTRAINT Refcatalogo425 
+    FOREIGN KEY (fk_paquete_sistema)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
+
+-- 
+-- TABLE: licencia_historia 
+--
+
+ALTER TABLE licencia_historia ADD CONSTRAINT Reflicencia426 
+    FOREIGN KEY (pk_id_licencia)
+    REFERENCES licencia(pk_id_licencia)
+;
+
+
+-- 
 -- TABLE: menu 
 --
 
@@ -1829,14 +1990,14 @@ ALTER TABLE proveedor ADD CONSTRAINT Reftransaccion_log216
     REFERENCES transaccion_log(pk_id_transaccion_log)
 ;
 
-ALTER TABLE proveedor ADD CONSTRAINT Refcampo_entrada307 
-    FOREIGN KEY (fk_id_rubro)
-    REFERENCES campo_entrada(pk_id_campo_entrada)
-;
-
 ALTER TABLE proveedor ADD CONSTRAINT Reftransaccion_log226 
     FOREIGN KEY (transaccion_modificacion)
     REFERENCES transaccion_log(pk_id_transaccion_log)
+;
+
+ALTER TABLE proveedor ADD CONSTRAINT Refcampo_entrada307 
+    FOREIGN KEY (fk_id_rubro)
+    REFERENCES campo_entrada(pk_id_campo_entrada)
 ;
 
 ALTER TABLE proveedor ADD CONSTRAINT Refcampo_entrada308 
@@ -1994,6 +2155,11 @@ ALTER TABLE usuario ADD CONSTRAINT Refempresa244
     REFERENCES empresa(pk_id_empresa)
 ;
 
+ALTER TABLE usuario ADD CONSTRAINT Refcatalogo420 
+    FOREIGN KEY (fk_logged_in)
+    REFERENCES catalogo(pk_id_catalogo)
+;
+
 
 -- 
 -- TABLE: usuario_permiso 
@@ -2032,6 +2198,11 @@ ALTER TABLE usuario_permiso ADD CONSTRAINT Refconstante338
 ALTER TABLE usuario_permiso ADD CONSTRAINT Reftransaccion_log351 
     FOREIGN KEY (transaccion_creacion)
     REFERENCES transaccion_log(pk_id_transaccion_log)
+;
+
+ALTER TABLE usuario_permiso ADD CONSTRAINT Refcatalogo421 
+    FOREIGN KEY (fk_tipo_permiso)
+    REFERENCES catalogo(pk_id_catalogo)
 ;
 
 

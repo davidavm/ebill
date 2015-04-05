@@ -113,7 +113,8 @@
                                   transaccion_creacion, 
                                   transaccion_modificacion, 
                                   fk_id_empresa,
-                                  (select concat(nombre_corto,' (NIT: ',nit,')') from empresa where pk_id_empresa = fk_id_empresa) empresa
+                                  (select concat(nombre_corto,' (NIT: ',nit,')') from empresa where pk_id_empresa = fk_id_empresa and estado_registro = 'A') empresa,
+                                  (select concat(fk_id_empresa,'_',pk_id_archivo,'.',extension) from archivo where pk_id_archivo = fk_id_archivo_foto and estado_registro = 'A') nombre_archivo_foto
                            FROM   persona
                            WHERE  estado_registro = 'A' ";
 
@@ -213,12 +214,13 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call persona_baja(?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call persona_baja(?,?,?,?,?, @resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);  
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000);                               
-
+                $sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000);                               
+                
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
                
@@ -254,7 +256,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call persona_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
+                $sentencia = $gbd->prepare("call persona_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, @resultado); ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -270,6 +272,7 @@
                 $sentencia->bindParam(13, $datos[12], PDO::PARAM_STR, 4000);                                                  
                 $sentencia->bindParam(14, $datos[13], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(15, $datos[14], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(16, $datos[15], PDO::PARAM_STR, 4000); 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
