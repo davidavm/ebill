@@ -156,7 +156,7 @@ define( 'CONFIGURATION_PATH', SITE_PATH .'configuration'. DIR_SEP );
  * Constant for the library UPLOAD path
  * @package Configuration
  */
-define( 'UPLOAD_PATH', SITE_PATH .'upload'. DIR_SEP );
+define( 'UPLOAD_PATH', SITE_PATH .'view'. DIR_SEP . 'si' . DIR_SEP . 'upload' . DIR_SEP);
 
 /**
  * Constant for the documentation path
@@ -272,6 +272,12 @@ define( 'REPORTS_RELATIVE_PATH',APPLICATION_RELATIVE_PATH."view".DIR_SEP_REL."si
  * @package Configuration
  */
 define( 'LANGUAGE_RELATIVE_PATH',APPLICATION_RELATIVE_PATH."view".DIR_SEP_REL."lang". DIR_SEP_REL );
+
+/**
+ * Constant for the relative css path .
+ * @package Configuration
+ */
+define( 'UPLOAD_RELATIVE_PATH',APPLICATION_RELATIVE_PATH."view".DIR_SEP_REL."si". DIR_SEP_REL."upload". DIR_SEP_REL );
 
 // }}}
 

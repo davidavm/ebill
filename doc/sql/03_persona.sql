@@ -96,7 +96,7 @@ DELIMITER ;
 -- modificacion persona
 DROP PROCEDURE IF EXISTS persona_modif;
 DELIMITER //
-CREATE  PROCEDURE persona_modif(  pk_id_persona INT(11),
+CREATE  PROCEDURE persona_modif(  pi_pk_id_persona INT(11),
 												pi_nombres VARCHAR(255) ,
 												pi_apellido_paterno VARCHAR(255),
 												pi_apellido_materno VARCHAR(255) ,
@@ -111,6 +111,7 @@ CREATE  PROCEDURE persona_modif(  pk_id_persona INT(11),
 												pi_usuario_transaccion INT(11) ,												
 												pi_transaccion_modificacion INT(11) ,
 												pi_fk_id_empresa INT(11),
+                                                                                                pi_fk_id_archivo_old INT(11),
 											OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
@@ -165,6 +166,10 @@ BEGIN
     COMMIT;
 
     CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
+    -- borrar anterior archivo si existe
+    if (pi_fk_id_archivo_foto != pi_fk_id_archivo_old) then
+    CALL archivo_baja(pi_fk_id_archivo_old, pi_usuario_transaccion, pi_transaccion_modificacion, pi_fk_id_empresa, @resultado);
+    end if;
 
 END//
 DELIMITER ;
@@ -174,10 +179,11 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS persona_baja;
 DELIMITER //
-CREATE  PROCEDURE persona_baja(   pk_id_persona INT(11),																							
+CREATE  PROCEDURE persona_baja(   pi_pk_id_persona INT(11),																							
 												pi_usuario_transaccion INT(11) ,												
 												pi_transaccion_modificacion INT(11) ,
 												pi_fk_id_empresa INT(11),
+                                                                                                pi_fk_id_archivo_foto INT(11),
 											OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
@@ -221,6 +227,9 @@ BEGIN
     COMMIT;
 	  
     CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
+    
+    -- Baja de archivo
+    CALL archivo_baja(pi_fk_id_archivo_foto, pi_usuario_transaccion, pi_transaccion_modificacion, pi_fk_id_empresa, @resultado);
 
 END//
 DELIMITER ;

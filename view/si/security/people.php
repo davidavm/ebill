@@ -26,8 +26,15 @@ if ($action == 'insert') {
         if ($object->isExist(array($_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) ))) {
             $messageErrorTransaction = "No se puede ingresar una Persona que ya existe. Revise los datos de Nombre corto, Razon Social o Nit.";
         } else {
-            $idTransaccion = $transaction->insert(array(Persona::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])) );                       
-            $data = array($_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
+            $idTransaccion = $transaction->insert(array(Persona::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])) );
+            // subida del archivo si existe
+            $idArchivo = NULL; // si no existe coloca Nulo a la BD
+            if( isset($_FILES["fk_id_archivo_foto"]) ){
+            $uploadArchivo = new Archivo($registry[$dbSystem]);
+            $idArchivo = $uploadArchivo->uploadImage($_FILES,UPLOAD_PATH."identification". DIR_SEP,'fk_id_archivo_foto',$idTransaccion,$_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]),700000);
+            }      
+            // Subida de datos
+            $data = array($_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], $idArchivo, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
             }
@@ -43,7 +50,9 @@ if ($action == 'insert') {
 if ($action == 'delete') {
     try {
         $idTransaccion = $transaction->insert(array(Persona::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-        $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));        
+        $idArchivo = isset($_GET["idArchivo"]) ? $_GET["idArchivo"] : NULL;
+        $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]), $idArchivo);        
+        // eliminar datos
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
         }
@@ -66,7 +75,15 @@ if ($action == 'edit') {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Persona que ya existe.";
         } else {
             $idTransaccion = $transaction->insert(array(Persona::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-            $data = array($_GET["idObject"], $_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], NULL, $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
+            // subida del archivo si existe
+            $idArchivoOld = isset($_POST["old_fk_id_archivo_foto"])?$_POST["old_fk_id_archivo_foto"]:NULL; // si no se cargo uno nuevo el id sigue siendo el anterior            
+            $idArchivo = $idArchivoOld;
+            if( isset($_FILES["fk_id_archivo_foto"]) && $_FILES["fk_id_archivo_foto"]["error"] != UPLOAD_ERR_NO_FILE ){
+            $uploadArchivo = new Archivo($registry[$dbSystem]);
+            $idArchivo = $uploadArchivo->uploadImage($_FILES,UPLOAD_PATH."identification". DIR_SEP,'fk_id_archivo_foto',$idTransaccion,$_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]),700000);            
+            }      
+            // Ingreso de datos            
+            $data = array($_GET["idObject"], $_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], $idArchivo , $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]), $idArchivoOld);
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
@@ -205,7 +222,7 @@ if ($action == 'list') {
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
                                         <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkpeople&action=edit_form&idObject=<?php echo $register['pk_id_persona']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_persona']; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?'&fk_id_empresa='.$register['fk_id_empresa']:$_SESSION["authenticated_id_empresa"]); ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_persona']; ?>&idArchivo=<?php echo $register['fk_id_archivo_foto']; ?>&fk_id_empresa=<?php echo ($_SESSION["authenticated_id_empresa"]==-1?$register['fk_id_empresa']:$_SESSION["authenticated_id_empresa"]) ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -266,7 +283,7 @@ if ($action == 'list') {
 
                     <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-pencil-square-o "></i></span> deben ser llenados de manera obligatoria.</p> </br>
 
-                    <form name="formObject" id="formObject" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=<?php
+                    <form name="formObject" id="formObject"  role="form" enctype="multipart/form-data" action="index.php?page=<?php echo $routeFull; ?>&action=<?php
                     if ($action == 'insert_form') {
                         echo "insert";
                     } else if ($action == 'edit_form') {
@@ -412,9 +429,38 @@ if ($action == 'list') {
                                     <input id="telefono3" name="telefono3" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono3"] . "\" " : NULL); ?>/>
                                 </div>                            
                             </div>
+                            <div class="form-group col-lg-8">
+                                <label for="fk_id_archivo_foto">Subir fotograf&iacute;a de identificaci&oacute;n personal:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa-picture-o" data-toggle="tooltip" data-placement="top" title="Campo opcional"></span>
+                                    </span>
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="700000" />                                                                        
+                                    <input id="fk_id_archivo_foto" name="fk_id_archivo_foto" class="form-control" type="file" accept="image/*" style="padding: 0px;" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono3"] . "\" " : NULL); ?>/>                                    
+                                </div>  
+                            </div>
+                            <div class="form-group col-lg-2">
+                                <label for="fk_id_archivo_foto">&nbsp;</label>
+                                <div class="input-group">
+                                     
+                                <?php                                 
+                                        if($objectEdit["fk_id_archivo_foto"] == NULL ){
+                                    ?>
+                                    <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-1.png"; ?>" alt="Usuario del sistema" class="img-circle img-inline userpic-32" width="35" />
+                                    <?php
+                                        } elseif( $action == 'edit_form' || $action == 'view_form' ){
+                                    ?>
+                                    <input type="hidden" name="old_fk_id_archivo_foto" value="<?php echo $objectEdit["fk_id_archivo_foto"]; ?>" />
+                                    <img src="<?php echo UPLOAD_RELATIVE_PATH . "identification/".$objectEdit["nombre_archivo_foto"]; ?>" alt="Usuario del sistema" class="img-circle img-inline userpic-32" width="35" height="35"/>        
+                                    <?php
+                                        }
+                                    ?>     
+                                    </div>
+                            </div>
                             <?php 
                             if( $_SESSION["authenticated_id_empresa"] == -1 ){
                             ?>
+                            <div class="clear"></div>
                             <div class="form-group col-lg-8">
                                 <label for="fk_id_empresa">Empresa:</label>                                    
                                 <div class="input-group">
