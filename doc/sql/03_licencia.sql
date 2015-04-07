@@ -231,7 +231,8 @@ BEGIN
     DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
-	
+	DECLARE v_id_lic_his INT;
+
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
 		ROLLBACK;
@@ -248,12 +249,12 @@ BEGIN
 	SELECT @resultado INTO v_res;
 
       update licencia set `fecha_transaccion` = current_timestamp(),
-									`usuario_transaccion` =`pi_usuario_transaccion` ,
-									`estado_registro` ='E',
-									`transaccion_modificacion`  =`pi_transaccion_modificacion`,
-									`fk_id_empresa`=`pi_fk_id_empresa` 	
-					where `pk_id_licencia`=`pi_pk_id_licencia`;			
-									 
+                        `usuario_transaccion` =`pi_usuario_transaccion` ,
+                        `estado_registro` ='E',
+                        `transaccion_modificacion`  =`pi_transaccion_modificacion`,
+                        `fk_id_empresa`=`pi_fk_id_empresa` 	
+                    where `pk_id_licencia`=`pi_pk_id_licencia`;			
+
 	      
       SET po_resultado = `pi_pk_id_licencia`;
 	  SET v_cant_reg = ROW_COUNT();
@@ -262,5 +263,20 @@ BEGIN
 
 	  CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
+ -- RECUPERAMOS EL ID DE LA LIC A DAR DE BAJA.
+     select pk_id_licencia_historia into v_id_lic_his 
+         from licencia_historia
+        where pk_id_licencia=`pi_pk_id_licencia`
+        and estado_registro='A';
+
+
+ --REGISTRO DE BAJA DEL HISTORICO
+      CALL `licencia_historia_baja_hsto`( v_id_lic_his ,   -- pk_id_licencia_historia                               
+                                        `pi_usuario_transaccion`  ,											
+                                        `pi_transaccion_modificacion`  ,
+                                        `pi_fk_id_empresa` ,
+                                        current_timestamp(),
+                                        @id_lichis );
+
 END//
 DELIMITER ;
