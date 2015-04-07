@@ -40,43 +40,68 @@ BEGIN
   
     
       INSERT INTO licencia (licencia                     ,
-									codigo_contrato               ,
-									fecha_inicio_servicio                 ,
-									fecha_fin_servicio                      ,
-									fecha_transaccion                   ,
-									fk_tipo_servicio_sistema      ,
-									fk_tipo_contrato_sistema      ,
-									fk_tiempo_servicio_sistema    ,
-									fk_paquete_sistema            ,
-									usuario_transaccion           ,
-									estado_registro              ,
-									transaccion_creacion          ,
-									transaccion_modificacion      ,
-									fk_id_empresa )	
-									VALUES
-									(
-								    pi_licencia                     ,
-									pi_codigo_contrato               ,
-									pi_fecha_inicio_servicio                 ,
-									pi_fecha_fin_servicio                      ,
-									current_timestamp()                   ,
-									pi_fk_tipo_servicio_sistema      ,
-									pi_fk_tipo_contrato_sistema      ,
-									pi_fk_tiempo_servicio_sistema    ,
-									pi_fk_paquete_sistema            ,
-									pi_usuario_transaccion           ,
-									'A'              ,
-									pi_transaccion_creacion          ,
-									pi_transaccion_modificacion      ,
-									pi_fk_id_empresa              
-		        					);
+                            codigo_contrato               ,
+                            fecha_inicio_servicio                 ,
+                            fecha_fin_servicio                      ,
+                            fecha_transaccion                   ,
+                            fk_tipo_servicio_sistema      ,
+                            fk_tipo_contrato_sistema      ,
+                            fk_tiempo_servicio_sistema    ,
+                            fk_paquete_sistema            ,
+                            usuario_transaccion           ,
+                            estado_registro              ,
+                            transaccion_creacion          ,
+                            transaccion_modificacion      ,
+                            fk_id_empresa )	
+                            VALUES
+                            (
+                            pi_licencia                     ,
+                            pi_codigo_contrato               ,
+                            pi_fecha_inicio_servicio                 ,
+                            pi_fecha_fin_servicio                      ,
+                            current_timestamp()                   ,
+                            pi_fk_tipo_servicio_sistema      ,
+                            pi_fk_tipo_contrato_sistema      ,
+                            pi_fk_tiempo_servicio_sistema    ,
+                            pi_fk_paquete_sistema            ,
+                            pi_usuario_transaccion           ,
+                            'A'              ,
+                            pi_transaccion_creacion          ,
+                            pi_transaccion_modificacion      ,
+                            pi_fk_id_empresa              
+                    );
 	      
       SET po_resultado = LAST_INSERT_ID();
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;
-	  
+
+
+   
+     --REGISTRO DE LOG
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
+
+
+ -- REGISTRO DE HISTORICO DE LICENCIAS
+    CALL `licencia_historia_alta`(LAST_INSERT_ID()                ,
+                                pi_licencia                      ,
+                                pi_codigo_contrato               ,
+                                pi_fecha_inicio_servicio         ,
+                                pi_fecha_fin_servicio            ,
+
+                                pi_fk_tipo_servicio_sistema      ,
+                                pi_fk_tipo_contrato_sistema      ,
+                                pi_fk_tiempo_servicio_sistema    ,
+                                pi_fk_paquete_sistema            ,
+                                pi_usuario_transaccion           ,
+
+                                pi_transaccion_creacion          ,
+                                pi_transaccion_modificacion      ,
+                                pi_fk_id_empresa                 ,
+                                current_timestamp()                  ,
+                                date_format('3333-12-31 23:59:59','%Y-%m-%d %H:%i:%s'),                     ,
+                                @resultado);
+
 
 END//
 DELIMITER ;
@@ -101,10 +126,14 @@ CREATE  PROCEDURE `licencia_modif`( pi_pk_id_licencia                INT        
 									OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
-    DECLARE v_res INT;
+        DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
-   
+        DECLARE v_fecha_ini DATETIME;
+        DECLARE v_fecha_fin DATETIME;
+        DECLARE v_id_lic_his INT;
+       
+
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
 		ROLLBACK;
@@ -145,7 +174,45 @@ BEGIN
       COMMIT;
 
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
-	
+
+     -- GENERAMOS UNA FECHA INI Y FIN PARA DAR DE BAJA Y DAR DE ALTA EL NUEVO REG
+     select current_timestamp() , 
+        date_format(date_sub(current_timestamp(), interval '-1' second) ,'%Y-%m-%d %H:%i:%s')  INTO v_fecha_fin, v_fecha_ini;
+     
+     -- RECUPERAMOS EL ID DE LA LIC A DAR DE BAJA.
+     select pk_id_licencia_historia into v_id_lic_his 
+         from licencia_historia
+        where pk_id_licencia=`pi_pk_id_licencia`
+        and estado_registro='A';
+
+     --REGISTRO DE BAJA DEL HISTORICO
+      CALL `licencia_historia_baja_hsto`( v_id_lic_his ,   -- pk_id_licencia_historia                               
+                                        `pi_usuario_transaccion`  ,											
+                                        `pi_transaccion_modificacion`  ,
+                                        `pi_fk_id_empresa` ,
+                                         v_fecha fin,
+                                        @id_lichis );
+
+      -- REGISTRO DE ALTA DEL HISTORICO
+    CALL `licencia_historia_alta`(`pi_pk_id_licencia`                ,
+                                    pi_licencia                      ,
+                                    pi_codigo_contrato               ,
+                                    pi_fecha_inicio_servicio         ,
+                                    pi_fecha_fin_servicio            ,
+
+                                    pi_fk_tipo_servicio_sistema      ,
+                                    pi_fk_tipo_contrato_sistema      ,
+                                    pi_fk_tiempo_servicio_sistema    ,
+                                    pi_fk_paquete_sistema            ,
+                                    pi_usuario_transaccion           ,
+
+                                    pi_transaccion_creacion          ,
+                                    pi_transaccion_modificacion      ,
+                                    pi_fk_id_empresa                 ,
+                                    v_fecha_ini                 ,
+                                    date_format('3333-12-31 23:59:59','%Y-%m-%d %H:%i:%s'),                     ,
+                                    @res_id_lichis);
+
 END//
 DELIMITER ;
 
