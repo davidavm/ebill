@@ -5,6 +5,12 @@ $_SESSION["active_option_menu"] = $route;
 $routeFull = $route . "&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages";
 // Prepare Object 
 $object = new Persona($registry[$dbSystem]);
+
+$result = NULL;
+$objectEdit = NULL;
+$result = $object->getList($_GET["idObject"], ($_SESSION["authenticated_id_empresa"] == -1 ? Persona::ALL : $_SESSION["authenticated_id_empresa"]));
+$objectEdit = $result[0];
+
 ?>
 <!-- Action insert, view or edit -->
 <div class="page-title">
@@ -28,23 +34,29 @@ $object = new Persona($registry[$dbSystem]);
     <div class="col-sm-12">
         <div class="panel panel-success">                
             <div class="panel-heading">
-                <h3 class="panel-title">Mi Perfil</h3>                                       
+                <h3 class="panel-title">Mi Perfil 
+                                    <?php                                 
+                                        if($objectEdit["nombre_archivo_foto"] == NULL ){
+                                    ?>
+                                    <img src="<?php echo IMG_RELATIVE_PATH . "ebil/user-1.png"; ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" height="28" />
+                                    <?php
+                                        } else{
+                                    ?>
+                                    <img src="<?php echo UPLOAD_RELATIVE_PATH . "identification/".$objectEdit["nombre_archivo_foto"]; ?>" alt="user-image" class="img-circle img-inline userpic-32" width="28" height="28" />
+                                    <?php
+                                        }
+                                    ?>  
+                </h3>                                       
             </div>
             <div class="panel-body">
 
                 <form name="formObject" id="formObject" role="form" action="#" >
-                    <?php
-                    $result = NULL;
-                    $objectEdit = NULL;
-                    $result = $object->getList($_GET["idObject"], ($_SESSION["authenticated_id_empresa"] == -1 ? Persona::ALL : $_SESSION["authenticated_id_empresa"]));
-                    $objectEdit = $result[0];
-                    ?>
                     <div class="row col-margin">
                         <div class="form-group col-lg-4">                            
                             <label for="nombres">Nombres:</label>                                
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["nombres"]; ?>
+                                    <?php echo $objectEdit["nombres"]; ?> &nbsp;
                                 </span>
                             </div>
                         </div>
@@ -52,7 +64,7 @@ $object = new Persona($registry[$dbSystem]);
                             <label for="apellido_paterno">Primer apellido:</label> 
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["apellido_paterno"]; ?>
+                                    <?php echo $objectEdit["apellido_paterno"]; ?> &nbsp;
                                 </span>                                                                
                             </div>
                         </div>    
@@ -60,7 +72,7 @@ $object = new Persona($registry[$dbSystem]);
                             <label for="apellido_materno">Segundo apellido:</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["apellido_materno"]; ?>
+                                    <?php echo $objectEdit["apellido_materno"]; ?> &nbsp;
                                 </span>                                                                
                             </div>
                         </div>  
@@ -77,7 +89,7 @@ $object = new Persona($registry[$dbSystem]);
                                             break;
                                         }
                                     }
-                                    ?>
+                                    ?> &nbsp;
                                 </span>                                   
                             </div>                            
                         </div>                               
@@ -85,7 +97,7 @@ $object = new Persona($registry[$dbSystem]);
                             <label for="numero_identidad">Numero de identidad:</label>
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["numero_identidad"]; ?>
+                                    <?php echo $objectEdit["numero_identidad"]; ?> &nbsp;
                                 </span>                                                                
                             </div>
                         </div>
@@ -102,7 +114,7 @@ $object = new Persona($registry[$dbSystem]);
                                             break;
                                         }
                                     }
-                                    ?>
+                                    ?> &nbsp;
                                 </span>                                    
                             </div>                            
                         </div>                               
@@ -110,7 +122,7 @@ $object = new Persona($registry[$dbSystem]);
                             <label for="direccion">Direcci&oacute;n o ubicaci&oacute;n del domicilio:</label>                                    
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["direccion"]; ?>
+                                    <?php echo $objectEdit["direccion"]; ?> &nbsp;
                                 </span>
                             </div>                            
                         </div>     
@@ -118,7 +130,7 @@ $object = new Persona($registry[$dbSystem]);
                             <label for="telefono1">Tel&eacute;fonos/Celulares:</label>                                    
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["telefono1"]; ?>
+                                    <?php echo $objectEdit["telefono1"]; ?> &nbsp;
                                 </span>                                    
                             </div>                            
                         </div>  
@@ -126,7 +138,7 @@ $object = new Persona($registry[$dbSystem]);
                             <label for="telefono2">&nbsp;</label>                                    
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["telefono2"]; ?>
+                                    <?php echo $objectEdit["telefono2"]; ?> &nbsp;
                                 </span>                                    
                             </div>                            
                         </div> 
@@ -134,7 +146,7 @@ $object = new Persona($registry[$dbSystem]);
                             <label for="telefono3">&nbsp;</label>                                    
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <?php echo $objectEdit["telefono3"]; ?>
+                                    <?php echo $objectEdit["telefono3"]; ?> &nbsp;
                                 </span>
                             </div>                            
                         </div>
