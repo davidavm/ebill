@@ -1,4 +1,4 @@
-DROP  TABLE IF EXISTS aud_log_procesos;
+﻿DROP  TABLE IF EXISTS aud_log_procesos;
 -- Volcando estructura para tabla aud_log_procesos
 CREATE TABLE aud_log_procesos (
   id_log int(11) NOT NULL AUTO_INCREMENT,
@@ -31,7 +31,7 @@ BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
 		ROLLBACK;
-		SET po_resultado = -1;
+		SET po_resultado := -1;
 	END;
     
     START TRANSACTION;
@@ -45,9 +45,9 @@ BEGIN
        v_fecha_inicio
 		 );
 		          
-      SET po_resultado = LAST_INSERT_ID();
+      SET po_resultado := LAST_INSERT_ID();
       COMMIT;          
-END//
+END;
 DELIMITER ;
 
 
@@ -60,7 +60,7 @@ BEGIN
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
 		ROLLBACK;
-		SET po_resultado = -1;
+		SET po_resultado := -1;
 	END;
     
     START TRANSACTION;
@@ -73,9 +73,9 @@ BEGIN
      where id_log = v_id_log;
     commit;
     
-    SET po_resultado = 0;
+    SET po_resultado := 0;
     
-END//
+END;
 DELIMITER ;
 
 

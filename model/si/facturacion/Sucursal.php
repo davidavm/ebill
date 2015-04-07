@@ -107,7 +107,7 @@
                                          `numero` ,
                                          `direccion`,
                                          `telefono1` ,
-                                         `teefono2` ,
+                                         `telefono2` ,
                                          `telefono3` ,
                                          date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
                                          `usuario_transaccion` ,

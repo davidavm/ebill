@@ -767,7 +767,7 @@ CREATE TABLE sucursal(
     numero                      INT,
     direccion                   TEXT,
     telefono1                   VARCHAR(32),
-    teefono2                    VARCHAR(32),
+    telefono2                    VARCHAR(32),
     telefono3                   VARCHAR(32),
     fecha_transaccion           DATETIME        NOT NULL,
     usuario_transaccion         INT,

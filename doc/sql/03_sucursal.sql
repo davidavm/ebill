@@ -1,13 +1,13 @@
-
+﻿
 -- Volcando estructura para procedimiento grupo_alta
 DROP PROCEDURE IF EXISTS `sucursal_alta`;
-DELIMITER //
+
 CREATE  PROCEDURE `sucursal_alta`( `pi_sucursal` VARCHAR(255),
 									`pi_razon_social` VARCHAR(255) ,
 									`pi_numero` INT(11) ,
 									`pi_direccion` TEXT ,
 									`pi_telefono1` VARCHAR(32) ,
-									`pi_teefono2` VARCHAR(32) ,
+									`pi_telefono2` VARCHAR(32) ,
 									`pi_telefono3` VARCHAR(32) ,
 									
 									`pi_usuario_transaccion` INT(11),
@@ -45,7 +45,7 @@ BEGIN
 									`numero`  ,
 									`direccion`  ,
 									`telefono1`  ,
-									`teefono2`  ,
+									`telefono2`  ,
 									`telefono3`  ,
 									`fecha_transaccion`  ,
 									`usuario_transaccion` ,
@@ -60,7 +60,7 @@ BEGIN
 									`pi_numero`  ,
 									`pi_direccion`  ,
 									`pi_telefono1`  ,
-									`pi_teefono2`  ,
+									`pi_telefono2`  ,
 									`pi_telefono3`  ,
 									current_timestamp()  ,
 									`pi_usuario_transaccion` ,
@@ -77,20 +77,19 @@ BEGIN
 	  
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
-END//
-DELIMITER ;
+END;
 
 
 -- Volcando estructura para procedimiento grupo_modif
 DROP PROCEDURE IF EXISTS `sucursal_modif`;
-DELIMITER //
+
 CREATE  PROCEDURE `sucursal_modif`( `pi_pk_id_suscursal` INT(11) ,
 									`pi_sucursal` VARCHAR(255),
 									`pi_razon_social` VARCHAR(255) ,
 									`pi_numero` INT(11) ,
 									`pi_direccion` TEXT ,
 									`pi_telefono1` VARCHAR(32) ,
-									`pi_teefono2` VARCHAR(32) ,
+									`pi_telefono2` VARCHAR(32) ,
 									`pi_telefono3` VARCHAR(32) ,
 									
 									`pi_usuario_transaccion` INT(11),
@@ -126,7 +125,7 @@ BEGIN
 								`numero` = `pi_numero`,
 								`direccion` = `pi_direccion`,
 								`telefono1` = `pi_telefono1`,
-								`teefono2` = `pi_teefono2`,
+								`telefono2` = `pi_telefono2`,
 								`telefono3` = `pi_telefono3`,
 								`fecha_transaccion` = current_timestamp() ,
 								`usuario_transaccion` = `pi_usuario_transaccion`,
