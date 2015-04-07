@@ -93,7 +93,7 @@ VALUES(1, 1, 2, current_timestamp(), 1, 'A',1 ,1);
 commit;
 
 INSERT INTO persona (pk_id_persona, nombres, apellido_paterno, apellido_materno, fecha_transaccion, usuario_transaccion, estado_registro, transaccion_creacion, transaccion_modificacion)
-VALUES(1, 'Luis Fernando', 'Almendras', 'Aruzamen', current_timestamp(), 1, 'A',1 ,1);
+VALUES(1, 'Penta', 'Group', 'Srl', current_timestamp(), 1, 'A',1 ,1);
 commit;
 
 -- Ultima configuracion para el usuario final
