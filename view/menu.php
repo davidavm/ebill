@@ -48,6 +48,11 @@
                             <span class="title">Datos Factura</span>
                         </a>
                     </li>
+                      <li>
+                       <a href="index.php?page=/si/billing/economic_activities&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                            <span class="title">Manejo Actividades Economicas</span>
+                        </a>
+                    </li> 
                     <li>
                        <a href="index.php?page=/si/billing/branchs&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                             <span class="title">Manejo Sucursales</span>

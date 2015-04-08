@@ -109,6 +109,7 @@
                                          `telefono1` ,
                                          `telefono2` ,
                                          `telefono3` ,
+                                         (select empresa from empresa  where pk_id_empresa=fk_id_empresa ) empresa,
                                          date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
                                          `usuario_transaccion` ,
                                          `estado_registro` ,

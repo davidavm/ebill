@@ -104,6 +104,7 @@
                                 `pk_id_actividad_economica` ,
                                      `actividad_economica` ,
                                      `fk_id_clasificacion_tipo_actividad` ,
+                                     (select descripcion from catalogo  where pk_id_catalogo=fk_id_clasificacion_tipo_actividad ) tipo_actividad,
                                      date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
                                      `usuario_transaccion` ,
                                      `estado_registro` ,
