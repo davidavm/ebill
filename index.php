@@ -81,6 +81,10 @@ require_once("configuration/path_local.php");
  */
 require_once("configuration/supported_version.php");
 
+require_once('vendors/tcpdf/tcpdf.php');
+
+require_once('vendors/tcpdf/tcpdf_barcodes_2d.php');
+
 /**
  * To verify that the PHP version is compatible with the framework "PUNKU PHP"
  */
