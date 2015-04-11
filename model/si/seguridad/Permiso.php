@@ -1,6 +1,6 @@
 <?php
 /**
-* Class Permiso.
+* Class .
 *
 * Implementation of the class Usuario.
 *
@@ -19,7 +19,7 @@
 */
 
 /**
-* Class Permiso
+* Class 
 *
 * Implementation of class Usuario.
 *
@@ -50,10 +50,6 @@
      const UPDATE = "UPDATE TABLE PERMISO";
      const DELETE = "DELETE TABLE PERMISO";
      const SELECT = "SELECT TABLE PERMISO";
-
-     const ROLE_ADMINISTRATOR_DEFAULT = "Administrador"; // Rol Administrator
-     const ROLE_ROOT_DEFAULT = "SuperUsuario"; // Rol Super Usuario
-     const ROLE_OPERATOR_DEFAULT = "Operador"; // Rol Reportes
 
     // }}}
 
@@ -95,27 +91,27 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idPermiso = self::ALL){
+        public function getList($id = self::ALL){
             $result = null;
             $query = null;
             try{
                 $query = " 	
                           select
-                                `pk_id_permiso` ,
-                                `permiso` ,
-                                date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion, 
-                                `descripcion` ,
-                                `usuario_transaccion` ,
-                                `estado_registro` ,
-                                `transaccion_creacion`,
-                                `transaccion_modificacion`
-                                from usuario_rol
-                                where `estado_registro`='A'
+                                pk_id_permiso ,
+                                permiso ,
+                                date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion, 
+                                descripcion ,
+                                usuario_transaccion ,
+                                estado_registro ,
+                                transaccion_creacion,
+                                transaccion_modificacion
+                                from permiso
+                                where estado_registro='A'
                                 ";
 
-                if( $idPermiso != self::ALL){
+                if( $id != self::ALL){
                 $query = $query." and a.pk_id_permiso = ?";
-                $result = DataBase::getArrayListQuery($query, array($idPermiso), $this->instanceDataBase);
+                $result = DataBase::getArrayListQuery($query, array($id), $this->instanceDataBase);
                 }
                 else{
                 $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
