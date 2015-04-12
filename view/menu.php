@@ -40,44 +40,58 @@
             <li>
                 <a href="#">
                     <i class="linecons-cog"></i>
-                    <span class="title">Configuraci&oacute;n Factura</span>
+                    <span class="title">Configuraci&oacute;n de Factura</span>
                 </a>
                 <ul>
                     <li>
                         <a href="#">
-                            <span class="title">Datos Factura</span>
-                        </a>
-                    </li>
-                      <li>
-                       <a href="index.php?page=/si/billing/economic_activities&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
-                            <span class="title">Manejo Actividades Economicas</span>
-                        </a>
-                    </li> 
-                    <li>
-                       <a href="index.php?page=/si/billing/branchs&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
-                            <span class="title">Manejo Sucursales</span>
+                            <span class="title">Mi Empresa</span>
                         </a>
                     </li>                    
                     <li>
                         <a href="#">
-                            <span class="title">Formato factura</span>
+                            <span class="title">Datos de Factura</span>
+                        </a>
+                    </li>
+                      <li>
+                       <a href="index.php?page=/si/billing/economic_activities&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                            <span class="title">Actividades Economicas</span>
+                        </a>
+                    </li> 
+                    <li>
+                       <a href="index.php?page=/si/billing/branchs&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                            <span class="title">Sucursales</span>
+                        </a>
+                    </li>                    
+                    <li>
+                        <a href="#">
+                            <span class="title">Formato de Factura</span>
                         </a>
                     </li>
                     
                     <li>
                        <a href="index.php?page=/si/billing/dosifications&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
-                            <span class="title">Manejo Dosificaci&oacute;n</span>
+                            <span class="title">Dosificaci&oacute;n</span>
                         </a>
                     </li>
 
+                    <li>
+                       <a href="#">
+                            <span class="title">Campos de Factura</span>
+                        </a>
+                    </li>
+                    <li>
+                       <a href="#">
+                            <span class="title">Certificacion del Sistema</span>
+                        </a>
+                    </li>                    
+                    
                 </ul>
             </li>            
             <li>
-                <a href="#">
+                <a href="index.php?page=/si/billing/invoices&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <i class="linecons-money"></i>
-                    <a href="index.php?page=/si/billing/invoices&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <span class="title">Facturar</span>
-                    </a>
                 </a>
             </li>
             
@@ -93,16 +107,43 @@
             <li>
                 <a href="#">
                     <i class="linecons-cog"></i>
-                    <span class="title">Configurar campos de cliente</span>
+                    <span class="title">Configuraci&oacute;n de Cliente</span>
                 </a>
-            </li>
-            
+                <ul>                  
+                    <li>
+                        <a href="#">
+                            <span class="title">Campos de Cliente</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="title">Categoria de Cliente</span>
+                        </a>
+                    </li>                      
+                    <li>
+                        <a href="#">
+                            <span class="title">Rubro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="title">Vendedor</span>
+                        </a>
+                    </li>                     
+                </ul>
+            </li>                           
             <li>
                 <a href="#">
                     <i class="linecons-wallet"></i>
-                    <span class="title">Manejar clientes</span>
+                    <span class="title">Manejar Clientes</span>
                 </a>
             </li>
+            <li>
+                <a href="#">
+                    <i class="linecons-database"></i>
+                    <span class="title">Importar datos  de Clientes</span>
+                </a>
+            </li>            
         </ul>
     </li>
     
@@ -113,25 +154,34 @@
         </a>
         <ul>
             <li>
-                  <a href="index.php?page=/si/warehouse/groups&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
-                      <i class="linecons-params"></i>
-                      <span class="title">Manejo de grupos</span>
-                </a>
-            </li>
-            
-            <li>
-                  <a href="index.php?page=/si/warehouse/warehouse&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
-                    <i class="linecons-truck"></i>  
-                    <span class="title">Manejo de almacenes</span>
-                </a>
-            </li>
-            
-            <li>
                 <a href="#">
-                    <i class="linecons-cog"></i>                    
-                    <span class="title">Configurar campos de item</span>
+                    <i class="linecons-cog"></i>
+                    <span class="title">Configuraci&oacute;n de Almacenes</span>
                 </a>
-            </li>
+                <ul>                  
+                    <li>
+                        <a href="#">
+                            <span class="title">Campos de Item</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="title">Unidad de Medida</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.php?page=/si/warehouse/groups&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                              <span class="title">Grupos</span>
+                        </a>
+                    </li>
+
+                    <li>
+                          <a href="index.php?page=/si/warehouse/warehouse&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                            <span class="title">Almacenes</span>
+                        </a>
+                    </li>                    
+                </ul>
+            </li>                
             
             <li>
                 <a href="#">
@@ -143,7 +193,7 @@
             <li>
                 <a href="#">
                     <i class="linecons-database"></i>
-                    <span class="title">Importar datos  de items</span>
+                    <span class="title">Importar Datos de Items</span>
                 </a>
             </li>
             
@@ -156,12 +206,20 @@
             <span class="title">Compras</span>
         </a>
         <ul>
+            
             <li>
                 <a href="#">
-                    <i class="inecons-location"></i>
-                    <span class="title">Manejar centros de costo</span>
+                    <i class="linecons-cog"></i>
+                    <span class="title">Configuraci&oacute;n de Compras</span>
                 </a>
-            </li>
+                <ul>                              
+                    <li>
+                        <a href="#">
+                            <span class="title">Centros de Costo</span>
+                        </a>
+                    </li>                  
+                </ul>
+            </li>  
             
             <li>
                 <a href="#">
@@ -182,13 +240,27 @@
             <li>
                 <a href="#">
                     <i class="linecons-cog"></i>
-                    <span class="title">Configurar campos de proveedor</span>
+                    <span class="title">Configuraci&oacute;n de Proveedor</span>
                 </a>
-            </li>
+                <ul>                              
+                    <li>
+                        <a href="#">                            
+                            <span class="title">Campos de Proveedor</span>
+                        </a>
+                    </li>              
+                </ul>
+            </li>              
+
             <li>
                 <a href="#">
                     <i class="linecons-tag"></i>
                     <span class="title">Manejar Proveedores</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="linecons-database"></i>
+                    <span class="title">Importar Datos de Proveedores</span>
                 </a>
             </li>            
         </ul>
