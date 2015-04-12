@@ -402,6 +402,7 @@ CREATE TABLE empresa(
 CREATE TABLE factura(
     pk_id_factura                       INT               AUTO_INCREMENT,
     fk_id_sucursal                      INT,
+    numero_factura                INT,
     numero_autorizacion                 INT,
     llave_dosificacion                  TEXT,
     fecha_limite_emision                DATE              NOT NULL,
