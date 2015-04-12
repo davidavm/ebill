@@ -4,7 +4,7 @@ $route = isset($_GET["page"]) ? $_GET["page"] : "";
 $_SESSION["active_option_menu"] = $route;
 $routeFull = $route . "&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages";
 // Prepare Object 
-$object = new Empresa($registry[$dbSystem]);
+$object = new Vendedor($registry[$dbSystem]);
 
 // Prepare Transacction
 $transaction = new Transaccion($registry[$dbSystem]);
@@ -24,10 +24,10 @@ $messageOkTransaction = "";
 if ($action == 'insert') {
     try {
         if ($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) {
-            $messageErrorTransaction = "No se puede ingresar una Empresa que ya existe. Revise los datos de Nombre corto, Razon Social o Nit.";
+            $messageErrorTransaction = "No se puede ingresar una Vendedor que ya existe. Revise los datos de Nombre corto, Razon Social o Nit.";
         } else {
-            $idTransaccion = $transaction->insert(array(Empresa::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
-            $data = array($_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion);
+            $idTransaccion = $transaction->insert(array(Vendedor::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
+            $data = array($_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion);
             
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
@@ -43,7 +43,7 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Empresa::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+        $idTransaccion = $transaction->insert(array(Vendedor::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion);        
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
@@ -64,10 +64,10 @@ if ($action == 'edit') {
         $result = $object->getList($_GET["idObject"]);
         $objectEdit = $result[0];
         if (($object->isExist(array($_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"]))) && ($objectEdit["nombre_corto"] != $_POST["nombre_corto"] || $objectEdit["razon_social"] != $_POST["razon_social"] || $objectEdit["nit"] != $_POST["nit"])) {
-            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Empresa que ya existe.";
+            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Vendedor que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Empresa::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-            $data = array($_GET["idObject"], $_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion);            
+            $idTransaccion = $transaction->insert(array(Vendedor::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+            $data = array($_GET["idObject"], $_POST["empresa"], $_POST["nombre_corto"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"], $_POST["telefono3"], ($_POST["fk_id_departamento"]==-1?NULL:$_POST["fk_id_departamento"]), (empty($_POST["fk_id_municipio"])||($_POST["fk_id_municipio"]==-1)?NULL:$_POST["fk_id_municipio"]), NULL, NULL, NULL, NULL, $_SESSION["authenticated_id_user"], $idTransaccion);            
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
@@ -92,8 +92,8 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-university"></i> Empresas</h1>
-            <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de empresas.</p>
+            <h1 class="title"><i class="fa-university"></i> Vendedors</h1>
+            <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de vendedores.</p>
         </div>
 
         <div class="breadcrumb-env">
@@ -105,7 +105,7 @@ if ($action == 'list') {
                     <a href="#">Seguridad</a>
                 </li>
                 <li class="active">
-                    <strong>Manejo de empresas</strong>
+                    <strong>Manejo de vendedores</strong>
                 </li>
             </ol>
         </div>
@@ -121,7 +121,7 @@ if ($action == 'list') {
                         <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
                                 <i class="linecons-shop"></i>
-                                <span>Agregar Empresa</span>
+                                <span>Agregar Vendedor</span>
                             </button>
                         </form>
                         <?php } ?>
@@ -164,10 +164,10 @@ if ($action == 'list') {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nombre completo</th>
-                                <th>Nombre corto</th>
-                                <th>Razon Social</th>
-                                <th>Nit</th>
+                                <th>Nombres</th>
+                                <th>Primer Apellido</th>
+                                <th>Segundo Apellido</th>
+                                <th>Telefonos</th>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
                             </tr>
@@ -176,12 +176,12 @@ if ($action == 'list') {
                         <tfoot>
                             <tr>
                                 <th></th>
-                                <th>Nombre completo</th>
-                                <th>Nombre corto</th>
-                                <th>Razon Social</th>
-                                <th>Nit</th>
+                                <th>Nombres</th>
+                                <th>Primer Apellido</th>
+                                <th>Segundo Apellido</th>
+                                <th>Telefonos</th>
                                 <th>Modificaci&oacute;n</th>
-                                <th>Acciones</th>   
+                                <th>Acciones</th>                    
                             </tr>
                         </tfoot>
                         <tbody>
@@ -195,16 +195,15 @@ if ($action == 'list') {
                                 ?>
                                 <tr>
                                     <td style="width: 25px;"></td>
-                                    <td><?php echo $register['empresa']; ?></td>
-                                    <td><?php echo $register['nombre_corto']; ?></td>
-                                    <td><?php echo $register['razon_social']; ?></td>
-                                    <td><?php echo $register['nit']; ?></td>
+                                    <td><?php echo $register['nombres']; ?></td>
+                                    <td><?php echo $register['primer_apellido']; ?></td>
+                                    <td><?php echo $register['segundo_apellido']; ?></td>
+                                    <td><?php echo $register['telefono1'].(!empty($register['telefono2'])?', '.$register['telefono2']:NULL).(!empty($register['telefono3'])?', '.$register['telefono3']:NULL); ?></td>
                                     <td style="width: 120px;"><?php echo $register['fecha_transaccion']; ?></td>
                                     <td style="width: 80px; text-align: center">
-                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_empresa']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&idObject=<?php echo $register['pk_id_empresa']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_empresa']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&idObject=<?php echo $register['pk_id_empresa']; ?>" title="Licenciamiento" class="edit_icon"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_vendedor']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkbusiness&action=edit_form&idObject=<?php echo $register['pk_id_vendedor']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_vendedor']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -232,13 +231,13 @@ if ($action == 'list') {
     } else {
         $typeOperation = "Ningun";
     }
-    $typeOperation = $typeOperation . " Empresa"
+    $typeOperation = $typeOperation . " Vendedor"
     ?>
     <!-- Action insert, view or edit -->
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-university"></i> Empresas</h1>
-            <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Empresa.</p>
+            <h1 class="title"><i class="fa-university"></i> Vendedors</h1>
+            <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Vendedor.</p>
         </div>
         <div class="breadcrumb-env">
             <ol class="breadcrumb bc-1">
@@ -249,7 +248,7 @@ if ($action == 'list') {
                     <a href="forms-native.html">Seguridad</a>
                 </li>
                 <li class="active">
-                    <strong>Empresa</strong>
+                    <strong>Vendedor</strong>
                 </li>
             </ol>
         </div>
@@ -259,7 +258,7 @@ if ($action == 'list') {
         <div class="col-sm-12">
             <div class="panel panel-success">                
                 <div class="panel-heading">
-                    <h3 class="panel-title">Formulario para datos de Empresa</h3>                                       
+                    <h3 class="panel-title">Formulario para datos de Vendedor</h3>                                       
                 </div>
                 <div class="panel-body">
 
@@ -284,7 +283,7 @@ if ($action == 'list') {
                           ?>
                         <div class="row col-margin">
                             <div class="form-group col-lg-6">                            
-                                <label for="empresa">Nombre <strong>completo</strong> de la Empresa:</label>                                
+                                <label for="empresa">Nombre <strong>completo</strong> de la Vendedor:</label>                                
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
@@ -293,7 +292,7 @@ if ($action == 'list') {
                                 </div>
                             </div>
                             <div class="form-group col-lg-6">
-                                <label for="nombre_corto">Nombre <strong>corto</strong> de la Empresa utilizado como dominio:</label> <a class="fa fa-question-circle" style="cursor: pointer" tabindex="0" data-toggle="popover" data-trigger="focus" title="Dominio de la Empresa" data-content="Este dato le servira para poder acceder al sistema de la siguiente manera: usuario@dominio. Por ejemplo si su empresa tiene el dominio 'miempresa' los usuarios de su empresa deberan ingresar al sistema colocando usuario1@miempresa"></a>
+                                <label for="nombre_corto">Nombre <strong>corto</strong> de la Vendedor utilizado como dominio:</label> <a class="fa fa-question-circle" style="cursor: pointer" tabindex="0" data-toggle="popover" data-trigger="focus" title="Dominio de la Vendedor" data-content="Este dato le servira para poder acceder al sistema de la siguiente manera: usuario@dominio. Por ejemplo si su empresa tiene el dominio 'miempresa' los usuarios de su empresa deberan ingresar al sistema colocando usuario1@miempresa"></a>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>

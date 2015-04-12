@@ -1,8 +1,7 @@
-﻿
 -- Volcando estructura para procedimiento 
-DROP PROCEDURE IF EXISTS `rubro_alta`;
-
-CREATE  PROCEDURE `rubro_alta`( pi_rubro                       VARCHAR(255),
+DROP PROCEDURE IF EXISTS rubro_alta;
+DELIMITER //
+CREATE  PROCEDURE rubro_alta( pi_rubro                       VARCHAR(255),
                                 pi_descripcion                 TEXT,
                                 
                                 pi_usuario_transaccion         INT,
@@ -62,13 +61,14 @@ BEGIN
 	  
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
-END;
+END//
+DELIMITER ;
 
 
 -- Volcando estructura para procedimiento 
-DROP PROCEDURE IF EXISTS `rubro_modif`;
-
-CREATE  PROCEDURE `rubro_modif`( pi_pk_id_rubro                 INT             ,
+DROP PROCEDURE IF EXISTS rubro_modif;
+DELIMITER //
+CREATE  PROCEDURE rubro_modif( pi_pk_id_rubro                 INT             ,
                                 pi_rubro                       VARCHAR(255),
                                 pi_descripcion                 TEXT,
                                 
@@ -109,10 +109,10 @@ BEGIN
                                 
                                 transaccion_modificacion  = pi_transaccion_modificacion  ,
                                 fk_id_empresa = pi_fk_id_empresa
-		where `pk_id_rubro`=`pi_pk_id_rubro`;			
+		where pk_id_rubro=pi_pk_id_rubro;			
 									 
 	      
-      SET po_resultado = `pi_pk_id_rubro`;
+      SET po_resultado = pi_pk_id_rubro;
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;
@@ -125,12 +125,12 @@ DELIMITER ;
 
 
 -- Volcando estructura para procedimiento grupo_baja
-DROP PROCEDURE IF EXISTS `rubro_baja`;
+DROP PROCEDURE IF EXISTS rubro_baja;
 DELIMITER //
-CREATE  PROCEDURE `rubro_baja`( `pi_pk_id_rubro` INT(11),                                 
-                                `pi_usuario_transaccion` INT(11) ,											
-                                `pi_transaccion_modificacion` INT(11) ,
-                                `pi_fk_id_empresa` INT(11),
+CREATE  PROCEDURE rubro_baja( pi_pk_id_rubro INT(11),                                 
+                                pi_usuario_transaccion INT(11) ,											
+                                pi_transaccion_modificacion INT(11) ,
+                                pi_fk_id_empresa INT(11),
                                 OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
@@ -153,15 +153,15 @@ BEGIN
 	CALL audit_insert(nombre_proceso, current_timestamp(), @resultado);
 	SELECT @resultado INTO v_res;
 
-      update rubro set `fecha_transaccion` = current_timestamp(),
-                    `usuario_transaccion` =`pi_usuario_transaccion` ,
-                    `estado_registro` ='E',
-                    `transaccion_modificacion`  =`pi_transaccion_modificacion`,
-                    `fk_id_empresa`=`pi_fk_id_empresa` 	
-            where `pk_id_rubro`=`pi_pk_id_rubro`;			
+      update rubro set fecha_transaccion = current_timestamp(),
+                    usuario_transaccion =pi_usuario_transaccion ,
+                    estado_registro ='E',
+                    transaccion_modificacion  =pi_transaccion_modificacion,
+                    fk_id_empresa=pi_fk_id_empresa 	
+            where pk_id_rubro=pi_pk_id_rubro;			
 									 
 	      
-      SET po_resultado = `pi_pk_id_rubro`;
+      SET po_resultado = pi_pk_id_rubro;
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;

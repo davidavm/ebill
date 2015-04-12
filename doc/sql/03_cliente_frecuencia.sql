@@ -1,8 +1,7 @@
-
 -- Volcando estructura para procedimiento 
-DROP PROCEDURE IF EXISTS `cliente_frecuencia_alta`;
-
-CREATE  PROCEDURE `cliente_frecuencia_alta`(pi_razon_social                VARCHAR(255),
+DROP PROCEDURE IF EXISTS cliente_frecuencia_alta;
+DELIMITER //
+CREATE  PROCEDURE cliente_frecuencia_alta(pi_razon_social                VARCHAR(255),
                                             pi_nit                         VARCHAR(255),
                                             pi_categoria                   VARCHAR(255),
                                             pi_fecha_ingreso               DATETIME         ,
@@ -74,13 +73,14 @@ SET po_resultado = LAST_INSERT_ID();
 	  
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
-END;
+END//
+DELIMITER ;
 
 
 -- Volcando estructura para procedimiento 
-DROP PROCEDURE IF EXISTS `cliente_frecuencia_modif`;
-
-CREATE  PROCEDURE `cliente_frecuencia_modif`( pi_pk_id_frecuencia_cliente    INT             ,
+DROP PROCEDURE IF EXISTS cliente_frecuencia_modif;
+DELIMITER //
+CREATE  PROCEDURE cliente_frecuencia_modif( pi_pk_id_frecuencia_cliente    INT             ,
                                             pi_razon_social                VARCHAR(255),
                                             pi_nit                         VARCHAR(255),
                                             pi_categoria                   VARCHAR(255),
@@ -129,10 +129,10 @@ BEGIN
                                            
                                             transaccion_modificacion  = pi_transaccion_modificacion  ,
                                             fk_id_empresa  = pi_fk_id_empresa
-    where `pk_id_cliente_frecuencia`=`pi_pk_id_cliente_frecuencia`;			
+    where pk_id_cliente_frecuencia=pi_pk_id_cliente_frecuencia;			
 
 
-      SET po_resultado = `pi_pk_id_cliente_frecuencia`;
+      SET po_resultado = pi_pk_id_cliente_frecuencia;
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;
@@ -145,12 +145,12 @@ DELIMITER ;
 
 
 -- Volcando estructura para procedimiento grupo_baja
-DROP PROCEDURE IF EXISTS `cliente_frecuencia_baja`;
+DROP PROCEDURE IF EXISTS cliente_frecuencia_baja;
 DELIMITER //
-CREATE  PROCEDURE `cliente_frecuencia_baja`( `pi_pk_id_cliente_frecuencia` INT(11),                                 
-                                `pi_usuario_transaccion` INT(11) ,											
-                                `pi_transaccion_modificacion` INT(11) ,
-                                `pi_fk_id_empresa` INT(11),
+CREATE  PROCEDURE cliente_frecuencia_baja( pi_pk_id_cliente_frecuencia INT(11),                                 
+                                pi_usuario_transaccion INT(11) ,											
+                                pi_transaccion_modificacion INT(11) ,
+                                pi_fk_id_empresa INT(11),
                                 OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
@@ -173,15 +173,15 @@ BEGIN
 	CALL audit_insert(nombre_proceso, current_timestamp(), @resultado);
 	SELECT @resultado INTO v_res;
 
-      update cliente_frecuencia set `fecha_transaccion` = current_timestamp(),
-                    `usuario_transaccion` =`pi_usuario_transaccion` ,
-                    `estado_registro` ='E',
-                    `transaccion_modificacion`  =`pi_transaccion_modificacion`,
-                    `fk_id_empresa`=`pi_fk_id_empresa` 	
-      where `pk_id_cliente_frecuencia`=`pi_pk_id_cliente_frecuencia`;			
+      update cliente_frecuencia set fecha_transaccion = current_timestamp(),
+                    usuario_transaccion =pi_usuario_transaccion ,
+                    estado_registro ='E',
+                    transaccion_modificacion  =pi_transaccion_modificacion,
+                    fk_id_empresa=pi_fk_id_empresa 	
+      where pk_id_cliente_frecuencia=pi_pk_id_cliente_frecuencia;			
 
 
-      SET po_resultado = `pi_pk_id_cliente_frecuencia`;
+      SET po_resultado = pi_pk_id_cliente_frecuencia;
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;
