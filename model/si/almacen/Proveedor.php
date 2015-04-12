@@ -110,7 +110,8 @@
                             `telefono3` ,
                             `contacto` ,
                             `fk_id_rubro` ,
-                            `fk_id_ubicacion_geografica` ,
+                            `fk_id_departamento` ,
+                            `fk_id_municipio` ,
                             `fecha1` ,
                             `fecha2` ,
                             `texto1` ,
@@ -190,7 +191,7 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call proveedor_alta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call proveedor_alta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -211,6 +212,7 @@
                 $sentencia->bindParam(18, $datos[17], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(19, $datos[18], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(20, $datos[19], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000); 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
                
@@ -282,7 +284,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call proveedor_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
+                $sentencia = $gbd->prepare("call proveedor_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -303,6 +305,7 @@
                 $sentencia->bindParam(18, $datos[17], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(19, $datos[18], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(20, $datos[19], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000); 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
                
