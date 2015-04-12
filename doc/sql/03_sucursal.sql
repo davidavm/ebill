@@ -1,21 +1,21 @@
 ﻿
--- Volcando estructura para procedimiento grupo_alta
+-- Volcando estructura para procedimiento 
 DROP PROCEDURE IF EXISTS `sucursal_alta`;
 
 CREATE  PROCEDURE `sucursal_alta`( `pi_sucursal` VARCHAR(255),
-									`pi_razon_social` VARCHAR(255) ,
-									`pi_numero` INT(11) ,
-									`pi_direccion` TEXT ,
-									`pi_telefono1` VARCHAR(32) ,
-									`pi_telefono2` VARCHAR(32) ,
-									`pi_telefono3` VARCHAR(32) ,
-									
-									`pi_usuario_transaccion` INT(11),
-									
-									`pi_transaccion_creacion` INT(11) ,
-									`pi_transaccion_modificacion` INT(11) ,
-									`pi_fk_id_empresa` INT(11),
-									OUT po_resultado INT)
+                                `pi_razon_social` VARCHAR(255) ,
+                                `pi_numero` INT(11) ,
+                                `pi_direccion` TEXT ,
+                                `pi_telefono1` VARCHAR(32) ,
+                                `pi_telefono2` VARCHAR(32) ,
+                                `pi_telefono3` VARCHAR(32) ,
+
+                                `pi_usuario_transaccion` INT(11),
+
+                                `pi_transaccion_creacion` INT(11) ,
+                                `pi_transaccion_modificacion` INT(11) ,
+                                `pi_fk_id_empresa` INT(11),
+                                OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;
@@ -41,36 +41,36 @@ BEGIN
   
     
       INSERT INTO sucursal (`sucursal` ,
-									`razon_social`  ,
-									`numero`  ,
-									`direccion`  ,
-									`telefono1`  ,
-									`telefono2`  ,
-									`telefono3`  ,
-									`fecha_transaccion`  ,
-									`usuario_transaccion` ,
-									`estado_registro` ,
-									`transaccion_creacion` ,
-									`transaccion_modificacion`  ,
-									`fk_id_empresa`)	
-									VALUES
-									(
-								    `pi_sucursal` ,
-									`pi_razon_social`  ,
-									`pi_numero`  ,
-									`pi_direccion`  ,
-									`pi_telefono1`  ,
-									`pi_telefono2`  ,
-									`pi_telefono3`  ,
-									current_timestamp()  ,
-									`pi_usuario_transaccion` ,
-									'A' ,
-									`pi_transaccion_creacion` ,
-									`pi_transaccion_modificacion`  ,
-									`pi_fk_id_empresa`               
-		        					);
-	      
-      SET po_resultado = LAST_INSERT_ID();
+                        `razon_social`  ,
+                        `numero`  ,
+                        `direccion`  ,
+                        `telefono1`  ,
+                        `telefono2`  ,
+                        `telefono3`  ,
+                        `fecha_transaccion`  ,
+                        `usuario_transaccion` ,
+                        `estado_registro` ,
+                        `transaccion_creacion` ,
+                        `transaccion_modificacion`  ,
+                        `fk_id_empresa`)	
+                        VALUES
+                        (
+                    `pi_sucursal` ,
+                        `pi_razon_social`  ,
+                        `pi_numero`  ,
+                        `pi_direccion`  ,
+                        `pi_telefono1`  ,
+                        `pi_telefono2`  ,
+                        `pi_telefono3`  ,
+                        current_timestamp()  ,
+                        `pi_usuario_transaccion` ,
+                        'A' ,
+                        `pi_transaccion_creacion` ,
+                        `pi_transaccion_modificacion`  ,
+                        `pi_fk_id_empresa`               
+                );
+
+SET po_resultado = LAST_INSERT_ID();
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;
@@ -80,23 +80,23 @@ BEGIN
 END;
 
 
--- Volcando estructura para procedimiento grupo_modif
+-- Volcando estructura para procedimiento 
 DROP PROCEDURE IF EXISTS `sucursal_modif`;
 
 CREATE  PROCEDURE `sucursal_modif`( `pi_pk_id_suscursal` INT(11) ,
-									`pi_sucursal` VARCHAR(255),
-									`pi_razon_social` VARCHAR(255) ,
-									`pi_numero` INT(11) ,
-									`pi_direccion` TEXT ,
-									`pi_telefono1` VARCHAR(32) ,
-									`pi_telefono2` VARCHAR(32) ,
-									`pi_telefono3` VARCHAR(32) ,
-									
-									`pi_usuario_transaccion` INT(11),
-									
-									`pi_transaccion_modificacion` INT(11) ,
-									`pi_fk_id_empresa` INT(11),
-									OUT po_resultado INT)
+                                    `pi_sucursal` VARCHAR(255),
+                                    `pi_razon_social` VARCHAR(255) ,
+                                    `pi_numero` INT(11) ,
+                                    `pi_direccion` TEXT ,
+                                    `pi_telefono1` VARCHAR(32) ,
+                                    `pi_telefono2` VARCHAR(32) ,
+                                    `pi_telefono3` VARCHAR(32) ,
+
+                                    `pi_usuario_transaccion` INT(11),
+
+                                    `pi_transaccion_modificacion` INT(11) ,
+                                    `pi_fk_id_empresa` INT(11),
+                                    OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;
@@ -121,21 +121,21 @@ BEGIN
   
     
       update sucursal set         `sucursal` = `pi_sucursal` ,
-								`razon_social` = `pi_razon_social`,
-								`numero` = `pi_numero`,
-								`direccion` = `pi_direccion`,
-								`telefono1` = `pi_telefono1`,
-								`telefono2` = `pi_telefono2`,
-								`telefono3` = `pi_telefono3`,
-								`fecha_transaccion` = current_timestamp() ,
-								`usuario_transaccion` = `pi_usuario_transaccion`,
-								`estado_registro` = 'A',
-								`transaccion_creacion`= `pi_transaccion_creacion`,
-								`transaccion_modificacion` = `pi_transaccion_modificacion`,
-								`fk_id_empresa` = `pi_fk_id_empresa`
-					where `pk_id_sucursal`=`pi_pk_id_sucursal`;			
-									 
-	      
+                        `razon_social` = `pi_razon_social`,
+                            `numero` = `pi_numero`,
+                            `direccion` = `pi_direccion`,
+                            `telefono1` = `pi_telefono1`,
+                            `telefono2` = `pi_telefono2`,
+                            `telefono3` = `pi_telefono3`,
+                            `fecha_transaccion` = current_timestamp() ,
+                            `usuario_transaccion` = `pi_usuario_transaccion`,
+                            `estado_registro` = 'A',
+                            `transaccion_creacion`= `pi_transaccion_creacion`,
+                            `transaccion_modificacion` = `pi_transaccion_modificacion`,
+                            `fk_id_empresa` = `pi_fk_id_empresa`
+    where `pk_id_sucursal`=`pi_pk_id_sucursal`;			
+
+
       SET po_resultado = `pi_pk_id_sucursal`;
 	  SET v_cant_reg = ROW_COUNT();
 	  
@@ -152,10 +152,10 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `sucursal_baja`;
 DELIMITER //
 CREATE  PROCEDURE `sucursal_baja`( `pi_pk_id_sucursal` INT(11),                                 
-											`pi_usuario_transaccion` INT(11) ,											
-											`pi_transaccion_modificacion` INT(11) ,
-											`pi_fk_id_empresa` INT(11),
-											OUT po_resultado INT)
+                                `pi_usuario_transaccion` INT(11) ,											
+                                `pi_transaccion_modificacion` INT(11) ,
+                                `pi_fk_id_empresa` INT(11),
+                                OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;
@@ -178,13 +178,13 @@ BEGIN
 	SELECT @resultado INTO v_res;
 
       update sucursal set `fecha_transaccion` = current_timestamp(),
-									`usuario_transaccion` =`pi_usuario_transaccion` ,
-									`estado_registro` ='E',
-									`transaccion_modificacion`  =`pi_transaccion_modificacion`,
-									`fk_id_empresa`=`pi_fk_id_empresa` 	
-					where `pk_id_sucursal`=`pi_pk_id_sucursal`;			
-									 
-	      
+                    `usuario_transaccion` =`pi_usuario_transaccion` ,
+                    `estado_registro` ='E',
+                    `transaccion_modificacion`  =`pi_transaccion_modificacion`,
+                    `fk_id_empresa`=`pi_fk_id_empresa` 	
+      where `pk_id_sucursal`=`pi_pk_id_sucursal`;			
+
+
       SET po_resultado = `pi_pk_id_sucursal`;
 	  SET v_cant_reg = ROW_COUNT();
 	  
