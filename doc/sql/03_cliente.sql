@@ -4,28 +4,30 @@
 DROP PROCEDURE IF EXISTS `cliente_alta`;
 DELIMITER //
 CREATE  PROCEDURE `cliente_alta`(`pi_codigo` VARCHAR(255) ,
-								`pi_razon_social` VARCHAR(255) ,
-								`pi_nit` VARCHAR(255) ,
-								`pi_direccion` VARCHAR(255) ,
-								`pi_telefono1` VARCHAR(255) ,
-								`pi_telefono2` VARCHAR(255) ,
-								`pi_telefono3` VARCHAR(255) ,
-								`pi_contacto` VARCHAR(255) ,
-								`pi_fk_id_rubro` INT(11) ,
-								`pi_fk_id_categoria` INT(11) ,
-								`pi_fk_id_vendedor` INT(11) ,
-								`pi_fk_id_ubicacion_geografica` INT(11) ,
-								`pi_fecha1` DATETIME ,
-								`pi_fecha2` DATETIME ,
-								`pi_texto1` VARCHAR(255) ,
-								`pi_texto2` VARCHAR(100) ,
-							
-								`pi_usuario_transaccion` INT(11) ,
-								
-								`pi_transaccion_creacion` INT(11) ,
-								`pi_transaccion_modificacion` INT(11) ,
-								`pi_fk_id_empresa` INT(11),
-											OUT po_resultado INT)
+                                `pi_razon_social` VARCHAR(255) ,
+                                `pi_nit` VARCHAR(255) ,
+                                `pi_direccion` VARCHAR(255) ,
+                                `pi_telefono1` VARCHAR(255) ,
+                                `pi_telefono2` VARCHAR(255) ,
+                                `pi_telefono3` VARCHAR(255) ,
+                                `pi_contacto` VARCHAR(255) ,
+                                `pi_fk_id_rubro` INT(11) ,
+                                `pi_fk_id_categoria` INT(11) ,
+                                pi_fk_id_departamento          INT,
+                                pi_fk_id_municipio             INT,
+                                `pi_fk_id_vendedor` INT(11) ,
+                                
+                                `pi_fecha1` DATETIME ,
+                                `pi_fecha2` DATETIME ,
+                                `pi_texto1` VARCHAR(255) ,
+                                `pi_texto2` VARCHAR(100) ,
+
+                                `pi_usuario_transaccion` INT(11) ,
+
+                                `pi_transaccion_creacion` INT(11) ,
+                                `pi_transaccion_modificacion` INT(11) ,
+                                `pi_fk_id_empresa` INT(11),
+                                                        OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;
@@ -61,8 +63,10 @@ BEGIN
 								`contacto`  ,
 								`fk_id_rubro`  ,
 								`fk_id_categoria`  ,
+                                                                fk_id_departamento          ,
+                                                                fk_id_municipio             ,
 								`fk_id_vendedor`  ,
-								`fk_id_ubicacion_geografica` ,
+								
 								`fecha1`  ,
 								`fecha2`  ,
 								`texto1`  ,
@@ -86,8 +90,10 @@ BEGIN
 									`pi_contacto`  ,
 									`pi_fk_id_rubro`  ,
 									`pi_fk_id_categoria`  ,
+fk_                                                                      pi_fk_id_departamento          ,
+                                                                         pi_fk_id_municipio             ,
 									`pi_fk_id_vendedor`  ,
-									`pi_fk_id_ubicacion_geografica` ,
+									
 									`pi_fecha1`  ,
 									`pi_fecha2`  ,
 									`pi_texto1`  ,
@@ -126,8 +132,10 @@ CREATE  PROCEDURE `cliente_modif`( 	`pi_pk_id_cliente` INT(11) ,
 									`pi_contacto` VARCHAR(255) ,
 									`pi_fk_id_rubro` INT(11) ,
 									`pi_fk_id_categoria` INT(11) ,
+                                                                        pi_fk_id_departamento          INT,
+                                                                            pi_fk_id_municipio             INT,
 									`pi_fk_id_vendedor` INT(11) ,
-									`pi_fk_id_ubicacion_geografica` INT(11) ,
+									
 									`pi_fecha1` DATETIME,
 									`pi_fecha2` DATETIME ,
 									`pi_texto1` VARCHAR(255) ,
@@ -171,8 +179,10 @@ BEGIN
 									`contacto`  = `pi_contacto` ,
 									`fk_id_rubro` = `pi_fk_id_rubro`,
 									`fk_id_categoria` = `pi_fk_id_categoria`,
+                                                                        fk_id_departamento   = pi_fk_id_departamento       ,
+                                                                        fk_id_municipio   = pi_fk_id_municipio          ,
 									`fk_id_vendedor` = `pi_fk_id_vendedor`,
-									`fk_id_ubicacion_geografica` = `pi_fk_id_ubicacion_geografica`,
+									
 									`fecha1` = `pi_fecha1`,
 									`fecha2`  = `pi_fecha2`,
 									`texto1`  = `pi_texto1`,
