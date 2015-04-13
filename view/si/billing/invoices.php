@@ -21,16 +21,41 @@ $messageErrorTransaction = "";
 $detailMessageErrorTransaction = "";
 $messageOkTransaction = "";
 // If action is insert
+//require_once 'create_invoice_pdf.php';
 if ($action == 'insert') {
+    
     try {
         if ($object->isExist(array($_POST["grupo"]))) {
             $messageErrorTransaction = "No se puede ingresar una factura que ya existe. Revise los datos de factura.";
         } else {
+          
+            
             $idTransaccion = $transaction->insert(array(Grupo::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
-            $data = array($_POST["fk_id_grupo_padre"], 
-                          $_POST["grupo"], 
-                          $_POST["descripcion"], 
-                          $_POST["fk_id_tipo_grupo"], 
+            $data = array($_POST["fk_id_sucursal"],
+                            $_POST["numero_factura"],
+                            $_POST["numero_autorizacion"],
+                            $_POST["llave_dosificacion"],
+                            $_POST["fecha_limite_emision"],
+                            $_POST["fecha_factura"],
+                            $_POST["nit"],
+                            $_POST["categoria"],
+                            $_POST["razon_social"],
+                            $_POST["descuento"], 
+                            $_POST["fk_id_formato_dato_descuento"],
+                            $_POST["recargo"],
+                            $_POST["fk_id_formato_dato_recargo"],
+                            $_POST["ice"], 
+                            $_POST["excentos"], 
+                            $_POST["fk_id_opcion_tipo_venta"],
+                            $_POST["cantidad_dias"],
+                            $_POST["codigo_control"],
+                            $_POST["cantidad"], 
+                            $_POST["unidad"],
+                            $_POST["fk_id_dato_entrada_buscar_unidad"],
+                            $_POST["detalle"],
+                            $_POST["precio_unitario"], 
+                            $_POST["total"],
+                            $_POST["sujeto_descuento_fiscal"], 
                           $_SESSION["authenticated_id_user"], 
                           $idTransaccion, 
                           $idTransaccion,
@@ -71,11 +96,16 @@ if ($action == 'delete') {
 
 // If action is edit
 if ($action == 'edit') {
+    
+require_once 'create_invoice_pdf.php';
     try {
         $result = NULL;
         $objectEdit = NULL;
         $result = $object->getList($_GET["idObject"]);
         $objectEdit = $result[0];
+        
+        
+        
         if (($object->isExist(array($_POST["grupo"]))) && ($objectEdit["grupo"] != $_POST["grupo"] )) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar un Grupo que ya existe.";
         } else {
@@ -92,7 +122,7 @@ if ($action == 'edit') {
             
             
             if( $object->update($data) == -1 ){
-                throw new Exception("Error en el INSERT hacia la Base de datos.");
+                throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
             $messageOkTransaction = "El registro fue modificado correctamente.";
         }
@@ -140,7 +170,7 @@ if ($action == 'list') {
             <div class="panel panel-success">
                 <div class="row">
                     <div class="col-md-3">
-                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/warehouse/checkgroups&action=edit_form&action=insert_form" style="margin-top:1px;">
+                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/checkInvoices&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
                                 <i class="linecons-shop"></i>
                                 <span>Generar Factura</span>
@@ -222,11 +252,11 @@ if ($action == 'list') {
                                      <td><?php echo $register['total']; ?></td>
                                       <td><?php echo $register['descuento']; ?></td>
                                        <td><?php echo $register['recargo']; ?></td>
-                                        <td><?php echo $register['estado_registro']; ?></td>
+                                        <td><?php echo $register['estado_factura']; ?></td>
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_factura']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/warehouse/checkgroups&action=edit_form&idObject=<?php echo $register['pk_id_grupo']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_factura']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                   <!-- <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/checkInvoices&action=edit_form&idObject=<?php echo $register['pk_id_factura']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>-->
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_factura']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-remove-circle"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -306,7 +336,7 @@ if ($action == 'list') {
                           ?>
                         <div class="row col-margin">
                             <div class="form-group col-lg-6">
-                                <label for="fk_id_tipo_grupo">Sucursal:</label>                                    
+                                <label for="fk_id_sucursal">Sucursal:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
@@ -333,65 +363,65 @@ if ($action == 'list') {
                                     </select>                                     
                                 </div>                            
                             </div> 
-                       </div>                            
+                                                 
                          <div class="form-group col-lg-6">
-                                <label for="descripcion">Fecha Factura</label>
+                                <label for="fecha_factura">Fecha Factura</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="fecha_factura" name="fecha_factura" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
+                                    <input id="fecha_factura" name="fecha_factura" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["fecha_factura"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>     
                         
-                        <div class="row">
+                      
                         <div class="form-group col-lg-6">
-                                <label for="descripcion">Nit</label>
+                                <label for="nit">Nit</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="nit" name="nit" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
+                                    <input id="nit" name="nit" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nit"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>   
                               <div class="form-group col-lg-6">
-                                <label for="descripcion">Razon Social</label>
+                                <label for="razon_social">Razon Social</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="razon_social" name="razon_social" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
+                                    <input id="razon_social" name="razon_social" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["razon_social"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>   
                               <div class="form-group col-lg-6">
-                                <label for="descripcion">Descuentos</label>
+                                <label for="descuento">Descuentos</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="descuentos" name="descuentos" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
+                                    <input id="descuento" name="descuento" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descuento"] . "\" " : NULL); ?>/>
                                 </div>
                             </div> 
                               <div class="form-group col-lg-6">
-                                <label for="descripcion">Recargos</label>
+                                <label for="recargo">Recargos</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="recargos" name="recargos" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
+                                    <input id="recargo" name="recargo" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["recargo"] . "\" " : NULL); ?>/>
                                 </div>
                             </div> 
                             <div class="form-group col-lg-6">
-                                <label for="descripcion">Ice</label>
+                                <label for="ice">Ice</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="ice" name="ice" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
+                                    <input id="ice" name="ice" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["ice"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
                               <div class="form-group col-lg-6">
-                                <label for="fk_id_tipo_grupo">Tipo Venta:</label>                                    
+                                <label for="fk_id_opcion_tipo_venta">Tipo Venta:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
@@ -420,15 +450,16 @@ if ($action == 'list') {
                             </div> 
                            
                             <div class="form-group col-lg-6">
-                                <label for="descripcion">Exentos</label>
+                                <label for="excentos">Exentos</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="exentos" name="exentos" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
+                                    <input id="excentos" name="excentos" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["excentos"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
-                        
+                             </br>
+                        </div>  
                         <div class="row">     
                             
                         <div class="col-md-12">

@@ -23,13 +23,14 @@ $messageOkTransaction = "";
 // If action is insert
 if ($action == 'insert') {
     try {
-        if ($object->isExist(array($_POST["sucursal"]))) {
+        if ($object->isExist(array($_POST["sucursal"],$_POST["numero"],($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"])))) {
             $messageErrorTransaction = "No se puede ingresar una sucursal que ya existe. Revise los datos de Sucursal.";
         } else {
           
-             ECHO $_POST["fk_id_empresa"];
-             ECHO "<BR>". $_SESSION["authenticated_id_empresa"];
-            $idTransaccion = $transaction->insert(array(Sucursal::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
+           //  ECHO $_POST["fk_id_empresa"];
+            // ECHO "<BR>". $_SESSION["authenticated_id_empresa"];
+            $idTransaccion = $transaction->insert(array(Sucursal::INSERT, $_SESSION["authenticated_id_user"]
+                    , ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])  ));            
             $data = array($_POST["sucursal"], 
                           $_POST["razon_social"], 
                           $_POST["numero"], 
@@ -40,7 +41,8 @@ if ($action == 'insert') {
                           $_SESSION["authenticated_id_user"], 
                           $idTransaccion, 
                           $idTransaccion,
-                          $_POST["fk_id_empresa"]);
+                          ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"])
+                    );
             
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
@@ -56,11 +58,11 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Grupo::DELETE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+        $idTransaccion = $transaction->insert(array(Grupo::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], 
                       $_SESSION["authenticated_id_user"], 
                       $idTransaccion,
-                      $_SESSION["authenticated_id_empresa"]
+                      ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"])
                      );   
            //echo '<PRE>';
            //print_r($data);
@@ -84,10 +86,13 @@ if ($action == 'edit') {
         $objectEdit = $result[0];
   
         
-        if ($object->isExist(array($_POST["sucursal"]))) {
-            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Sucursal que ya existe.";
+        if ($object->isExist(array($_POST["sucursal"],$_POST["numero"],($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]))) 
+            && ($objectEdit["sucursal"] != $_POST["sucursal"] || $objectEdit["numero"] != $_POST["numero"]  || $objectEdit["fk_id_empresa"] != ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]) )
+            ) {
+            $messageErrorTransaction = "Edici&oacute;n incorrecta, no se puede ingresar una Sucursal con el mismo nombre y numero para la misma empresa.";
         } else {
-            $idTransaccion = $transaction->insert(array(Grupo::UPDATE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+         
+            $idTransaccion = $transaction->insert(array(Grupo::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"], 
                           $_POST["sucursal"], 
                           $_POST["razon_social"], 
@@ -98,12 +103,12 @@ if ($action == 'edit') {
                           $_POST["telefono3"], 
                            $_SESSION["authenticated_id_user"], 
                            $idTransaccion,
-                           $_POST["fk_id_empresa"]
+                          ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"])
                             ); 
             
-            
+            print_r($data);
             if( $object->update($data) == -1 ){
-                throw new Exception("Error en el INSERT hacia la Base de datos.");
+                throw new Exception("Error en el Update hacia la Base de datos.");
             }
             $messageOkTransaction = "El registro fue modificado correctamente.";
         }
@@ -150,8 +155,8 @@ if ($action == 'list') {
 
             <div class="panel panel-success">
                 <div class="row">
-                    <div class="col-md-3">
-                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/branchs&action=edit_form&action=insert_form" style="margin-top:1px;">
+                    <div class="col-md-3">                                         <!-- &ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkpeople&action=edit_form&action=insert_form" style="margin-top:1px;">-->
+                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/checkBranch&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
                                 <i class="linecons-shop"></i>
                                 <span>Agregar Sucursal</span>
@@ -228,7 +233,7 @@ if ($action == 'list') {
                               
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_sucursal']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/branchs&action=edit_form&idObject=<?php echo $register['pk_id_sucursal']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/checkBranch&action=edit_form&idObject=<?php echo $register['pk_id_sucursal']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
                                         <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_sucursal']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>

@@ -29,7 +29,7 @@ if ($action == 'insert') {
             $idTransaccion = $transaction->insert(array(Persona::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])) );
             // subida del archivo si existe
             $idArchivo = NULL; // si no existe coloca Nulo a la BD
-            if( isset($_FILES["fk_id_archivo_foto"]) ){
+            if( isset($_FILES["fk_id_archivo_foto"]) && $_FILES["fk_id_archivo_foto"]["error"]!= UPLOAD_ERR_NO_FILE){ // 4 = Archivo no subido
             $uploadArchivo = new Archivo($registry[$dbSystem]);
             $idArchivo = $uploadArchivo->uploadImage($_FILES,UPLOAD_PATH."identification". DIR_SEP,'fk_id_archivo_foto',$idTransaccion,$_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]),700000);
             }      

@@ -1,4 +1,4 @@
-﻿DROP  TABLE IF EXISTS aud_log_procesos;
+
 -- Volcando estructura para tabla aud_log_procesos
 CREATE TABLE aud_log_procesos (
   id_log int(11) NOT NULL AUTO_INCREMENT,
@@ -23,8 +23,9 @@ CREATE TABLE aud_log_procesos (
 
 
 -- Volcando estructura para procedimiento audit_insert
-DELIMITER //
 DROP  PROCEDURE IF EXISTS audit_insert;
+
+DELIMITER //
 CREATE PROCEDURE audit_insert(IN v_nombre_proceso TEXT, IN v_fecha_inicio DATETIME, OUT po_resultado INT)
 BEGIN
   	DECLARE v_id INT;
@@ -47,13 +48,14 @@ BEGIN
 		          
       SET po_resultado := LAST_INSERT_ID();
       COMMIT;          
-END;
+END//
 DELIMITER ;
 
 
 -- Volcando estructura para procedimiento audit_update
-DELIMITER //
 DROP  PROCEDURE IF EXISTS audit_update;
+
+DELIMITER //
 CREATE PROCEDURE audit_update(IN v_id_log INT, IN v_fecha_fin DATETIME, IN v_comentario TEXT, IN v_cant_reg INT, IN v_correcto VARCHAR(50), OUT po_resultado INT)
 BEGIN
  	DECLARE v_id INT;
@@ -75,7 +77,7 @@ BEGIN
     
     SET po_resultado := 0;
     
-END;
+END//
 DELIMITER ;
 
 

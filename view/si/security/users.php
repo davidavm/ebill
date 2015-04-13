@@ -39,6 +39,36 @@ if ($action == 'insert') {
     }
     $action = 'list';
 }
+if ($action == 'permission') {
+    try {
+
+            $usuarioPermiso = new UsuarioPermiso($registry[$dbSystem]);            
+            $idTransaccion = $transaction->insert(array(Usuario::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+            // Eliminar todos los permisos
+            $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));                        
+            if($usuarioPermiso->deletePermissionUser($data) == -1){
+                throw new Exception("Error al querer actualizar los permisos en la Base de datos.");
+            }
+            if( isset($_POST["pk_id_permiso"]) && count($_POST["pk_id_permiso"])>0 ){
+                $permisosFormulario = $_POST["pk_id_permiso"];
+                $tipoPermisosFormulario = $_POST["fk_tipo_permiso"];
+                // insertar los nuevos permisos
+                foreach($permisosFormulario as $idx => $valor){
+                    $data = array($_GET["idObject"], $permisosFormulario[$idx], $tipoPermisosFormulario[$idx], $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
+                    if( $usuarioPermiso->insert($data)  == -1 ){
+                    throw new Exception("Error en el INSERT de parte de los permisos hacia la Base de datos.");
+                    }
+                }
+            }
+            $messageOkTransaction = "Los permisos fueron ingresados correctamente.";
+            $usuarioPermiso = NULL;
+            
+        }catch (Exception $e) {
+        $messageErrorTransaction = "Existio un error al querer ingresar los datos de permiso.";
+        $detailMessageErrorTransaction = '<strong>Error JF-View-0001:</strong> ' . $e->getMessage();
+        }
+    $action = 'list';
+}
 // If action is delete
 if ($action == 'delete') {
     try {
@@ -205,8 +235,8 @@ if ($action == 'list') {
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_usuario']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
                                         <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkusers&action=edit_form&idObject=<?php echo $register['pk_id_usuario']; ?>&pk_id_usuario_rol=<?php echo$register['pk_id_usuario_rol']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_usuario']; ?>&pk_id_usuario_rol=<?php echo$register['pk_id_usuario_rol']; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?'&fk_id_empresa='.$register['fk_id_empresa']:$_SESSION["authenticated_id_empresa"]); ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/security/checkusers&action=permission_form&idObject=<?php echo $register['pk_id_usuario']; ?>&pk_id_usuario_rol=<?php echo$register['pk_id_usuario_rol']; ?>" title="Permisos" class="edit_icon"><span class="glyphicon glyphicon-th-list"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_usuario']; ?>&pk_id_usuario_rol=<?php echo$register['pk_id_usuario_rol']; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?'&fk_id_empresa='.$register['fk_id_empresa']:'&fk_id_empresa='.$_SESSION["authenticated_id_empresa"]); ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=enableDisableObject&action=permission_form&idObject=<?php echo $register['pk_id_usuario']; ?>&pk_id_usuario_rol=<?php echo$register['pk_id_usuario_rol']; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?'&fk_id_empresa='.$register['fk_id_empresa']:'&fk_id_empresa='.$_SESSION["authenticated_id_empresa"]); ?>" title="Permisos" class="edit_icon"><span class="glyphicon glyphicon-th-list"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -216,7 +246,6 @@ if ($action == 'list') {
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
     <?php
@@ -462,6 +491,122 @@ if ($action == 'list') {
         </div>
     </div>
     <?php
+} elseif ($action == 'permission_form'){
+?>
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title"><i class="fa-male"></i> Usuarios</h1>
+            <p class="description">En este formulario usted podr&aacute; realizar la edici&oacute;n de datos de Permiso para un Usuario.</p>
+        </div>
+        <div class="breadcrumb-env">
+            <ol class="breadcrumb bc-1">
+                <li>
+                    <a href="dashboard-1.html"><i class="fa-home"></i>Inicio</a>
+                </li>
+                <li>
+                    <a href="forms-native.html">Seguridad</a>
+                </li>
+                <li class="active">
+                    <strong>Permisos</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-success">                
+                <div class="panel-heading">
+                    <h3 class="panel-title">Formulario Permisos de Usuario</h3>                                       
+                </div>
+                <div class="panel-body">
+
+                    <p class="description">Los campos marcados con este simbolo <span  data-toggle="tooltip" data-placement="top" title="Campo obligatorio."><i class="fa fa-pencil-square-o "></i></span> deben ser llenados de manera obligatoria, siempre y cuando se marque la casilla.</p> </br>
+
+<form name="formObject" id="formObject" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=permission&idObject=<?php echo $_GET["idObject"]; ?><?php echo ($_SESSION["authenticated_id_empresa"]==-1?"&fk_id_empresa=".$_GET["fk_id_empresa"]:"&fk_id_empresa=".$_SESSION["authenticated_id_empresa"]) ?>" method="post" >
+                          <?php
+                          $result = NULL;
+                          $objectEdit = NULL;
+                          $permiso = new Permiso($registry[$dbSystem]);
+                          $result = $permiso->getList();
+                          $usuarioPermiso = new UsuarioPermiso($registry[$dbSystem]);                          
+                          ?>
+                        <div class="row col-margin">  
+                            <?php
+                            foreach ($result as $idx => $registro) {
+                            $permisosActual = $usuarioPermiso->getListUserPermision($_GET["idObject"], $registro["pk_id_permiso"], ($_SESSION["authenticated_id_empresa"]==-1?$_GET["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]));
+                            if(count($permisosActual)>0){
+                            $permisoActual = $permisosActual[0];
+                            }
+                            ?>
+                            <div class="form-group col-lg-2">                                
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="pk_id_permiso[]" id="pk_id_permiso<?php echo$idx; ?>" value="<?php echo $registro["pk_id_permiso"]; ?>" <?php if(count($permisosActual)>0){ echo $permisoActual["fk_id_permiso"]==$registro["pk_id_permiso"]?" checked='checked' ":" disabled='disable' "; }?> onClick="enableDisableObject('pk_id_permiso<?php echo$idx; ?>','fk_tipo_permiso<?php echo$idx; ?>')"/>
+                                                <?php echo $registro["permiso"]; ?>
+                                            </label>                                   
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                    </span>
+                                    <select id="fk_tipo_permiso<?php echo$idx; ?>" name="fk_tipo_permiso[]" class="form-control input-sm" <?php if(count($permisosActual)>0){ echo $permisoActual["fk_id_permiso"]!=$registro["pk_id_permiso"]?" disabled='disable' ":NULL; } else{ echo" disabled='disable' ";} ?> >                                            
+                                        <?php
+                                        $tipoPermiso = new Catalogo($registry[$dbSystem]);
+                                        $result = $tipoPermiso->getCatalogo("tipo_permiso");
+                                        foreach ($result as $indice => $register) {
+                                        ?>
+                                        <option value="<?php echo $register["pk_id_catalogo"]; ?>" <?php 
+                                            if ( count($permisosActual)>0 && $permisoActual["fk_id_tipo_permiso"]==$register["pk_id_catalogo"] ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $register["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>
+                            </div>   
+                            <div class="clearfix"></div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                      
+                        <div class="row">
+                        <div class="col-md-12">
+                            <?php
+                            if ($action == 'view_form') {
+                                ?>                                           
+                                <a href="index.php?page=<?php echo $routeFull; ?>" class="btn btn-warning btn-icon btn-icon-standalone">
+                                    <i class="linecons-user"></i>
+                                    <span>Aceptar</span>
+                                </a>
+                                <?php
+                            } else {
+                                ?>
+                                <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
+                                    <i class="linecons-user"></i>
+                                    <span>Guardar</span>
+                                </button>
+                                <a href="index.php?page=<?php echo $routeFull; ?>" class="btn btn-blue btn-icon btn-icon-standalone">
+                                    <i class="linecons-user"></i>
+                                    <span>Cancelar</span>
+                                </a>                                    
+                                <?php
+                            }
+                            ?>
+                        </div>		
+                        </div>                            
+                                        
+                    </form>                 
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<?php
 }
 ?>
 

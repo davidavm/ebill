@@ -111,7 +111,7 @@
                                      `transaccion_creacion` ,
                                      `transaccion_modificacion` ,
                                      `fk_id_empresa` 
-                               from actividad_economica
+                               from actividad_economica A
                                 where `estado_registro`='A'
                                 ";
 

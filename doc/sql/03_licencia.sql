@@ -1,8 +1,7 @@
-
--- Volcando estructura para procedimiento grupo_alta
-DROP PROCEDURE IF EXISTS `licencia_alta`;
+-- Volcando estructura para procedimiento licencia_alta
+DROP PROCEDURE IF EXISTS licencia_alta;
 DELIMITER //
-CREATE  PROCEDURE `licencia_alta`( pi_licencia                      VARCHAR(255),
+CREATE  PROCEDURE licencia_alta( pi_licencia                      VARCHAR(255),
 									pi_codigo_contrato               VARCHAR(255),
 									pi_fecha_inicio_servicio         DATE        ,
 									pi_fecha_fin_servicio            DATE          ,									
@@ -78,12 +77,12 @@ BEGIN
 
 
    
-     --REGISTRO DE LOG
+     -- REGISTRO DE LOG
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
 
  -- REGISTRO DE HISTORICO DE LICENCIAS
-    CALL `licencia_historia_alta`(LAST_INSERT_ID()                ,
+    CALL licencia_historia_alta(LAST_INSERT_ID()                ,
                                 pi_licencia                      ,
                                 pi_codigo_contrato               ,
                                 pi_fecha_inicio_servicio         ,
@@ -99,7 +98,7 @@ BEGIN
                                 pi_transaccion_modificacion      ,
                                 pi_fk_id_empresa                 ,
                                 current_timestamp()                  ,
-                                date_format('3333-12-31 23:59:59','%Y-%m-%d %H:%i:%s'),                     ,
+                                date_format('3333-12-31 23:59:59','%Y-%m-%d %H:%i:%s'),
                                 @resultado);
 
 
@@ -108,9 +107,9 @@ DELIMITER ;
 
 
 -- Volcando estructura para procedimiento grupo_modif
-DROP PROCEDURE IF EXISTS `licencia_modif`;
+DROP PROCEDURE IF EXISTS licencia_modif;
 DELIMITER //
-CREATE  PROCEDURE `licencia_modif`( pi_pk_id_licencia                INT             ,
+CREATE  PROCEDURE licencia_modif( pi_pk_id_licencia                INT             ,
 									pi_licencia                      VARCHAR(255),
 									pi_codigo_contrato               VARCHAR(255),
 									pi_fecha_inicio_servicio         DATE            ,
@@ -165,10 +164,10 @@ BEGIN
 									estado_registro      = 'A'         ,									
 									transaccion_modificacion = pi_transaccion_modificacion      ,
 									fk_id_empresa  = pi_fk_id_empresa
-					where `pk_id_licencia`=`pi_pk_id_licencia`;			
+					where pk_id_licencia=pi_pk_id_licencia;			
 									 
 	      
-      SET po_resultado = `pi_pk_id_licencia`;
+      SET po_resultado = pi_pk_id_licencia;
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;
@@ -182,19 +181,19 @@ BEGIN
      -- RECUPERAMOS EL ID DE LA LIC A DAR DE BAJA.
      select pk_id_licencia_historia into v_id_lic_his 
          from licencia_historia
-        where pk_id_licencia=`pi_pk_id_licencia`
+        where pk_id_licencia=pi_pk_id_licencia
         and estado_registro='A';
 
-     --REGISTRO DE BAJA DEL HISTORICO
-      CALL `licencia_historia_baja_hsto`( v_id_lic_his ,   -- pk_id_licencia_historia                               
-                                        `pi_usuario_transaccion`  ,											
-                                        `pi_transaccion_modificacion`  ,
-                                        `pi_fk_id_empresa` ,
-                                         v_fecha fin,
+     -- REGISTRO DE BAJA DEL HISTORICO
+      CALL licencia_historia_baja_hsto( v_id_lic_his ,                                  
+                                        pi_usuario_transaccion  ,											
+                                        pi_transaccion_modificacion  ,
+                                        pi_fk_id_empresa ,
+                                         v_fecha_fin,
                                         @id_lichis );
 
       -- REGISTRO DE ALTA DEL HISTORICO
-    CALL `licencia_historia_alta`(`pi_pk_id_licencia`                ,
+    CALL licencia_historia_alta(pi_pk_id_licencia                ,
                                     pi_licencia                      ,
                                     pi_codigo_contrato               ,
                                     pi_fecha_inicio_servicio         ,
@@ -210,7 +209,7 @@ BEGIN
                                     pi_transaccion_modificacion      ,
                                     pi_fk_id_empresa                 ,
                                     v_fecha_ini                 ,
-                                    date_format('3333-12-31 23:59:59','%Y-%m-%d %H:%i:%s'),                     ,
+                                    date_format('3333-12-31 23:59:59','%Y-%m-%d %H:%i:%s'),                     
                                     @res_id_lichis);
 
 END//
@@ -219,12 +218,12 @@ DELIMITER ;
 
 
 -- Volcando estructura para procedimiento grupo_baja
-DROP PROCEDURE IF EXISTS `licencia_baja`;
+DROP PROCEDURE IF EXISTS licencia_baja;
 DELIMITER //
-CREATE  PROCEDURE `licencia_baja`( `pi_pk_id_licencia` INT(11),                                 
-											`pi_usuario_transaccion` INT(11) ,											
-											`pi_transaccion_modificacion` INT(11) ,
-											`pi_fk_id_empresa` INT(11),
+CREATE  PROCEDURE licencia_baja( pi_pk_id_licencia INT(11),                                 
+											pi_usuario_transaccion INT(11) ,											
+											pi_transaccion_modificacion INT(11) ,
+											pi_fk_id_empresa INT(11),
 											OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
@@ -248,15 +247,15 @@ BEGIN
 	CALL audit_insert(nombre_proceso, current_timestamp(), @resultado);
 	SELECT @resultado INTO v_res;
 
-      update licencia set `fecha_transaccion` = current_timestamp(),
-                        `usuario_transaccion` =`pi_usuario_transaccion` ,
-                        `estado_registro` ='E',
-                        `transaccion_modificacion`  =`pi_transaccion_modificacion`,
-                        `fk_id_empresa`=`pi_fk_id_empresa` 	
-                    where `pk_id_licencia`=`pi_pk_id_licencia`;			
+      update licencia set fecha_transaccion = current_timestamp(),
+                        usuario_transaccion =pi_usuario_transaccion ,
+                        estado_registro ='E',
+                        transaccion_modificacion  =pi_transaccion_modificacion,
+                        fk_id_empresa=pi_fk_id_empresa 	
+                    where pk_id_licencia=pi_pk_id_licencia;			
 
 	      
-      SET po_resultado = `pi_pk_id_licencia`;
+      SET po_resultado = pi_pk_id_licencia;
 	  SET v_cant_reg = ROW_COUNT();
 	  
       COMMIT;
@@ -266,15 +265,15 @@ BEGIN
  -- RECUPERAMOS EL ID DE LA LIC A DAR DE BAJA.
      select pk_id_licencia_historia into v_id_lic_his 
          from licencia_historia
-        where pk_id_licencia=`pi_pk_id_licencia`
+        where pk_id_licencia=pi_pk_id_licencia
         and estado_registro='A';
 
 
- --REGISTRO DE BAJA DEL HISTORICO
-      CALL `licencia_historia_baja_hsto`( v_id_lic_his ,   -- pk_id_licencia_historia                               
-                                        `pi_usuario_transaccion`  ,											
-                                        `pi_transaccion_modificacion`  ,
-                                        `pi_fk_id_empresa` ,
+ -- REGISTRO DE BAJA DEL HISTORICO
+      CALL licencia_historia_baja_hsto( v_id_lic_his ,   -- pk_id_licencia_historia                               
+                                        pi_usuario_transaccion  ,											
+                                        pi_transaccion_modificacion  ,
+                                        pi_fk_id_empresa ,
                                         current_timestamp(),
                                         @id_lichis );
 
