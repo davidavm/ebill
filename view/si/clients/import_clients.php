@@ -92,8 +92,8 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-university"></i> Vendedors</h1>
-            <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de vendedores.</p>
+            <h1 class="title"><i class="fa-university"></i> Importar Datos de Clientes</h1>
+            <p class="description">En esta p&aacute;gina podr&aacute; importar datos de clientes.</p>
         </div>
 
         <div class="breadcrumb-env">
@@ -102,10 +102,10 @@ if ($action == 'list') {
                     <a href="#"><i class="fa-home"></i>Inicio</a>
                 </li>
                 <li>
-                    <a href="#">Seguridad</a>
+                    <a href="#">Clientes</a>
                 </li>
                 <li class="active">
-                    <strong>Manejo de vendedores</strong>
+                    <strong>Importar datos de Clientes</strong>
                 </li>
             </ol>
         </div>
