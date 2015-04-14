@@ -8,7 +8,11 @@ return this.optional(element) || /^[a-z,"\-","_",0-9]+$/i.test(value);
 
 jQuery.validator.addMethod("alfanumerico", function(value, element) {
 return this.optional(element) || /^[a-z,0-9]+$/i.test(value);
-}, " Ingrese Letras y n&uacute;meros."); 
+}, " Ingrese Letras y n&uacute;meros.");
+
+jQuery.validator.addMethod("alfanumericopunto", function(value, element) {
+return this.optional(element) || /^[a-z,".",0-9]+$/i.test(value);
+}, " Ingrese Letras, n&uacute;meros y punto.");
 
 jQuery.validator.addMethod("alfanumericoespacio", function(value, element) {
 return this.optional(element) || /^[a-z," ",0-9]+$/i.test(value);

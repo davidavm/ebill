@@ -120,7 +120,7 @@
                                 ";
 
                 if( $idVendedor != self::ALL){
-                $query = $query." and a.pk_id_vendedor = ?";
+                $query = $query." and pk_id_vendedor = ?";
                 $result = DataBase::getArrayListQuery($query, array($idVendedor), $this->instanceDataBase);
                 }
                 else{
@@ -153,7 +153,7 @@
                 $query = "select count(1) existe
                           from vendedor
                           where estado_registro = 'A' 
-                          and ( nombres = ?  and primer_apellido= ? )";
+                          and  nombres = ?  and primer_apellido= ? ";
 
                 $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
                 $aux = $resultAux[0];

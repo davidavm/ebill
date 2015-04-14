@@ -4,7 +4,7 @@ $route = isset($_GET["page"]) ? $_GET["page"] : "";
 $_SESSION["active_option_menu"] = $route;
 $routeFull = $route . "&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages";
 // Prepare Object 
-$object = new Vendedor($registry[$dbSystem]);
+$object = new Categoria($registry[$dbSystem]);
 
 // Prepare Transacction
 $transaction = new Transaccion($registry[$dbSystem]);
@@ -23,11 +23,11 @@ $messageOkTransaction = "";
 // If action is insert
 if ($action == 'insert') {
     try {
-        if ($object->isExist(array($_POST["nombres"], $_POST["primer_apellido"]))) {
-            $messageErrorTransaction = "No se puede ingresar un Vendedor que ya existe. Revise los datos de Nombres y Primer Apellido.";
+        if ($object->isExist(array($_POST["categoria"]))) {
+            $messageErrorTransaction = "No se puede ingresar un Categoria que ya existe. Revise los datos de Categoria.";
         } else {
-            $idTransaccion = $transaction->insert(array(Vendedor::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
-            $data = array($_POST["nombres"], $_POST["primer_apellido"], $_POST["segundo_apellido"], $_POST["telefono1"], $_POST["telefono2"], $_POST["telefono3"], $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]));
+            $idTransaccion = $transaction->insert(array(Categoria::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
+            $data = array($_POST["categoria"], $_POST["descripcion"], $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]));
             
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
@@ -43,7 +43,7 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Vendedor::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+        $idTransaccion = $transaction->insert(array(Categoria::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion);        
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
@@ -63,11 +63,11 @@ if ($action == 'edit') {
         $objectEdit = NULL;
         $result = $object->getList($_GET["idObject"]);
         $objectEdit = $result[0];
-        if (($object->isExist(array($_POST["nombres"], $_POST["primer_apellido"]))) && ($objectEdit["nombres"] != $_POST["nombres"] || $objectEdit["primer_apellido"] != $_POST["primer_apellido"])) {
-            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Vendedor que ya existe.";
+        if (($object->isExist(array($_POST["categoria"]))) && ($objectEdit["categoria"] != $_POST["categoria"])) {
+            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Categoria que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Vendedor::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
-            $data = array($_GET["idObject"], $_POST["nombres"], $_POST["primer_apellido"], $_POST["segundo_apellido"], $_POST["telefono1"], $_POST["telefono2"], $_POST["telefono3"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]));            
+            $idTransaccion = $transaction->insert(array(Categoria::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+            $data = array($_GET["idObject"], $_POST["categoria"], $_POST["descripcion"], $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]));            
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");
             }
@@ -92,8 +92,8 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-users"></i> Vendedores</h1>
-            <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de vendedores.</p>
+            <h1 class="title"><i class="fa-users"></i> Categorias</h1>
+            <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de categorias.</p>
         </div>
 
         <div class="breadcrumb-env">
@@ -105,7 +105,7 @@ if ($action == 'list') {
                     <a href="#">Clientes</a>
                 </li>
                 <li class="active">
-                    <strong>Manejo de vendedores</strong>
+                    <strong>Manejo de categorias</strong>
                 </li>
             </ol>
         </div>
@@ -117,10 +117,10 @@ if ($action == 'list') {
             <div class="panel panel-success">
                 <div class="row">
                     <div class="col-md-3">
-                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/clients/checkseller&action=edit_form&action=insert_form" style="margin-top:1px;">
+                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/clients/checkcategory&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
                                 <i class="linecons-shop"></i>
-                                <span>Agregar Vendedor</span>
+                                <span>Agregar Categoria</span>
                             </button>
                         </form>
                     </div>   
@@ -162,10 +162,8 @@ if ($action == 'list') {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nombres</th>
-                                <th>Primer Apellido</th>
-                                <th>Segundo Apellido</th>
-                                <th>Telefonos</th>
+                                <th>Categoria</th>
+                                <th>Descripci&oacute;n</th>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
                             </tr>
@@ -174,10 +172,8 @@ if ($action == 'list') {
                         <tfoot>
                             <tr>
                                 <th></th>
-                                <th>Nombres</th>
-                                <th>Primer Apellido</th>
-                                <th>Segundo Apellido</th>
-                                <th>Telefonos</th>
+                                <th>Categoria</th>
+                                <th>Descripci&oacute;n</th>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
                             </tr>
@@ -189,15 +185,13 @@ if ($action == 'list') {
                                 ?>
                                 <tr>
                                     <td style="width: 25px;"></td>
-                                    <td><?php echo $register['nombres']; ?></td>
-                                    <td><?php echo $register['primer_apellido']; ?></td>
-                                    <td><?php echo $register['segundo_apellido']; ?></td>
-                                    <td><?php echo $register['telefono1'].(!empty($register['telefono2'])?', '.$register['telefono2']:NULL).(!empty($register['telefono3'])?', '.$register['telefono3']:NULL); ?></td>
+                                    <td><?php echo $register['categoria']; ?></td>
+                                    <td><?php echo $register['descripcion']; ?></td>
                                     <td style="width: 120px;"><?php echo $register['fecha_transaccion']; ?></td>
                                     <td style="width: 80px; text-align: center">
-                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_vendedor']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/clients/checkseller&action=edit_form&idObject=<?php echo $register['pk_id_vendedor']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
-                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_vendedor']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_categoria']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/clients/checkcategory&action=edit_form&idObject=<?php echo $register['pk_id_categoria']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_categoria']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
                                 <?php
@@ -225,13 +219,13 @@ if ($action == 'list') {
     } else {
         $typeOperation = "Ningun";
     }
-    $typeOperation = $typeOperation . " Vendedor"
+    $typeOperation = $typeOperation . " Categoria"
     ?>
     <!-- Action insert, view or edit -->
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-users"></i> Vendedores</h1>
-            <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Vendedor.</p>
+            <h1 class="title"><i class="fa-users"></i> Categorias</h1>
+            <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Categoria.</p>
         </div>
         <div class="breadcrumb-env">
             <ol class="breadcrumb bc-1">
@@ -242,7 +236,7 @@ if ($action == 'list') {
                     <a href="forms-native.html">Clientes</a>
                 </li>
                 <li class="active">
-                    <strong>Vendedor</strong>
+                    <strong>Categoria</strong>
                 </li>
             </ol>
         </div>
@@ -252,7 +246,7 @@ if ($action == 'list') {
         <div class="col-sm-12">
             <div class="panel panel-success">                
                 <div class="panel-heading">
-                    <h3 class="panel-title">Formulario para datos de Vendedor</h3>                                       
+                    <h3 class="panel-title">Formulario para datos de Categoria</h3>                                       
                 </div>
                 <div class="panel-body">
 
@@ -276,61 +270,27 @@ if ($action == 'list') {
                           }
                           ?>
                         <div class="row col-margin">
-                            <div class="form-group col-lg-4">                            
-                                <label for="nombres">Nombres:</label>                                
+                            <div class="form-group col-lg-6" style="margin-bottom: 5px;">                            
+                                <label for="categoria">Categoria:</label>                                
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="nombres" name="nombres" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["nombres"] . "\" " : NULL); ?>/>
+                                    <input id="categoria" name="categoria" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["categoria"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
-                            <div class="form-group col-lg-4">
-                                <label for="primer_apellido">Primer apellido:</label> 
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
-                                    </span>                            
-                                    <input id="primer_apellido" name="primer_apellido" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["primer_apellido"] . "\" " : NULL); ?>/>
-                                </div>
-                            </div>    
-                            <div class="form-group col-lg-4">
-                                <label for="segundo_apellido">Segundo apellido:</label>
+                            <div class="clearfix"></div>
+                            <div class="form-group col-lg-6">
+                                <label for="descripcion">Descripci&oacute;n:</label> 
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-square-o" data-toggle="tooltip" data-placement="top" title="Campo Opcional."></span>
                                     </span>                            
-                                    <input id="segundo_apellido" name="segundo_apellido" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["segundo_apellido"] . "\" " : NULL); ?>/>
+                                    <textarea id="descripcion" name="descripcion" maxlength="1024" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> ><?php echo($action == 'edit_form' || $action == 'view_form' ? $objectEdit["descripcion"]: NULL); ?></textarea>
                                 </div>
-                            </div>  
-                            <div class="form-group col-lg-4">
-                                <label for="telefono1">Tel&eacute;fonos/Celulares:</label>                                    
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 1"></span>                                        
-                                    </span>
-                                    <input id="telefono1" name="telefono1" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono1"] . "\" " : NULL); ?>/>
-                                </div>                            
-                            </div>  
-                            <div class="form-group col-lg-4">
-                                <label for="telefono2">&nbsp;</label>                                    
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 2"></span>
-                                    </span>
-                                    <input id="telefono2" name="telefono2" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono2"] . "\" " : NULL); ?>/>
-                                </div>                            
-                            </div> 
-                            <div class="form-group col-lg-4">
-                                <label for="telefono3">&nbsp;</label>                                    
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span  class="fa-tty" data-toggle="tooltip" data-placement="top" title="Telefono/Celular 3"></span>
-                                    </span>
-                                    <input id="telefono3" name="telefono3" maxlength="32" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono3"] . "\" " : NULL); ?>/>
-                                </div>                            
-                            </div>                             
-                        </div>                            
+                            </div>    
+                        </div>     
+                        <br/>
                         <div class="row">
                         <div class="col-md-12">
                             <?php

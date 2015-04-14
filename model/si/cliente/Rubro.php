@@ -116,7 +116,7 @@
                                 ";
 
                 if( $idRubro != self::ALL){
-                $query = $query." and a.pk_id_rubro = ?";
+                $query = $query." and pk_id_rubro = ?";
                 $result = DataBase::getArrayListQuery($query, array($idRubro), $this->instanceDataBase);
                 }
                 else{
@@ -149,7 +149,7 @@
                 $query = "select count(1) existe
                           from rubro
                           where estado_registro = 'A' 
-                          and ( rubro = ?  )";
+                          and  rubro = ?  ";
 
                 $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
                 $aux = $resultAux[0];

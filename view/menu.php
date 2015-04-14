@@ -142,7 +142,7 @@
                 </a>
             </li>
             <li>
-                <a href="index.php?page=/si/clients/import_clients&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
+                <a href="index.php?page=/si/clients/import_clients&cf_jscss[0]=plupload&ci_jq[0]=plupload&ci_js[0]=messages">
                     <i class="linecons-database"></i>
                     <span class="title">Importar datos  de Clientes</span>
                 </a>
