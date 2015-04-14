@@ -231,7 +231,7 @@ $errorWebPageProperty = $property["general"]["error"];
                                     <?php
                                         } else{
                                     ?>
-                                    <img src="<?php echo UPLOAD_RELATIVE_PATH . "identification/".$userCompanyData["nombre_archivo_foto"]; ?>" alt="Usuario del sistema" class="img-responsive img-circle" height="160" width="160" />        
+                                    <img src="<?php echo UPLOAD_RELATIVE_PATH . "identification/".$userCompanyData["nombre_archivo_foto"]; ?>" alt="Usuario del sistema" class="img-responsive img-circle"/>        
                                     <?php
                                         }
                                     ?>     

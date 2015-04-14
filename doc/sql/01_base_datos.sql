@@ -450,6 +450,7 @@ CREATE TABLE factura(
     llave_dosificacion              TEXT,
     fecha_limite_emision            DATE              NOT NULL,
     fecha_factura                   DATETIME          NOT NULL,
+    numero_factura    INT,
     nit_cliente                     VARCHAR(255),
     nit_empresa                     CHAR(10),
     cabecera                        TEXT,

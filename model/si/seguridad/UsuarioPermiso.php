@@ -99,19 +99,19 @@
             $result = null;
             $query = null;
             try{
-                $query = "select
-                                pk_id_usuario_permiso ,
-                                date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion, 
-                                fk_id_usuario ,
-                                fk_id_permiso,
-                                fk_tipo_permiso,
-                                usuario_transaccion,
-                                estado_registro ,
-                                transaccion_creacion ,
-                                transaccion_modificacion ,
-                                fk_id_empresa 
+                $query = " 	
+                           select
+                                `pk_id_usuario_permiso` ,
+                                date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion, 
+                                `fk_id_usuario` ,
+                                `fk_id_permiso`,
+                                `usuario_transaccion`,
+                                `estado_registro` ,
+                                `transaccion_creacion` ,
+                                `transaccion_modificacion` ,
+                                `fk_id_empresa` 
                                 from usuario_permiso
-                                where estado_registro='A'
+                                where `estado_registro`='A'
                                 ";
 
                 if( $idUsuarioPermiso != self::ALL){
@@ -128,41 +128,6 @@
             }            
         }
 
-    /**
-     * The implementation method for query to the instance data Base.
-     *
-     * @throws None.
-     *
-     * @access     public
-     * @static     No.
-     * @see        None.
-     * @since      Available from the version  1.0 01-01-2015.
-     * @deprecated No.
-     */
-        public function getListUserPermision($idUser, $idPermission, $idEmpresa){
-            $result = null;
-            $query = null;
-            try{
-                $query = "select                                
-                                fk_id_permiso,
-                                fk_id_tipo_permiso,
-                                usuario_transaccion,
-                                estado_registro ,
-                                transaccion_creacion ,
-                                transaccion_modificacion ,
-                                fk_id_empresa 
-                                from usuario_permiso
-                                where estado_registro='A'
-                                and fk_id_usuario = ?
-                                and fk_id_permiso = ?
-                                and fk_id_empresa = ? ";
-                $result = DataBase::getArrayListQuery($query, array($idUser, $idPermission, $idEmpresa), $this->instanceDataBase);
-                return $result;
-            }
-            catch(PDOException $e){
-                throw $e;
-            }            
-        }
         
         /**
      * The implementation method for query to the instance data Base.
@@ -214,14 +179,13 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call usuario_permiso_alta(?,?,?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call usuario_permiso_alta(?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(5, $datos[4], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(6, $datos[5], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(7, $datos[6], PDO::PARAM_STR, 4000); 
                 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -276,44 +240,6 @@
             }              
         }
 
-     /**
-     * The implementation method for delete data to the instance data Base.
-     *
-     * @throws None.
-     *
-     * @access     public
-     * @static     No.
-     * @see        None.
-     * @since      Available from the version  1.0 01-01-2015.
-     * @deprecated No.
-     */
-        public function deletePermissionUser($datos){
-        
-            try{
-              $id=-1;                       
-         
-                $gbd=$this->instanceDataBase;
-                  
-                $sentencia = $gbd->prepare("call usuario_permiso_baja_all(?,?,?,?,@resultado);  ");
-                $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000);  
-                $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(4, $datos[3], PDO::PARAM_STR, 4000); 
-                // llamar al procedimiento almacenado
-                $sentencia->execute();
-               
-                  $query = "select @resultado as resultado";
-                $result = DataBase::getArrayListQuery($query, array(),$this->instanceDataBase);                                 
-                
-                if(count($result)>0)
-                   $id = $result[0]['resultado'];
-                return $id;
-            }
-            catch(PDOException $e){
-                throw $e;
-            }              
-        }
-        
      /**
      * The implementation method for update data to the instance data Base.
      *

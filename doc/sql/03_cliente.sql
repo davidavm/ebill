@@ -1,5 +1,3 @@
-
-
 -- Volcando estructura para procedimiento grupo_alta
 DROP PROCEDURE IF EXISTS `cliente_alta`;
 DELIMITER //
@@ -89,8 +87,7 @@ BEGIN
 									`pi_telefono3` ,
 									`pi_contacto`  ,
 									`pi_fk_id_rubro`  ,
-									`pi_fk_id_categoria`  ,
-fk_                                                                      pi_fk_id_departamento          ,
+									`pi_fk_id_categoria`  ,                                                                   pi_fk_id_departamento          ,
                                                                          pi_fk_id_municipio             ,
 									`pi_fk_id_vendedor`  ,
 									

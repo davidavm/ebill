@@ -128,6 +128,8 @@
   `precio_unitario`,
   `total`,
   `sujeto_descuento_fiscal`,
+  fk_id_estado_factura,
+  (select descripcion from catalogo  where pk_id_catalogo=fk_id_estado_factura ) estado_factura,
   `fecha_transaccion`,
   `usuario_transaccion`,
   `estado_registro`,

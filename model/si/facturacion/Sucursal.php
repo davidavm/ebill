@@ -116,7 +116,7 @@
                                          `transaccion_creacion` ,
                                          `transaccion_modificacion` ,
                                          `fk_id_empresa`
-                                         from sucursal
+                                         from sucursal a
                                 where `estado_registro`='A'
                                 ";
 
@@ -265,6 +265,7 @@
            
             try{
                 $id=-1;                       
+         
          
                 $gbd=$this->instanceDataBase;
                   

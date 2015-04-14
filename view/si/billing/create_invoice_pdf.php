@@ -63,10 +63,10 @@ $pdf->AddPage();
 // set cell margins
 $pdf->setCellMargins(1, 1, 1, 1);
 
-$image_file = 'view/img/ebil/logo_ebil.png';
+$image_file = 'view/img/ebil/logo_ebil_factura.jpg';
 $textoActividadEconomica="Desarrollo de Software";
 $textoFactura="FACTURA";
-$textOriginal="ORIGINAL";
+$textoOriginal="ORIGINAL";
 $textoNitEmpresa ="4440910";
 $textoNroAutorizacion ="30020015358";
 $textoNroFactura = "1236587";
@@ -75,18 +75,50 @@ $textoNombreEmpresa = "PENTAGROUP";
 $textoSucursal = "CASA MATRIZ";
 $textoDireccionEmpresa ="Av. Los Parrales # 100";
 
-$textoLugaryFecha = "Cochabamba, 10/02/2015";
+$textoLugaryFecha = "10/02/2015";
 $textoNitCliente = "4440910";
 $textoRazonSocialCliente = "David Vargas";
 
 $textoCodigoControl="AF-D0-BA-EH-CE-0O";
 $textoFechaLimiteEmision="31/12/2015";
     
+$detailList = array( array(
+    'codigo_item'=> 'EBIL_V1',
+    'descripcion'=> 'SISTEMA EBIL VERSION 1' ,
+    'precio_unitario'=> 8400,
+    'cantidad'=> 2,
+    'total'=> 16800) 
+    );
+$totalFactura = 0;
+$ice=0;
+$excentos=0;
+$importeGravado=0;
+$descuentos=0;
+$bonificaciones=0;
+$recargos = 0;
+$ImporteBaseCreditoFiscal 
+        = $totalFactura+$recargos 
+        - $ice - $excentos-$descuentos-$bonificaciones;
+
+$ImporteNoSujetoCreditoFiscal=0;
+$totalDescuentos=$descuentos+$bonificaciones;
+
 $textoPieFactura="<b>\"ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS. EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADO DE ACUERDO A LEY\"</b><br>
    Ley N°453: \"En caso de incumplimiento a lo ofertado o convenido, el proveedor debe reparar o sustituir el servicio\" ";
 
- $textoCodigoQR='5654564654';
-// MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
+ $textoCodigoQR=$textoNitEmpresa
+         .'|'.$textoNroFactura
+         .'|'.$textoNroAutorizacion
+         .'|'.$textoLugaryFecha
+         .'|'.$totalFactura
+         .'|'.$ImporteBaseCreditoFiscal
+         .'|'.$textoCodigoControl
+         .'|'.$textoNitCliente
+         .'|'.$ice
+         .'|'.$importeGravado
+         .'|'.$ImporteNoSujetoCreditoFiscal
+         .'|'.$totalDescuentos
+         ;
 
 // set some text for example
         
@@ -205,6 +237,24 @@ EOD;
        /*********************************************************************************************************************************************/
        /**DETALLE*************************************************************************************************************************/
        /*********************************************************************************************************************************************/
+   $deatailHtml='';
+        foreach($detailList as $detail){
+            $detailCode = $detail['codigo_item'];
+            $detailDescription = $detail['descripcion'];
+            $detailPrice = $detail['precio_unitario'];
+            $detailCantidad = $detail['cantidad'];
+            $detailSubtotal = $detail['total'];            
+            $totalFactura = $totalFactura+$detailSubtotal ;
+          $deatailHtml= <<<EOD
+<tr>
+    <th style="width:70px; text-align: center; font-weight: bold;" >$detailCode</th>
+    <th style="width:420px; text-align: center; font-weight: bold;"  >$detailDescription</th>
+    <th style="width:70px; text-align: center; font-weight: bold;">$detailPrice</th>
+    <th style="width:70px; text-align: center; font-weight: bold;">$detailCantidad</th>    
+    <th style="width:70px; text-align: center; font-weight: bold;">$detailSubtotal</th>     
+</tr>
+EOD;
+        }
        
        $tbl = <<<EOD
 <table border="1" cellpadding="2" style="$fontFamilyCssSanSerif_10" >
@@ -215,10 +265,11 @@ EOD;
     <th style="width:70px; text-align: center; font-weight: bold;">CANTIDAD</th>    
     <th style="width:70px; text-align: center; font-weight: bold;">SUBTOTAL</th>     
 </tr>
+$deatailHtml
 <tr>
     <th colspan="2" style="text-align: left; font-weight: bold;">&nbsp;&nbsp;SON:</th>
     <th colspan="2" style="text-align: center; font-weight: bold;" >TOTAL Bs</th>
-    <th colspan="2" style="text-align: center; font-weight: bold;" >800.63</th>                   
+    <th colspan="2" style="text-align: center; font-weight: bold;" >$totalFactura</th>                   
 </tr>               
 </table>
 EOD;

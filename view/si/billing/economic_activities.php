@@ -35,13 +35,14 @@ if ($action == 'insert') {
         `pi_fk_id_empresa` INT(11),
         OUT po_resultado INT
            */
-            $idTransaccion = $transaction->insert(array(ActividadEconomica::INSERT, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));            
+            $idTransaccion = $transaction->insert(array(ActividadEconomica::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"]) ));            
             $data = array($_POST["actividad_economica"], 
                           $_POST["fk_id_clasificacion_tipo_actividad"], 
                           $_SESSION["authenticated_id_user"], 
                           $idTransaccion, 
                           $idTransaccion,
-                          $_POST["fk_id_empresa"]);
+                          ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"])
+                    );
             
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
@@ -57,11 +58,11 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Grupo::DELETE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
+        $idTransaccion = $transaction->insert(array(Grupo::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], 
                       $_SESSION["authenticated_id_user"], 
                       $idTransaccion,
-                      $_SESSION["authenticated_id_empresa"]
+                      ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"])
                      );   
            //echo '<PRE>';
            //print_r($data);
