@@ -1,34 +1,11 @@
-# SQL Manager 2010 for MySQL 4.5.0.9
-# ---------------------------------------
-# Host     : WIN-9LDUPO4KHR7
-# Port     : 3306
-# Database : ebil
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
-SET FOREIGN_KEY_CHECKS=0;
-
-#
-# Definition for the `sucursal_baja` procedure : 
-#
-
 DROP PROCEDURE IF EXISTS `sucursal_baja`;
-
+DELIMITER //
 CREATE   PROCEDURE `sucursal_baja`(
         `pi_pk_id_sucursal` INT(11),
         `pi_usuario_transaccion` INT(11) ,
         `pi_transaccion_modificacion` INT(11) ,
         `pi_fk_id_empresa` INT(11),
-        OUT po_resultado INT
-    )
-    NOT DETERMINISTIC
-    CONTAINS SQL
-    SQL SECURITY DEFINER
-    COMMENT ''
+        OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
     DECLARE v_res INT;
@@ -65,14 +42,15 @@ BEGIN
 
 	  CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
-END;
+END //
+DELIMITER ;
 
 #
 # Definition for the `sucursal_alta` procedure : 
 #
 
 DROP PROCEDURE IF EXISTS `sucursal_alta`;
-
+DELIMITER //
 CREATE   PROCEDURE `sucursal_alta`(
         `pi_sucursal` VARCHAR(255),
         `pi_razon_social` VARCHAR(255) ,
@@ -152,14 +130,15 @@ BEGIN
 	  
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
-END;
+END //
+DELIMITER ;
 
 #
 # Definition for the `sucursal_modif` procedure : 
 #
 
 DROP PROCEDURE IF EXISTS `sucursal_modif`;
-
+DELIMITER //
 CREATE   PROCEDURE `sucursal_modif`(
         IN `pi_pk_id_sucursal` INTEGER(11),
         IN `pi_sucursal` VARCHAR(255),
@@ -230,10 +209,5 @@ BEGIN
 
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
-END;
-
-
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+END //
+DELIMITER ;
