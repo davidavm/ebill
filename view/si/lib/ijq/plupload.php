@@ -2,7 +2,7 @@
 	$("#uploader").pluploadQueue({
 		// General settings
 		runtimes : 'html5,flash,silverlight,html4',
-		url : '../upload.php',
+		url : 'index.php?page=<?php echo isset($_GET["page"]) ? $_GET["page"] : "".'&cf_jscss[0]=plupload&ci_jq[0]=plupload&ci_js[0]=messages'; ?>&action=subir',
 		chunk_size: '1mb',
 		rename : true,
 		dragdrop: true,
