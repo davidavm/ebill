@@ -5,8 +5,7 @@ $_SESSION["active_option_menu"] = $route;
 $routeFull = $route . "&cf_jscss[0]=plupload&ci_jq[0]=plupload&ci_js[0]=messages";
 
 // Prepare Object 
-$object = new Vendedor($registry[$dbSystem]);
-
+$object = new Archivo($registry[$dbSystem]);
 // Prepare Transacction
 $transaction = new Transaccion($registry[$dbSystem]);
 
@@ -20,7 +19,7 @@ if (isset($_POST["action"])) {
 
 // If action is insert
 if ($action == 'subir') {
-    echo 'ENTRO EN SUBIR';
+   
    try {
 
 
@@ -39,7 +38,7 @@ if ($action == 'subir') {
 
         // Settings  c:\wamp\tmp\plupload
         $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-        echo 'tmpdir='.$targetDir;
+        
         //$targetDir = 'uploads';
         $cleanupTargetDir = true; // Remove old files
         $maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -55,6 +54,7 @@ if ($action == 'subir') {
                 $fileName = $_REQUEST["name"];
         } elseif (!empty($_FILES)) {
                 $fileName = $_FILES["file"]["name"];
+                $fileSize = $_FILES["file"]["size"];                
         } else {
                 $fileName = uniqid("file_");
         }
@@ -69,9 +69,10 @@ if ($action == 'subir') {
         // Remove old temp files	
         if ($cleanupTargetDir) {
                 if (!is_dir($targetDir) || !$dir = opendir($targetDir)) {
-                        die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
+                        die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "No se pudo abrir el directorio temporal."}, "id" : "id"}');
                 }
-
+                
+              
                 while (($file = readdir($dir)) !== false) {
                         $tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
 
@@ -84,6 +85,41 @@ if ($action == 'subir') {
                         if (preg_match('/\.part$/', $file) && (filemtime($tmpfilePath) < time() - $maxFileAge)) {
                                 @unlink($tmpfilePath);
                         }
+                    
+                        /*
+                         *      pi_nombre VARCHAR(255) ,
+                                pi_extension VARCHAR(32),
+                                pi_bytes DECIMAL(15,5) ,
+                                pi_mime VARCHAR(255) ,
+                                pi_ruta VARCHAR(255) ,
+                                pi_ruta2 VARCHAR(255) ,
+                                pi_fk_id_tipo_archivo INT(11) ,
+                                pi_usuario_transaccion INT(11),
+                                pi_transaccion_creacion INT(11) ,
+                                pi_transaccion_modificacion INT(11) ,
+                                pi_fk_id_empresa INT(11)
+                         */
+                    
+                    // registro de los archivos en la base
+                    if($file!='.')
+                        if($file!='..'){
+                            $fileType = pathinfo($tmpfilePath,PATHINFO_EXTENSION);
+                            $data = array($file,
+                                            $fileType,
+                                            filesize($tmpfilePath),
+                                            mime_content_type( $tmpfilePath ),
+                                            pathinfo($tmpfilePath,PATHINFO_DIRNAME),
+                                            pathinfo($tmpfilePath,PATHINFO_BASENAME),
+                                            456,// tipo texto
+                                            $_SESSION["authenticated_id_user"], 
+                                            $idTransaccion, 
+                                            $idTransaccion, 
+                                            ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])                        
+                                              );
+                    
+                            $object->insert($data);
+                        }
+                  
                 }
                 closedir($dir);
         }	
@@ -91,21 +127,21 @@ if ($action == 'subir') {
 
         // Open temp file
         if (!$out = @fopen("{$filePath}.part", $chunks ? "ab" : "wb")) {
-                die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+                die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "No se pudo abrir la secuencia de salida."}, "id" : "id"}');
         }
 
         if (!empty($_FILES)) {
                 if ($_FILES["file"]["error"] || !is_uploaded_file($_FILES["file"]["tmp_name"])) {
-                        die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+                        die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Error al mover el archivo subido."}, "id" : "id"}');
                 }
 
                 // Read binary input stream and append it to temp file
                 if (!$in = @fopen($_FILES["file"]["tmp_name"], "rb")) {
-                        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+                        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "No se pudo abrir la secuencia de entrada."}, "id" : "id"}');
                 }
         } else {	
                 if (!$in = @fopen("php://input", "rb")) {
-                        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+                        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "No se pudo abrir la secuencia de entrada."}, "id" : "id"}');
                 }
         }
 
@@ -159,11 +195,11 @@ if ($action == 'formulario'){
  <div class="row">
   <div class="col-sm-12">
     <div class="panel-body">
-        <form method="post" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=subir">	
+        <form method="post" role="form" action="index.php?page=<?php echo $routeFull; ?>&action=formulario">	
                 <div id="uploader">
                         <p>Su navegador no tiene soporte para Flash, Silverlight o HTML5.</p>
                 </div>
-                <input type="submit" value="Send" />
+                <input type="submit" value="Cargar Mas Archivos" />
         </form>
    </div>
   </div>
