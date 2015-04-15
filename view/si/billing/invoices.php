@@ -598,15 +598,7 @@ if ($action == 'list') {
                                 </div>                            
                             </div> 
                            
-                         <div class="form-group col-lg-6">
-                                <label for="cantidad_dias">Cantidad Dias</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
-                                    </span>                            
-                                    <input id="cantidad_dias" name="cantidad_dias" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["cantidad_dias"] . "\" " : NULL); ?>/>
-                                </div>
-                            </div>
+                        
                              </br>
                         </div>  
                          <div class="row" id="invoice_detail"> 
