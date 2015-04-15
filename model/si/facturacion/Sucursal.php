@@ -103,6 +103,7 @@
                                   select 
                                     `pk_id_sucursal` ,
                                          `sucursal` ,
+                                         `razon_social` ,
                                          `numero` ,
                                          `direccion`,
                                          `telefono1` ,
@@ -184,7 +185,7 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call sucursal_alta(?,?,?,?,?,?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call sucursal_alta(?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -195,6 +196,7 @@
                 $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000); 
+                $sentencia->bindParam(11, $datos[10], PDO::PARAM_STR, 4000); 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
                
@@ -278,6 +280,7 @@
                 $sentencia->bindParam(8, $datos[7], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(9, $datos[8], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(10, $datos[9], PDO::PARAM_STR, 4000);
+                $sentencia->bindParam(11, $datos[10], PDO::PARAM_STR, 4000);
               
                 // llamar al procedimiento almacenado
                 $sentencia->execute();

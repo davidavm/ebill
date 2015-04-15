@@ -95,7 +95,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idCategoria = self::ALL){
+        public function getList($idCategoria = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
@@ -116,12 +116,22 @@
                                 ";
 
                 if( $idCategoria != self::ALL){
-                $query = $query." and pk_id_categoria = ?";
-                $result = DataBase::getArrayListQuery($query, array($idCategoria), $this->instanceDataBase);
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_categoria = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idCategoria, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_categoria = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idCategoria), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
                 }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
-                }
+                
                 return $result;
             }
             catch(PDOException $e){
@@ -179,7 +189,7 @@
                 $id=-1;        
         
                 $gbd=$this->instanceDataBase;
-                  
+
                 $sentencia = $gbd->prepare("call categoria_alta(?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 

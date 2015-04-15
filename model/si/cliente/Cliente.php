@@ -95,47 +95,57 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idCliente = self::ALL){
+        public function getList($idCliente = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
                 $query = " 	
                             select 
-                                `pk_id_cliente` ,
-                                     `codigo` ,
-                                     `razon_social` ,
-                                     `nit`,
-                                     `direccion` ,
-                                     `telefono1` ,
-                                     `telefono2` ,
-                                     `telefono3` ,
-                                     `contacto` ,
-                                     `fk_id_rubro` ,
-                                     `fk_id_categoria` ,
+                                pk_id_cliente ,
+                                     codigo ,
+                                     razon_social ,
+                                     nit,
+                                     direccion ,
+                                     telefono1 ,
+                                     telefono2 ,
+                                     telefono3 ,
+                                     contacto ,
+                                     fk_id_rubro ,
+                                     fk_id_categoria ,
                                      fk_id_departamento,
                                      fk_id_municipio,
-                                     `fk_id_vendedor` ,
-                                     `fecha1` ,
-                                     `fecha2` ,
-                                     `texto1` ,
-                                     `texto2` ,
-                                     date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
-                                     `usuario_transaccion` ,
-                                     `estado_registro` ,
-                                     `transaccion_creacion` ,
-                                     `transaccion_modificacion` ,
-                                     `fk_id_empresa`
+                                     fk_id_vendedor ,
+                                     fecha1 ,
+                                     fecha2 ,
+                                     texto1 ,
+                                     texto2 ,
+                                     date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
+                                     usuario_transaccion ,
+                                     estado_registro ,
+                                     transaccion_creacion ,
+                                     transaccion_modificacion ,
+                                     fk_id_empresa
                                      from cliente
-                                where `estado_registro`='A'
+                                where estado_registro='A'
                                 ";
 
                 if( $idCliente != self::ALL){
-                $query = $query." and a.pk_id_cliente = ?";
-                $result = DataBase::getArrayListQuery($query, array($idCliente), $this->instanceDataBase);
-                }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
-                }
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_cliente = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idCliente, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_cliente = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idCliente), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
+                }                
+
                 return $result;
             }
             catch(PDOException $e){
@@ -163,7 +173,7 @@
                 $query = "select count(1) existe
                           from cliente
                           where estado_registro = 'A' 
-                          and ( codigo = ?  )";
+                          and nit = ?  and razon_social = ? ";
 
                 $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
                 $aux = $resultAux[0];
