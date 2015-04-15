@@ -59,10 +59,10 @@ $dbSystem = 'dbSystem';
 $dataBaseConnection[$dbSystem] = array(
                                    'dbms'                => MYSQL,
                                    'typeDataBaseManager' => PDO,
-                                   'dataBasehost'        => 'localhost',
+                                   'dataBasehost'        => 'WIN-9LDUPO4KHR7',
                                    'dataBaseName'        => 'ebil',
-                                   'dataBaseUser'        => 'root',
-                                   'passwordDataBaseUser' => '',
+                                   'dataBaseUser'        => 'ebil',
+                                   'passwordDataBaseUser' => 'ebil',
                                    'state'               => ON
                                   );
 
