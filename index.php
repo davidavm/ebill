@@ -262,6 +262,9 @@ if (isset($_GET["security_administrator"])) {
 // Desidir que mostrar si fue el logueo exitoso o no
 if (isset($_SESSION["authenticated_id_user"])) {
     $path_controller_view = VIEW_PATH . $page_view . '.php';
+    if(isset($_GET['AJAX_VIEW']))
+        $path_controller_view = VIEW_PATH . $page_view_ajax . '.php';
+        
     $path_business_view = VIEW_PATH . $page . '.php';
     if ($page == $default_page) { // Si es la pagina por defecto cargar esta pagina alternativamente
         header('Location: index.php?page=/si/home');
