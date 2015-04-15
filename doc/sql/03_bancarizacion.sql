@@ -209,7 +209,7 @@ DELIMITER ;
 -- Volcando estructura para procedimiento bancarizacion_baja
 DROP PROCEDURE IF EXISTS `bancarizacion_baja`;
 DELIMITER //
-CREATE  PROCEDURE `usuario_permiso_baja`( `pi_pk_id_bancarizacion` INT(11),                                 
+CREATE  PROCEDURE `bancarizacion_baja`( `pi_pk_id_bancarizacion` INT(11),                                 
 											`pi_usuario_transaccion` INT(11) ,											
 											`pi_transaccion_modificacion` INT(11),
                                             `pi_fk_id_empresa` INT(11),

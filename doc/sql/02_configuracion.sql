@@ -722,4 +722,9 @@ INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependenc
 
 INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 560,'Valido','estado_factura','factura',1,0,CURRENT_TIMESTAMP(),'Factura valida.',null,'A','BASE',null,null,null);
 INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 561,'Anulado','estado_factura','factura',2,0,CURRENT_TIMESTAMP(),'Factura anulada.',null,'A','BASE',null,null,null);
+
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 562,'Cliente','tipo_importacion_datos','importacion_datos',1,0,CURRENT_TIMESTAMP(),'Importacion de datos de Clientes.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 563,'Proveedor','tipo_importacion_datos','importacion_datos',1,0,CURRENT_TIMESTAMP(),'Importacion de datos de Proveedores.',null,'A','BASE',null,null,null);
+INSERT INTO catalogo(pk_id_catalogo,descripcion,catalogo,negocio,orden,dependencia,fecha_transaccion,comentario,usuario_transaccion,estado_registro,cnf_base,transaccion_creacion,transaccion_modificacion,fk_id_empresa) VALUES( 564,'Item','tipo_importacion_datos','importacion_datos',1,0,CURRENT_TIMESTAMP(),'Importacion de datos de Items.',null,'A','BASE',null,null,null);
+
 commit;
