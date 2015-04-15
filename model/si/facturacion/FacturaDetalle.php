@@ -100,16 +100,18 @@
             $result = null;
             $query = null;
             try{
-                $query = " 	
-                             `pk_id_factura_detalle`,
+                $query = " 	select  `pk_id_factura_detalle`,
   `fk_id_factura`,
-  `fk_id_empresa`,
+  `codigo_item`,
+  `fk_id_item`,
   `descuento`,
   `fk_id_formato_dato_descuento`,
   `recargo`,
   `fk_id_formato_dato_recargo`,
   `ice`,
+  `fk_id_formato_dato_ice`,
   `excentos`,
+  `fk_id_formato_dato_excentos`,
   `cantidad`,
   `unidad`,
   `fk_id_dato_entrada_buscar_unidad`,
@@ -121,7 +123,7 @@
   `usuario_transaccion`,
   `estado_registro`,
   `transaccion_creacion`,
-  `transaccion_modificacion`
+  `transaccion_modificacion`,
   `fk_id_empresa`
                           from factura_detalle a
                           where `estado_registro`='A'
@@ -145,16 +147,18 @@
             $result = null;
             $query = null;
             try{
-                $query = " 	
-                             `pk_id_factura_detalle`,
+                $query = " select  `pk_id_factura_detalle`,
   `fk_id_factura`,
-  `fk_id_empresa`,
+  `codigo_item`,
+  `fk_id_item`,
   `descuento`,
   `fk_id_formato_dato_descuento`,
   `recargo`,
   `fk_id_formato_dato_recargo`,
   `ice`,
+  `fk_id_formato_dato_ice`,
   `excentos`,
+  `fk_id_formato_dato_excentos`,
   `cantidad`,
   `unidad`,
   `fk_id_dato_entrada_buscar_unidad`,
@@ -166,7 +170,7 @@
   `usuario_transaccion`,
   `estado_registro`,
   `transaccion_creacion`,
-  `transaccion_modificacion`
+  `transaccion_modificacion`,
   `fk_id_empresa`
                           from factura_detalle a
                           where `estado_registro`='A'

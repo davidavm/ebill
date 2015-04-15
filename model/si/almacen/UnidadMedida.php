@@ -117,7 +117,7 @@
                                 ";
 
                 if( $idUnidadMedida != self::ALL){
-                $query = $query." and a.pk_id_unidad_medida = ?";
+                $query = $query." and pk_id_unidad_medida = ?";
                 $result = DataBase::getArrayListQuery($query, array($idUnidadMedida), $this->instanceDataBase);
                 }
                 else{
@@ -150,7 +150,7 @@
                 $query = "select count(1) existe
                           from unidad_medida
                           where estado_registro = 'A' 
-                          and ( unidad_medida = ?  )";
+                          and unidad_medida = ?  ";
 
                 $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
                 $aux = $resultAux[0];

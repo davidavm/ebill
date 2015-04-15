@@ -105,7 +105,6 @@
                                                 fk_id_departamento ,
                                                 fk_id_municipio ,
                                                 fk_id_tipo_actividad ,
-                                                fk_id_tipo_formato_factura ,
                                                 fk_tipo_empresa ,
                                                 fk_tipo_razon_social ,
                                                 date_format(fecha_transaccion,'%d-%m-%Y %H:%i:%s') fecha_transaccion,

@@ -116,7 +116,7 @@
                                 ";
 
                 if( $idCategoria != self::ALL){
-                $query = $query." and a.pk_id_categoria = ?";
+                $query = $query." and pk_id_categoria = ?";
                 $result = DataBase::getArrayListQuery($query, array($idCategoria), $this->instanceDataBase);
                 }
                 else{
@@ -149,7 +149,7 @@
                 $query = "select count(1) existe
                           from Categoria
                           where estado_registro = 'A' 
-                          and ( categoria = ?  )";
+                          and categoria = ?  ";
 
                 $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
                 $aux = $resultAux[0];
