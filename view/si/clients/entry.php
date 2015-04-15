@@ -92,7 +92,7 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-users"></i> Rubros</h1>
+            <h1 class="title"><i class="fa-cogs"></i> Rubros</h1>
             <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de rubros.</p>
         </div>
 
@@ -180,7 +180,7 @@ if ($action == 'list') {
                         </tfoot>
                         <tbody>
                             <?php
-                            $result = $object->getList();
+                            $result = $object->getList(Rubro::ALL,($_SESSION["authenticated_id_empresa"]==-1?Rubro::ALL:$_SESSION["authenticated_id_empresa"]));
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>
@@ -224,7 +224,7 @@ if ($action == 'list') {
     <!-- Action insert, view or edit -->
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-users"></i> Rubros</h1>
+            <h1 class="title"><i class="fa-cogs"></i> Rubros</h1>
             <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Rubro.</p>
         </div>
         <div class="breadcrumb-env">

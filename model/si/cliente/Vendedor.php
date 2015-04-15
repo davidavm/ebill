@@ -95,7 +95,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idVendedor = self::ALL){
+        public function getList($idVendedor = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
@@ -109,23 +109,33 @@
                                     telefono2                  ,
                                     telefono3                  ,
                                      (select empresa from empresa  where pk_id_empresa=fk_id_empresa ) empresa,
-                                    date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,                                        
+                                    date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,                                        
                                     usuario_transaccion         ,
                                     estado_registro             ,
                                     transaccion_creacion        ,
                                     transaccion_modificacion    ,
                                     fk_id_empresa
                                          from vendedor
-                                where `estado_registro`='A'
+                                where estado_registro='A'
                                 ";
 
                 if( $idVendedor != self::ALL){
-                $query = $query." and pk_id_vendedor = ?";
-                $result = DataBase::getArrayListQuery($query, array($idVendedor), $this->instanceDataBase);
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_vendedor = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idVendedor, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_vendedor = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idVendedor), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
                 }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
-                }
+                
                 return $result;
             }
             catch(PDOException $e){

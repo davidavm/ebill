@@ -95,7 +95,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idRubro = self::ALL){
+        public function getList($idRubro = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
@@ -116,12 +116,22 @@
                                 ";
 
                 if( $idRubro != self::ALL){
-                $query = $query." and pk_id_rubro = ?";
-                $result = DataBase::getArrayListQuery($query, array($idRubro), $this->instanceDataBase);
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_rubro = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idRubro, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_rubro = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idRubro), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
                 }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
-                }
+                
                 return $result;
             }
             catch(PDOException $e){

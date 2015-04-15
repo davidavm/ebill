@@ -23,15 +23,16 @@ $messageOkTransaction = "";
 // If action is insert
 if ($action == 'insert') {
     try {
-        if ($object->isExist(array($_POST["almacen"]))) {
-            $messageErrorTransaction = "No se puede ingresar un Almacen que ya existe. Revise los datos de Almacen.";
+        if ($object->isExist(array($_POST["cod_almacen"]))) {
+            $messageErrorTransaction = "No se puede ingresar un Almacen que ya existe. Revise los datos de C&oacute;digo de Almacen.";
         } else {
             $idTransaccion = $transaction->insert(array(Almacen::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
+            
             $data = array($_POST["cod_almacen"], 
                           $_POST["almacen"], 
                           $_POST["descripcion"], 
-                          $_POST["fk_id_grupo"], 
-                          $_POST["fk_id_sistema_valoracion_inventario"],                         
+                          (isset($_POST["fk_id_grupo"]) && ($_POST["fk_id_grupo"]==NULL)?-1:$_POST["fk_id_grupo"]),
+                          (isset($_POST["fk_id_sistema_valoracion_inventario"]) && ($_POST["fk_id_sistema_valoracion_inventario"]==NULL)?-1:$_POST["fk_id_sistema_valoracion_inventario"]),
                           $_SESSION["authenticated_id_user"], 
                           $idTransaccion, 
                           $idTransaccion,
@@ -77,7 +78,7 @@ if ($action == 'edit') {
         $objectEdit = NULL;
         $result = $object->getList($_GET["idObject"]);
         $objectEdit = $result[0];
-        if (($object->isExist(array($_POST["almacen"]))) && ($objectEdit["almacen"] != $_POST["almacen"] )) {
+        if (($object->isExist(array($_POST["cod_almacen"]))) && ($objectEdit["cod_almacen"] != $_POST["cod_almacen"] )) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar un Almacen que ya existe.";
         } else {
             $idTransaccion = $transaction->insert(array(Almacen::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
@@ -85,8 +86,8 @@ if ($action == 'edit') {
                            $_POST["cod_almacen"],
                            $_POST["almacen"], 
                            $_POST["descripcion"], 
-                           $_POST["fk_id_grupo"], 
-                           $_POST["fk_id_sistema_valoracion_inventario"],                 
+                           (isset($_POST["fk_id_grupo"]) && ($_POST["fk_id_grupo"]==NULL)?-1:$_POST["fk_id_grupo"]),
+                           (isset($_POST["fk_id_sistema_valoracion_inventario"]) && ($_POST["fk_id_sistema_valoracion_inventario"]==NULL)?-1:$_POST["fk_id_sistema_valoracion_inventario"]),
                            $_SESSION["authenticated_id_user"], 
                            $idTransaccion,
                            $_SESSION["authenticated_id_empresa"]
@@ -118,7 +119,7 @@ if ($action == 'list') {
     <div class="page-title">
         <div class="title-env">
             <h1 class="title"><i class="fa fa-truck"></i> Almacenes</h1>
-            <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de Alamcen.</p>
+            <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de Almacen.</p>
         </div>
 
         <div class="breadcrumb-env">
@@ -130,7 +131,7 @@ if ($action == 'list') {
                     <a href="#">Almacen</a>
                 </li>
                 <li class="active">
-                    <strong>Manejo de almacenes</strong>
+                    <strong>Almacenes</strong>
                 </li>
             </ol>
         </div>
@@ -187,11 +188,11 @@ if ($action == 'list') {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Codigo</th>
-                                <th>Alamcen</th>
-                                <th>Descripcion</th>
+                                <th>C&oacute;digo</th>
+                                <th>Almacen</th>
+                                <th>Descripci&oacute;n</th>
                                 <th>Grupo</th>
-                                <th>Sistema Valoracion Iinventario</th>
+                                <th>Valoraci&oacute;n Inventario</th>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
                             </tr>
@@ -200,18 +201,18 @@ if ($action == 'list') {
                         <tfoot>
                             <tr>
                                 <th></th>
-                                <th>Codigo</th>
-                                <th>Alamcen</th>
-                                <th>Descripcion</th>
+                                <th>C&oacute;digo</th>
+                                <th>Almacen</th>
+                                <th>Descripci&oacute;n</th>
                                 <th>Grupo</th>
-                                <th>Sistema Valoracion Iinventario</th>
+                                <th>Valoraci&oacute;n Inventario</th>
                                 <th>Modificaci&oacute;n</th>
-                                <th>Acciones</th>                    
+                                <th>Acciones</th>   
                             </tr>
                         </tfoot>
                         <tbody>
                             <?php
-                            $result = $object->getList();
+                            $result = $object->getList(Almacen::ALL,($_SESSION["authenticated_id_empresa"]==-1?Almacen::ALL:$_SESSION["authenticated_id_empresa"]));
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>
@@ -264,7 +265,7 @@ if ($action == 'list') {
         <div class="breadcrumb-env">
             <ol class="breadcrumb bc-1">
                 <li>
-                    <a href="dashboard-1.html"><i class="fa-home"></i>Inicio</a>
+                    <a href="index.php"><i class="fa-home"></i>Inicio</a>
                 </li>
                 <li>
                     <a href="forms-native.html">Almacen</a>
@@ -307,7 +308,7 @@ if ($action == 'list') {
                              
                              
                             <div class="form-group col-lg-6">
-                                <label for="cod_almacen">Codigo Almacen</label> 
+                                <label for="cod_almacen">C&oacute;digo Almacen</label> 
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
@@ -328,7 +329,7 @@ if ($action == 'list') {
                                 <label for="descripcion">Descripci&oacute;n:</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o " data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                        <span class="fa fa-square-o" data-toggle="tooltip" data-placement="top" title="Campo Opcional."></span>
                                     </span>                            
                                     <input id="descripcion" name="descripcion" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descripcion"] . "\" " : NULL); ?>/>
                                 </div>
@@ -337,17 +338,17 @@ if ($action == 'list') {
                                 <label for="grupo">Grupo:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Opcional un valor de la lista."></span>                                        
                                     </span>
                                     <select id="fk_id_grupo" name="fk_id_grupo" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
-                                        <option value="-1" <?php 
+                                        <option value="" <?php 
                                         if ( ($action == 'insert_form') || ($objectEdit["fk_id_grupo"] == NULL) ) { 
                                             echo ' selected="selected" ';
                                         }
                                         ?> ></option>
                                         <?php
                                         $grupo = new Grupo($registry[$dbSystem]);
-                                        $result_grupo = $grupo->getList();
+                                        $result_grupo = $grupo->getList(Grupo::ALL,($_SESSION["authenticated_id_empresa"]==-1?Grupo::ALL:$_SESSION["authenticated_id_empresa"]));
                                         foreach ($result_grupo as $indice => $register_grupo) {
                                         ?>
                                         <option value="<?php echo $register_grupo["pk_id_grupo"]; ?>" <?php 
@@ -363,13 +364,13 @@ if ($action == 'list') {
                             </div>
                            
                             <div class="form-group col-lg-6">
-                                <label for="fk_id_sistema_valoracion_inventario">Sistema de Valoracion de Inventario:</label>                                    
+                                <label for="fk_id_sistema_valoracion_inventario">Sistema de Valoraci&oacute;n de Inventario:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>
                                     </span>
                                     <select id="fk_id_sistema_valoracion_inventario" name="fk_id_sistema_valoracion_inventario" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
-                                        <option value="-1" <?php  
+                                        <option value="" <?php  
                                         if ( ($action == 'insert_form') || ($objectEdit["fk_id_sistema_valoracion_inventario"] == NULL) ) { 
                                             echo ' selected="selected" ';
                                         }

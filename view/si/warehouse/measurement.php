@@ -92,7 +92,7 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-users"></i> UnidadMedidas</h1>
+            <h1 class="title"><i class="fa-magic"></i> Unidad de Medida</h1>
             <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de unidades de medida.</p>
         </div>
 
@@ -182,7 +182,7 @@ if ($action == 'list') {
                         </tfoot>
                         <tbody>
                             <?php
-                            $result = $object->getList();
+                            $result = $object->getList(UnidadMedida::ALL,($_SESSION["authenticated_id_empresa"]==-1?UnidadMedida::ALL:$_SESSION["authenticated_id_empresa"]));
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>
@@ -227,7 +227,7 @@ if ($action == 'list') {
     <!-- Action insert, view or edit -->
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa-users"></i> Unidad de Medida</h1>
+            <h1 class="title"><i class="fa-magic"></i> Unidad de Medida</h1>
             <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Unidad de Medida.</p>
         </div>
         <div class="breadcrumb-env">
