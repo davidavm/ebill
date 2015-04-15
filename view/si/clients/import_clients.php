@@ -54,7 +54,6 @@ if ($action == 'subir') {
                 $fileName = $_REQUEST["name"];
         } elseif (!empty($_FILES)) {
                 $fileName = $_FILES["file"]["name"];
-                $fileSize = $_FILES["file"]["size"];                
         } else {
                 $fileName = uniqid("file_");
         }
