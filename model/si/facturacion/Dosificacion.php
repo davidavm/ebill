@@ -103,8 +103,6 @@
                            select 
                                 `pk_id_dosificacion` ,
                                 `fk_id_sucursal` ,
-                                (select sucursal from sucursal  where pk_id_sucursal=fk_id_sucursal ) sucursal,
-                                 (select direccion from empresa  where pk_id_empresa=fk_id_empresa ) direccion,
                                 `fk_id_actividad_economica` ,
                                 `numero_correlativo` ,
                                 `fecha_limite_emision` ,
