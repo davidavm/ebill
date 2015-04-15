@@ -337,11 +337,11 @@ used as it is.
 						}
 
 						if (err.code == plupload.FILE_SIZE_ERROR) {
-							alert(_("Error: File too large:") + " " + file.name);
+							alert(_("Error: El archivo es demasiado grande:") + " " + file.name);
 						}
 
 						if (err.code == plupload.FILE_EXTENSION_ERROR) {
-							alert(_("Error: Invalid file extension:") + " " + file.name);
+							alert(_("Error: Extensión de archivo no válido:") + " " + file.name);
 						}
 						
 						file.hint = message;
