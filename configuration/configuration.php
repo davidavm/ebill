@@ -41,6 +41,11 @@ $default_page = "default";
 * To configure the  page view.
 */
 $page_view = "view";
+/**
+* To configure the  page view.
+*/
+$page_view_ajax = "view_ajax";
+
 
 /**
 * To configure the  page view login.
