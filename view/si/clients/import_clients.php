@@ -86,20 +86,6 @@ if ($action == 'subir') {
                                 @unlink($tmpfilePath);
                         }
                     
-                        /*
-                         *      pi_nombre VARCHAR(255) ,
-                                pi_extension VARCHAR(32),
-                                pi_bytes DECIMAL(15,5) ,
-                                pi_mime VARCHAR(255) ,
-                                pi_ruta VARCHAR(255) ,
-                                pi_ruta2 VARCHAR(255) ,
-                                pi_fk_id_tipo_archivo INT(11) ,
-                                pi_usuario_transaccion INT(11),
-                                pi_transaccion_creacion INT(11) ,
-                                pi_transaccion_modificacion INT(11) ,
-                                pi_fk_id_empresa INT(11)
-                         */
-                    
                     // registro de los archivos en la base
                     if($file!='.')
                         if($file!='..'){
