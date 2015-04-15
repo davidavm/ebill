@@ -32,7 +32,6 @@ if ($action == 'insert') {
             $idTransaccion = $transaction->insert(array(Sucursal::INSERT, $_SESSION["authenticated_id_user"]
                     , ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])  ));            
             $data = array($_POST["sucursal"], 
-                          $_POST["razon_social"], 
                           $_POST["numero"], 
                           $_POST["direccion"], 
                           $_POST["telefono1"], 
@@ -95,7 +94,6 @@ if ($action == 'edit') {
             $idTransaccion = $transaction->insert(array(Grupo::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"], 
                           $_POST["sucursal"], 
-                          $_POST["razon_social"], 
                           $_POST["numero"], 
                           $_POST["direccion"], 
                           $_POST["telefono1"], 
@@ -324,15 +322,7 @@ if ($action == 'list') {
                                     <input id="sucursal" name="sucursal" maxlength="255" class="form-control" type="text"<?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["sucursal"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
-                            <div class="form-group col-lg-4">
-                                <label for="razon_social">Razon Social:</label> 
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="fa fa-pencil-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
-                                    </span>                            
-                                    <input id="razon_social" name="razon_social" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["razon_social"] . "\" " : NULL); ?>/>
-                                </div>
-                            </div>    
+                             
                             <div class="form-group col-lg-4">
                                 <label for="numero">Numero:</label>
                                 <div class="input-group">

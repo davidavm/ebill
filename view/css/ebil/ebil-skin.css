@@ -514,6 +514,10 @@
   
 }
 
+.panel textarea, .panel select{
+  border: 1px solid #40bbea;
+  
+}
 
 .panel label{
 font-weight: 400;

@@ -74,12 +74,13 @@
                             <span class="title">Dosificaci&oacute;n</span>
                         </a>
                     </li>
-
+                    <!--
                     <li>
                        <a href="#">
                             <span class="title">Campos de Factura</span>
                         </a>
                     </li>
+                    -->
                     <li>
                        <a href="#">
                             <span class="title">Certificacion del Sistema</span>
@@ -110,23 +111,25 @@
                     <span class="title">Configuraci&oacute;n de Cliente</span>
                 </a>
                 <ul>                  
+                    <!--
                     <li>
                         <a href="#">
                             <span class="title">Campos de Cliente</span>
                         </a>
                     </li>
+                    -->
                     <li>
-                        <a href="#">
+                        <a href="index.php?page=/si/clients/category&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                             <span class="title">Categoria de Cliente</span>
                         </a>
                     </li>                      
                     <li>
-                        <a href="#">
+                        <a href="index.php?page=/si/clients/entry&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                             <span class="title">Rubro</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="index.php?page=/si/clients/seller&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                             <span class="title">Vendedor</span>
                         </a>
                     </li>                     
@@ -139,7 +142,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="index.php?page=/si/clients/import_clients&cf_jscss[0]=plupload&ci_jq[0]=plupload&ci_js[0]=messages">
                     <i class="linecons-database"></i>
                     <span class="title">Importar datos  de Clientes</span>
                 </a>
@@ -158,14 +161,16 @@
                     <i class="linecons-cog"></i>
                     <span class="title">Configuraci&oacute;n de Almacenes</span>
                 </a>
-                <ul>                  
+                <ul>
+                    <!--
                     <li>
                         <a href="#">
                             <span class="title">Campos de Item</span>
                         </a>
                     </li>
+                    -->
                     <li>
-                        <a href="#">
+                        <a href="index.php?page=/si/warehouse/measurement&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                             <span class="title">Unidad de Medida</span>
                         </a>
                     </li>
@@ -237,6 +242,7 @@
             <span class="title">Proveedores</span>
         </a>
         <ul>
+            <!--
             <li>
                 <a href="#">
                     <i class="linecons-cog"></i>
@@ -250,7 +256,7 @@
                     </li>              
                 </ul>
             </li>              
-
+            -->
             <li>
                 <a href="#">
                     <i class="linecons-tag"></i>

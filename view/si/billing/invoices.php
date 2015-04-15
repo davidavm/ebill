@@ -37,7 +37,7 @@ if ($action == 'insert') {
                             $_POST["llave_dosificacion"],
                             $_POST["fecha_limite_emision"],
                             $_POST["fecha_factura"],
-                            $_POST["nit"],
+                            $_POST["nit_cliente"],
                             $_POST["categoria"],
                             $_POST["razon_social"],
                             $_POST["descuento"], 
@@ -247,7 +247,7 @@ if ($action == 'list') {
                                 <tr>
                                     <td><?php echo $register['numero_factura']; ?></td>
                                     <td><?php echo $register['fecha_factura']; ?></td>
-                                    <td><?php echo $register['nit']; ?></td>
+                                    <td><?php echo $register['nit_cliente']; ?></td>
                                     <td><?php echo $register['razon_social']; ?></td>
                                      <td><?php echo $register['total']; ?></td>
                                       <td><?php echo $register['descuento']; ?></td>
@@ -402,6 +402,34 @@ if ($action == 'list') {
                                     <input id="descuento" name="descuento" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["descuento"] . "\" " : NULL); ?>/>
                                 </div>
                             </div> 
+                            <div class="form-group col-lg-6">
+                                <label for="fk_id_formato_dato_descuento">Formato:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                    </span>
+                                    <select id="fk_id_formato_dato_descuento" name="fk_id_formato_dato_descuento" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="-1" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_formato_dato_descuento"] == NULL) ) { 
+                                            echo ' selected="selected" ';
+                                        }
+                                        ?> ></option>
+                                        <?php
+                                        $catalogo = new Catalogo($registry[$dbSystem]);
+                                        $listCatalogo = $catalogo->getCatalogo('formato_dato') ;
+                                        foreach ($listCatalogo as $item) {
+                                        ?>
+                                        <option value="<?php echo $item["pk_id_catalogo"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_formato_dato_descuento"] == $item["pk_id_catalogo"])  ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $item["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>                            
+                            </div> 
                               <div class="form-group col-lg-6">
                                 <label for="recargo">Recargos</label>
                                 <div class="input-group">
@@ -412,6 +440,34 @@ if ($action == 'list') {
                                 </div>
                             </div> 
                             <div class="form-group col-lg-6">
+                                <label for="fk_id_formato_dato_recargo">Formato:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                    </span>
+                                    <select id="fk_id_formato_dato_recargo" name="fk_id_formato_dato_recargo" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="-1" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_formato_dato_recargo"] == NULL) ) { 
+                                            echo ' selected="selected" ';
+                                        }
+                                        ?> ></option>
+                                        <?php
+                                        $catalogo = new Catalogo($registry[$dbSystem]);
+                                        $listCatalogo = $catalogo->getCatalogo('formato_dato') ;
+                                        foreach ($listCatalogo as $item) {
+                                        ?>
+                                        <option value="<?php echo $item["pk_id_catalogo"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_formato_dato_recargo"] == $item["pk_id_catalogo"])  ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $item["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>                            
+                            </div> 
+                            <div class="form-group col-lg-6">
                                 <label for="ice">Ice</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -420,15 +476,80 @@ if ($action == 'list') {
                                     <input id="ice" name="ice" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["ice"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
-                              <div class="form-group col-lg-6">
-                                <label for="fk_id_opcion_tipo_venta">Tipo Venta:</label>                                    
+                             <div class="form-group col-lg-6">
+                                <label for="fk_id_formato_dato_recargo">Formato:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
                                     </span>
-                                    <select id="fk_id_opcion_tipo_venta" name="fk_id_opcion_tipo_venta" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                    <select id="fk_id_formato_dato_recargo" name="fk_id_formato_dato_recargo" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
                                         <option value="-1" <?php 
-                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_opcion_tipo_venta"] == NULL) ) { 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_formato_dato_recargo"] == NULL) ) { 
+                                            echo ' selected="selected" ';
+                                        }
+                                        ?> ></option>
+                                        <?php
+                                        $catalogo = new Catalogo($registry[$dbSystem]);
+                                        $listCatalogo = $catalogo->getCatalogo('formato_dato') ;
+                                        foreach ($listCatalogo as $item) {
+                                        ?>
+                                        <option value="<?php echo $item["pk_id_catalogo"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_formato_dato_recargo"] == $item["pk_id_catalogo"])  ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $item["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>                            
+                            </div> 
+                            <div class="form-group col-lg-6">
+                                <label for="excentos">Excentos</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
+                                    </span>                            
+                                    <input id="excentos" name="excentos" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["excentos"] . "\" " : NULL); ?>/>
+                                </div>
+                            </div>
+                             <div class="form-group col-lg-6">
+                                <label for="fk_id_formato_dato_excentos">Formato:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                    </span>
+                                    <select id="fk_id_formato_dato_excentos" name="fk_id_formato_dato_excentos" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="-1" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_formato_dato_excentos"] == NULL) ) { 
+                                            echo ' selected="selected" ';
+                                        }
+                                        ?> ></option>
+                                        <?php
+                                        $catalogo = new Catalogo($registry[$dbSystem]);
+                                        $listCatalogo = $catalogo->getCatalogo('formato_dato') ;
+                                        foreach ($listCatalogo as $item) {
+                                        ?>
+                                        <option value="<?php echo $item["pk_id_catalogo"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_formato_dato_excentos"] == $item["pk_id_catalogo"])  ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $item["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>                            
+                            </div> 
+                              <div class="form-group col-lg-6">
+                                <label for="fk_id_formato_dato_ice">Tipo Venta:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                    </span>
+                                    <select id="fk_id_formato_dato_ice" name="fk_id_formato_dato_ice" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="-1" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_formato_dato_ice"] == NULL) ) { 
                                             echo ' selected="selected" ';
                                         }
                                         ?> ></option>
@@ -438,7 +559,35 @@ if ($action == 'list') {
                                         foreach ($listCatalogo as $item) {
                                         ?>
                                         <option value="<?php echo $item["pk_id_catalogo"]; ?>" <?php 
-                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_opcion_tipo_venta"] == $item["pk_id_catalogo"])  ) {
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_formato_dato_ice"] == $item["pk_id_catalogo"])  ) {
+                                                echo ' selected="selected" ';
+                                            }
+                                        ?> ><?php echo $item["descripcion"]; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>                                     
+                                </div>                            
+                            </div> 
+                            <div class="form-group col-lg-6">
+                                <label for="fk_id_tipo_movimiento">Tipo Movimiento:</label>                                    
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        
+                                    </span>
+                                    <select id="fk_id_tipo_movimiento" name="fk_id_tipo_movimiento" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                        <option value="-1" <?php 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_tipo_movimiento"] == NULL) ) { 
+                                            echo ' selected="selected" ';
+                                        }
+                                        ?> ></option>
+                                        <?php
+                                        $catalogo = new Catalogo($registry[$dbSystem]);
+                                        $listCatalogo = $catalogo->getCatalogo('motivo_movimiento') ;
+                                        foreach ($listCatalogo as $item) {
+                                        ?>
+                                        <option value="<?php echo $item["pk_id_catalogo"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_tipo_movimiento"] == $item["pk_id_catalogo"])  ) {
                                                 echo ' selected="selected" ';
                                             }
                                         ?> ><?php echo $item["descripcion"]; ?></option>
@@ -449,17 +598,22 @@ if ($action == 'list') {
                                 </div>                            
                             </div> 
                            
-                            <div class="form-group col-lg-6">
-                                <label for="excentos">Exentos</label>
+                         <div class="form-group col-lg-6">
+                                <label for="cantidad_dias">Cantidad Dias</label>
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Campo obligatorio."></span>
                                     </span>                            
-                                    <input id="excentos" name="excentos" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["excentos"] . "\" " : NULL); ?>/>
+                                    <input id="cantidad_dias" name="cantidad_dias" maxlength="255" class="form-control" type="text" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["cantidad_dias"] . "\" " : NULL); ?>/>
                                 </div>
                             </div>
                              </br>
                         </div>  
+                         <div class="row" id="invoice_detail"> 
+                             <?php
+                                                                     include_once 'invoice_detail.php';
+                             ?>
+                         </div>
                         <div class="row">     
                             
                         <div class="col-md-12">
