@@ -89,13 +89,13 @@ if ($action == 'edit') {
         if ($object->isExist(array($_POST["actividad_economica"]))) {
             $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar una Actividad Economica que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Grupo::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1? NULL :$_SESSION["authenticated_id_empresa"])));
+            $idTransaccion = $transaction->insert(array(Grupo::UPDATE, $_SESSION["authenticated_id_user"], $_SESSION["authenticated_id_empresa"]));
             $data = array($_GET["idObject"], 
                          $_POST["actividad_economica"], 
                           $_POST["fk_id_clasificacion_tipo_actividad"],
                            $_SESSION["authenticated_id_user"], 
                            $idTransaccion,
-                         ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"])
+                           $_POST["fk_id_empresa"]
                             ); 
             
             
@@ -148,7 +148,7 @@ if ($action == 'list') {
             <div class="panel panel-success">
                 <div class="row">
                     <div class="col-md-3">
-                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/checkEconomicActivities&action=edit_form&action=insert_form" style="margin-top:1px;">
+                        <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/branchs&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
                                 <i class="linecons-shop"></i>
                                 <span>Agregar Actividad Economica</span>
@@ -219,7 +219,7 @@ if ($action == 'list') {
                               
                                     <td style="width: 80px; text-align: center">
                                         <a href="index.php?page=<?php echo $route; ?>&action=view_form&idObject=<?php echo $register['pk_id_actividad_economica']; ?>" title="<?php echo $labelOptionList["view"]; ?>" class="view_icon"><span class="glyphicon glyphicon-search"></span></a>
-                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/checkEconomicActivities&action=edit_form&idObject=<?php echo $register['pk_id_actividad_economica']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        <a href="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/billing/economic_activities&action=edit_form&idObject=<?php echo $register['pk_id_actividad_economica']; ?>" title="<?php echo $labelOptionList["edit"]; ?>" class="edit_icon"><span class="glyphicon glyphicon-pencil"></span></a>
                                         <a href="index.php?page=<?php echo $routeFull; ?>&action=delete&idObject=<?php echo $register['pk_id_actividad_economica']; ?>" title="<?php echo $labelOptionList["delete"]; ?>" onclick="return confirmationDelete();" class="delete_icon"><span class="glyphicon glyphicon-trash"></span></a>
                                     </td>                        
                                 </tr>
@@ -312,7 +312,7 @@ if ($action == 'list') {
                             </div>
                             
                           <div class="form-group col-lg-8">
-                                 <label for="fk_id_clasificacion_tipo_actividad">Clasificacion Actividad Economica:</label>                                    
+                                 <label for="fk_id_departamento">Clasificacion Actividad Economica:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Seleccione un valor de la lista."></span>                                        

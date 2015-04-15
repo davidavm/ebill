@@ -28,7 +28,6 @@ if ($action == 'insert') {
         } else {
             $idTransaccion = $transaction->insert(array(Categoria::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
             $data = array($_POST["categoria"], $_POST["descripcion"], $_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]));
-            
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
             }
@@ -180,7 +179,7 @@ if ($action == 'list') {
                         </tfoot>
                         <tbody>
                             <?php
-                            $result = $object->getList();
+                            $result = $object->getList(Categoria::ALL,($_SESSION["authenticated_id_empresa"]==-1?Categoria::ALL:$_SESSION["authenticated_id_empresa"]));
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>

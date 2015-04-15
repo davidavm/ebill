@@ -127,7 +127,7 @@ if ($action == 'list') {
                     <a href="#">Almacen</a>
                 </li>
                 <li class="active">
-                    <strong>Manejo de grupos</strong>
+                    <strong>Grupos</strong>
                 </li>
             </ol>
         </div>
@@ -206,7 +206,7 @@ if ($action == 'list') {
                         </tfoot>
                         <tbody>
                             <?php
-                            $result = $object->getList(Usuario::ALL, ($_SESSION["authenticated_id_empresa"]==-1?Grupo::ALL:$_SESSION["authenticated_id_empresa"]),Grupo::ALL );
+                            $result = $object->getList(Grupo::ALL, ($_SESSION["authenticated_id_empresa"]==-1?Grupo::ALL:$_SESSION["authenticated_id_empresa"]),Grupo::ALL );
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>
@@ -258,7 +258,7 @@ if ($action == 'list') {
         <div class="breadcrumb-env">
             <ol class="breadcrumb bc-1">
                 <li>
-                    <a href="dashboard-1.html"><i class="fa-home"></i>Inicio</a>
+                    <a href="index.php"><i class="fa-home"></i>Inicio</a>
                 </li>
                 <li>
                     <a href="forms-native.html">Almacen</a>
@@ -312,7 +312,7 @@ if ($action == 'list') {
                                         ?> ></option>
                                         <?php
                                         $grupo_padre = new Grupo($registry[$dbSystem]);
-                                        $result_grupo_padre = $grupo_padre->getList(Usuario::ALL, ($_SESSION["authenticated_id_empresa"]==-1?Grupo::ALL:$_SESSION["authenticated_id_empresa"]), (($action == 'edit_form')?$_GET["idObject"]:Grupo::ALL ));
+                                        $result_grupo_padre = $grupo_padre->getList(Grupo::ALL, ($_SESSION["authenticated_id_empresa"]==-1?Grupo::ALL:$_SESSION["authenticated_id_empresa"]), (($action == 'edit_form')?$_GET["idObject"]:Grupo::ALL ));
                                         foreach ($result_grupo_padre as $indice => $register_grupo_padre) {
                                         ?>
                                         <option value="<?php echo $register_grupo_padre["pk_id_grupo"]; ?>" <?php 

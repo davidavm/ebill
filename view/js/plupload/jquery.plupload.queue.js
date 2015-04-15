@@ -198,7 +198,7 @@ used as it is.
 					$('span.plupload_total_status', target).html(uploader.total.percent + '%');
 					$('div.plupload_progress_bar', target).css('width', uploader.total.percent + '%');
 					$('span.plupload_upload_status', target).html(
-						o.sprintf(_('Uploaded %d/%d files'), uploader.total.uploaded, uploader.files.length)
+						o.sprintf(_('%d/%d Archivos Cargados'), uploader.total.uploaded, uploader.files.length)
 					);
 				}
 
@@ -259,7 +259,7 @@ used as it is.
 
 					// Re-add drag message if there is no files
 					if (!uploader.files.length && uploader.features.dragdrop && uploader.settings.dragdrop) {
-						$('#' + id + '_filelist').append('<li class="plupload_droptext">' + _("Arratre los Archivos aqui.") + '</li>');
+						$('#' + id + '_filelist').append('<li class="plupload_droptext">' + _("Arrastre los Archivos Aqui.") + '</li>');
 					}
 				}
 
@@ -337,11 +337,11 @@ used as it is.
 						}
 
 						if (err.code == plupload.FILE_SIZE_ERROR) {
-							alert(_("Error: File too large:") + " " + file.name);
+							alert(_("Error: El archivo es demasiado grande:") + " " + file.name);
 						}
 
 						if (err.code == plupload.FILE_EXTENSION_ERROR) {
-							alert(_("Error: Invalid file extension:") + " " + file.name);
+							alert(_("Error: Extensión de archivo no válido:") + " " + file.name);
 						}
 						
 						file.hint = message;
@@ -358,7 +358,7 @@ used as it is.
 				uploader.bind("PostInit", function(up) {
 					// features are populated only after input components are fully instantiated
 					if (up.settings.dragdrop && up.features.dragdrop) {
-						$('#' + id + '_filelist').append('<li class="plupload_droptext">' + _("Arratre los Archivos Aqui.") + '</li>');
+						$('#' + id + '_filelist').append('<li class="plupload_droptext">' + _("Arrastre Aqui los Archivos.") + '</li>');
 					}
 				});
 
