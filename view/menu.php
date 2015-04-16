@@ -258,7 +258,7 @@
             </li>              
             -->
             <li>
-                <a href="#">
+                <a href="index.php?page=/si/providers/provider&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages">
                     <i class="linecons-tag"></i>
                     <span class="title">Manejar Proveedores</span>
                 </a>

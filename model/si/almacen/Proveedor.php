@@ -95,44 +95,54 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idProveedor = self::ALL){
+        public function getList($idProveedor = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
                 $query = " 	
-                    select  `pk_id_proveedor` ,
-                            `codigo` ,
-                            `nit` ,
-                            `razon_social` ,
-                            `direccion` ,
-                            `telefono1` ,
-                            `telefono2` ,
-                            `telefono3` ,
-                            `contacto` ,
-                            `fk_id_rubro` ,
-                            `fk_id_departamento` ,
-                            `fk_id_municipio` ,
-                            `fecha1` ,
-                            `fecha2` ,
-                            `texto1` ,
-                            `texto2` ,
-                             date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
-                            `usuario_transaccion` ,
-                            `estado_registro` ,
-                            `transaccion_creacion` ,
-                            `transaccion_modificacion`,
-                            `fk_id_empresa`    
+                    select  pk_id_proveedor ,
+                            codigo ,
+                            nit ,
+                            razon_social ,
+                            direccion ,
+                            telefono1 ,
+                            telefono2 ,
+                            telefono3 ,
+                            contacto ,
+                            fk_id_rubro ,
+                            fk_id_departamento ,
+                            fk_id_municipio ,
+                            fecha1 ,
+                            fecha2 ,
+                            texto1 ,
+                            texto2 ,
+                             date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
+                            usuario_transaccion ,
+                            estado_registro ,
+                            transaccion_creacion ,
+                            transaccion_modificacion,
+                            fk_id_empresa    
                          from proveedor a
-                        where `estado_registro`='A'
+                        where estado_registro='A'
                                 ";
-
+                
                 if( $idProveedor != self::ALL){
-                $query = $query." and a.pk_id_proveedor = ?";
-                $result = DataBase::getArrayListQuery($query, array($idProveedor), $this->instanceDataBase);
-                }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
-                }
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_proveedor = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idProveedor, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_proveedor = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idProveedor), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
+                } 
+                
                 return $result;
             }
             catch(PDOException $e){
@@ -160,7 +170,7 @@
                 $query = "select count(1) existe
                           from proveedor
                           where estado_registro = 'A' 
-                          and ( codigo = ?  )";
+                          and nit = ?  and razon_social = ? ";
 
                 $resultAux = DataBase::getArrayListQuery($query, $dato, $this->instanceDataBase);
                 $aux = $resultAux[0];
@@ -191,7 +201,7 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call proveedor_alta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call proveedor_alta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -211,8 +221,6 @@
                 $sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(18, $datos[17], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(19, $datos[18], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(20, $datos[19], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000); 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
                
@@ -284,7 +292,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call proveedor_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
+                $sentencia = $gbd->prepare("call proveedor_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -304,8 +312,6 @@
                 $sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(18, $datos[17], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(19, $datos[18], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(20, $datos[19], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(21, $datos[20], PDO::PARAM_STR, 4000); 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
                
