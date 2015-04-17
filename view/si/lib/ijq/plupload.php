@@ -2,7 +2,7 @@
 	$("#uploader").pluploadQueue({
 		// General settings
 		runtimes : 'html5,flash,silverlight,html4',
-		url : '../upload.php',
+		url : 'index.php?page=<?php echo isset($_GET["page"]) ? $_GET["page"] : "".'&cf_jscss[0]=plupload&ci_jq[0]=plupload&ci_js[0]=messages'; ?>&action=subir',
 		chunk_size: '1mb',
 		rename : true,
 		dragdrop: true,
@@ -12,10 +12,8 @@
 			max_file_size : '10mb',
 			// Specify what files to browse for
 			mime_types: [
-				{title : "Image files", extensions : "jpg,gif,png"},
-				{title : "Zip files", extensions : "zip"},
-                                {title : "Text plain", extensions : "asc,txt"}                                			
-			]
+                                     {title : "Text plain", extensions : "txt"}
+                                    ]
 		},
 
 		// Resize images on clientside if we can
