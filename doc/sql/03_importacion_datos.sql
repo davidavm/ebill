@@ -87,19 +87,19 @@ DELIMITER ;
 -- Volcando estructura para procedimiento 
 DROP PROCEDURE IF EXISTS importacion_datos_modif;
 DELIMITER //
-CREATE  PROCEDURE importacion_datos_modif(pk_id_importacion               INT             ,
-                                        registros_leidos                INT,
-                                        registros_ingresados            INT,
-                                        registros_error                 INT,
-                                        mensaje_carga                   VARCHAR(255),
-                                        fk_id_tipo_importacion_datos    INT,
-                                        fk_id_archivo                   INT,
-                                        fecha_transaccion               DATETIME         ,
-                                        usuario_transaccion             INT,
-                                        estado_registro                 VARCHAR(32),
-                                        transaccion_creacion            INT,
-                                        transaccion_modificacion        INT,
-                                        fk_id_empresa                   INT,
+CREATE  PROCEDURE importacion_datos_modif(pi_pk_id_importacion               INT             ,
+                                        pi_registros_leidos                INT,
+                                        pi_registros_ingresados            INT,
+                                        pi_registros_error                 INT,
+                                        pi_mensaje_carga                   VARCHAR(255),
+                                        pi_fk_id_tipo_importacion_datos    INT,
+                                        pi_fk_id_archivo                   INT,
+                                        
+                                        pi_usuario_transaccion             INT,
+                                        
+                                        pi_transaccion_creacion            INT,
+                                        pi_transaccion_modificacion        INT,
+                                        pi_fk_id_empresa                   INT,
                                     OUT po_resultado INT)
 BEGIN
 	DECLARE v_id INT;
