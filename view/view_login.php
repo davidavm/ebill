@@ -15,7 +15,7 @@ $errorWebPageProperty = $property["general"]["error"];
 	<meta name="author" content="<?php echo $headWebPageProperty["author"]; ?>" />
         
         <title><?php echo $headWebPageProperty["titleSystemWebPage"]; ?> - Ingreso al Sistema</title>
-        
+        <link href="<?php echo IMG_RELATIVE_PATH . "ebil/logo_ebil.ico" ?>" rel="shortcut icon" type="image/ico">
         <link href="<?php echo CSS_RELATIVE_PATH . "fonts/linecons/css/linecons.css"; ?>" rel="stylesheet" type="text/css" media="all" />
         <link href="<?php echo CSS_RELATIVE_PATH . "fonts/fontawesome/css/font-awesome.min.css"; ?>" rel="stylesheet" type="text/css" media="all" />
         <link href="<?php echo CSS_RELATIVE_PATH . "bootstrap/bootstrap.css"; ?>" rel="stylesheet" type="text/css" media="all" />

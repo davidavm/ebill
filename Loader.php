@@ -209,7 +209,17 @@ class Loader {
 	 */
 	public static function modelApplicationSecurity($class) {
 		return Loader::autoload(PATH_MODEL_APPLICATION_SECURITY, $class);
-	}        
+	}
+
+        /**
+	 * Cargador del paquete de libreria punkupattern
+	 *
+	 * @param String $class nombre de la clase a cargar
+	 * @return Boolean true si puedo cargar la clase. False de lo contrario.
+	 */
+	public static function modelApplicationImport($class) {
+		return Loader::autoload(PATH_MODEL_APPLICATION_IMPORT, $class);
+	}          
 }
 
 ?>
