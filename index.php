@@ -120,6 +120,7 @@ spl_autoload_register(array('Loader', 'modelApplicationBilling'));
 spl_autoload_register(array('Loader', 'modelApplicationReport'));
 spl_autoload_register(array('Loader', 'modelApplicationRRHH'));
 spl_autoload_register(array('Loader', 'modelApplicationSecurity'));
+spl_autoload_register(array('Loader', 'modelApplicationImport'));
 
 /**
  * Create registry object for the application.
