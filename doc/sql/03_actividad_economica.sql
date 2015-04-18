@@ -17,7 +17,7 @@ SET FOREIGN_KEY_CHECKS=0;
 #
 
 DROP PROCEDURE IF EXISTS `actividad_economica_alta`;
-
+DELIMITER //
 CREATE   PROCEDURE `actividad_economica_alta`(
         IN `pi_actividad_economica` VARCHAR(256),
         IN `pi_fk_id_clasificacion_tipo_actividad` INTEGER(11),
@@ -82,14 +82,15 @@ BEGIN
 	  
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
-END;
+END//
+DELIMITER ;
 
 #
 # Definition for the `actividad_economica_baja` procedure : 
 #
 
 DROP PROCEDURE IF EXISTS `actividad_economica_baja`;
-
+DELIMITER //
 CREATE   PROCEDURE `actividad_economica_baja`(
         `pi_pk_id_actividad_economica` INT(11),
         `pi_usuario_transaccion` INT(11) ,
@@ -200,7 +201,8 @@ BEGIN
 
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
-END;
+END//
+DELIMITER ;
 
 
 

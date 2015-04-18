@@ -17,7 +17,7 @@ SET FOREIGN_KEY_CHECKS=0;
 #
 
 DROP PROCEDURE IF EXISTS `dosificacion_alta`;
-
+DELIMITER //
 CREATE   PROCEDURE `dosificacion_alta`(
         `pi_fk_id_sucursal` INT(11) ,
         `pi_fk_id_actividad_economica` INT(11) ,
@@ -94,14 +94,15 @@ BEGIN
 	  
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
-END;
+END//
+DELIMITER ;
 
 #
 # Definition for the `dosificacion_baja` procedure : 
 #
 
 DROP PROCEDURE IF EXISTS `dosificacion_baja`;
-
+DELIMITER //
 CREATE   PROCEDURE `dosificacion_baja`(
         `pi_pk_id_dosificacion` INT(11),
         `pi_usuario_transaccion` INT(11) ,
@@ -149,14 +150,15 @@ BEGIN
 
 	  CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
-END;
+END//
+DELIMITER ;
 
 #
 # Definition for the `dosificacion_modif` procedure : 
 #
 
 DROP PROCEDURE IF EXISTS `dosificacion_modif`;
-
+DELIMITER //
 CREATE   PROCEDURE `dosificacion_modif`(
         `pi_pk_id_dosificacion` INT(11) ,
         `pi_fk_id_sucursal` INT(11) ,
@@ -219,7 +221,8 @@ BEGIN
 
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
-END;
+END//
+DELIMITER ;
 
 
 

@@ -17,7 +17,7 @@ SET FOREIGN_KEY_CHECKS=0;
 #
 
 DROP PROCEDURE IF EXISTS `factura_alta`;
-
+DELIMITER //
 CREATE   PROCEDURE `factura_alta`(
         IN pi_fk_id_sucursal INTEGER(11),
         IN pi_numero_factura INTEGER(11),
@@ -156,14 +156,15 @@ pi_sujeto_descuento_fiscal,
 	  
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);	    
 
-END;
+END//
+DELIMITER ;
 
 #
 # Definition for the `factura_baja` procedure : 
 #
 
 DROP PROCEDURE IF EXISTS `factura_baja`;
-
+DELIMITER //
 CREATE   PROCEDURE `factura_baja`(
         `pi_pk_id_factura` INT(11),
         `pi_usuario_transaccion` INT(11) ,
@@ -211,14 +212,15 @@ BEGIN
 
 	  CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
-END;
+END//
+DELIMITER ;
 
 #
 # Definition for the `factura_modif` procedure : 
 #
 
 DROP PROCEDURE IF EXISTS `factura_modif`;
-
+DELIMITER //
 CREATE   PROCEDURE `factura_modif`(
         pi_pk_id_factura int(11),
         pi_fk_id_sucursal int(11),
@@ -323,7 +325,8 @@ BEGIN
 
       CALL audit_update(v_res, current_timestamp(), 'OK: PROCESO TERMINO CORRECTAMENTE', v_cant_reg, 'S', @resultado);
 	
-END;
+END//
+DELIMITER ;
 
 
 
