@@ -80,7 +80,7 @@ if ($action == 'edit') {
             $idArchivo = $idArchivoOld;
             if( isset($_FILES["fk_id_archivo_foto"]) && $_FILES["fk_id_archivo_foto"]["error"] != UPLOAD_ERR_NO_FILE ){
             $uploadArchivo = new Archivo($registry[$dbSystem]);
-            $idArchivo = $uploadArchivo->uploadImage($_FILES,UPLOAD_PATH."identification". DIR_SEP,'fk_id_archivo_foto',$idTransaccion,$_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]),700000);            
+            $idArchivo = $uploadArchivo->uploadImage($_FILES,UPLOAD_PATH."identification". DIR_SEP,'fk_id_archivo_foto',$idTransaccion,$_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]),2000000);            
             }      
             // Ingreso de datos            
             $data = array($_GET["idObject"], $_POST["nombres"], $_POST["apellido_paterno"], $_POST["apellido_materno"], $_POST["fk_tipo_documento_identidad"], $_POST["numero_identidad"], $_POST["fk_departamento_expedicion_doc"],$_POST["direccion"], $_POST["telefono1"],$_POST["telefono2"],$_POST["telefono3"], $idArchivo , $_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1?$_POST["fk_id_empresa"]:$_SESSION["authenticated_id_empresa"]), $idArchivoOld);
@@ -435,7 +435,7 @@ if ($action == 'list') {
                                     <span class="input-group-addon">
                                         <span  class="fa-picture-o" data-toggle="tooltip" data-placement="top" title="Campo opcional"></span>
                                     </span>
-                                    <input type="hidden" name="MAX_FILE_SIZE" value="700000" />                                                                        
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />                                                                        
                                     <input id="fk_id_archivo_foto" name="fk_id_archivo_foto" class="form-control" type="file" accept="image/*" style="padding: 0px;" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> <?php echo($action == 'edit_form' || $action == 'view_form' ? " value=\"" . $objectEdit["telefono3"] . "\" " : NULL); ?>/>                                    
                                 </div>  
                             </div>
