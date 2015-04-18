@@ -4,7 +4,7 @@ $route = isset($_GET["page"]) ? $_GET["page"] : "";
 $_SESSION["active_option_menu"] = $route;
 $routeFull = $route . "&cf_jscss[0]=datatable&ci_jq[0]=datatable_index&ci_js[0]=messages";
 // Prepare Object 
-$object = new Cliente($registry[$dbSystem]);
+$object = new Item($registry[$dbSystem]);
 
 // Prepare Transacction
 $transaction = new Transaccion($registry[$dbSystem]);
@@ -24,9 +24,9 @@ $messageOkTransaction = "";
 if ($action == 'insert') {
     try {
         if ($object->isExist(array($_POST["nit"], $_POST["razon_social"]))) {
-            $messageErrorTransaction = "No se puede ingresar un Cliente que ya existe. Revise los datos de Nit y Razon Social.";
+            $messageErrorTransaction = "No se puede ingresar un Item que ya existe. Revise los datos de Nit y Razon Social.";
         } else {
-            $idTransaccion = $transaction->insert(array(Cliente::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
+            $idTransaccion = $transaction->insert(array(Item::INSERT, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));            
             $data = array($_POST["codigo"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"], $_POST["telefono2"], $_POST["telefono3"], $_POST["contacto"], $_POST["fk_id_rubro"], $_POST["fk_id_categoria"],$_POST["fk_id_departamento"],$_POST["fk_id_municipio"],$_POST["fk_id_vendedor"],$_POST["fecha1"],$_POST["fecha2"],$_POST["texto1"],$_POST["texto2"],$_SESSION["authenticated_id_user"], $idTransaccion, $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]));
             if( $object->insert($data) == -1 ){
                 throw new Exception("Error en el INSERT hacia la Base de datos.");
@@ -42,7 +42,7 @@ if ($action == 'insert') {
 // If action is delete
 if ($action == 'delete') {
     try {
-        $idTransaccion = $transaction->insert(array(Cliente::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+        $idTransaccion = $transaction->insert(array(Item::DELETE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
         $data = array($_GET["idObject"], $_SESSION["authenticated_id_user"], $idTransaccion);        
         if( $object->delete($data) == -1 ){
             throw new Exception("Error en el DELETE hacia la Base de datos.");
@@ -63,9 +63,9 @@ if ($action == 'edit') {
         $result = $object->getList($_GET["idObject"]);
         $objectEdit = $result[0];
         if (($object->isExist(array($_POST["nit"], $_POST["razon_social"]))) && ($objectEdit["nit"] != $_POST["nit"] || $objectEdit["razon_social"] != $_POST["razon_social"])) {
-            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar un Cliente que ya existe.";
+            $messageErrorTransaction = "Edici&oacute;n incorrecta, se quiere ingresar un Item que ya existe.";
         } else {
-            $idTransaccion = $transaction->insert(array(Cliente::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
+            $idTransaccion = $transaction->insert(array(Item::UPDATE, $_SESSION["authenticated_id_user"], ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])));
             $data = array($_GET["idObject"],$_POST["codigo"], $_POST["razon_social"], $_POST["nit"], $_POST["direccion"], $_POST["telefono1"], $_POST["telefono2"], $_POST["telefono3"], $_POST["contacto"], $_POST["fk_id_rubro"], $_POST["fk_id_categoria"],$_POST["fk_id_departamento"],$_POST["fk_id_municipio"],$_POST["fk_id_vendedor"],$_POST["fecha1"],$_POST["fecha2"],$_POST["texto1"],$_POST["texto2"],$_SESSION["authenticated_id_user"], $idTransaccion, ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"]));
             if( $object->update($data) == -1 ){
                 throw new Exception("Error en el UPDATE hacia la Base de datos.");
@@ -91,7 +91,7 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa fa-child"></i> Clientes</h1>
+            <h1 class="title"><i class="fa fa-clipboard"></i> Items</h1>
             <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de vendedores.</p>
         </div>
 
@@ -101,7 +101,7 @@ if ($action == 'list') {
                     <a href="#"><i class="fa-home"></i>Inicio</a>
                 </li>
                 <li>
-                    <a href="#">Clientes</a>
+                    <a href="#">Items</a>
                 </li>
                 <li class="active">
                     <strong>Manejo de vendedores</strong>
@@ -119,7 +119,7 @@ if ($action == 'list') {
                         <form method="post" action="index.php?page=<?php echo $route; ?>&ci_js[0]=aditionalvalidation&cf_jscss[0]=jqvalidation&li_jq[0]=/si/clients/checkclient&cf_jscss[1]=datetimepicker&action=edit_form&action=insert_form" style="margin-top:1px;">
                             <button type="submit" class="btn btn-warning btn-icon btn-icon-standalone">
                                 <i class="linecons-shop"></i>
-                                <span>Agregar Cliente</span>
+                                <span>Agregar Item</span>
                             </button>
                         </form>
                     </div>   
@@ -185,7 +185,7 @@ if ($action == 'list') {
                         </tfoot>
                         <tbody>
                             <?php
-                            $result = $object->getList(Cliente::ALL,($_SESSION["authenticated_id_empresa"]==-1?Cliente::ALL:$_SESSION["authenticated_id_empresa"]));
+                            $result = $object->getList(Item::ALL,($_SESSION["authenticated_id_empresa"]==-1?Item::ALL:$_SESSION["authenticated_id_empresa"]));
                             foreach ($result as $indice => $register) {
                                 ?>
                                 <tr>
@@ -227,13 +227,13 @@ if ($action == 'list') {
     } else {
         $typeOperation = "Ningun";
     }
-    $typeOperation = $typeOperation . " Cliente"
+    $typeOperation = $typeOperation . " Item"
     ?>
     <!-- Action insert, view or edit -->
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa fa-child"></i> Clientes</h1>
-            <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Cliente.</p>
+            <h1 class="title"><i class="fa fa-clipboard"></i> Items</h1>
+            <p class="description">En este formulario usted podr&aacute; realizar <?php echo $describeTypeOperation; ?> de datos para Item.</p>
         </div>
         <div class="breadcrumb-env">
             <ol class="breadcrumb bc-1">
@@ -241,10 +241,10 @@ if ($action == 'list') {
                     <a href="index.php"><i class="fa-home"></i>Inicio</a>
                 </li>
                 <li>
-                    <a href="forms-native.html">Clientes</a>
+                    <a href="forms-native.html">Items</a>
                 </li>
                 <li class="active">
-                    <strong>Manejo de Clientes</strong>
+                    <strong>Manejo de Items</strong>
                 </li>
             </ol>
         </div>
@@ -254,7 +254,7 @@ if ($action == 'list') {
         <div class="col-sm-12">
             <div class="panel panel-success">                
                 <div class="panel-heading">
-                    <h3 class="panel-title">Formulario para datos de Cliente</h3>                                       
+                    <h3 class="panel-title">Formulario para datos de Item</h3>                                       
                 </div>
                 <div class="panel-body">
 
