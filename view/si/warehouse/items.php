@@ -161,11 +161,11 @@ if ($action == 'list') {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>C&oacute;digo</th>
-                                <th>Raz&oacute;n Social</th>
-                                <th>Nit</th>
-                                <th>Direcci&oacute;n</th>
-                                <th>Telefonos</th>
+                                <th>C&oacute;digo Item</th>
+                                <th>C&oacute;digo Fabrica</th>
+                                <th>Item</th>
+                                <th>Unidad</th>
+                                <th>U</th>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
                             </tr>

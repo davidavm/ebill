@@ -101,27 +101,27 @@
             try{
                 $query = " 	
                         select
-                            `pk_id_item` ,
-                             `codigo_item` ,
-                             `codigo_fabrica` ,
-                             `descripcion` ,
-                             `caracteristicas_especiales` ,
-                             `fk_id_unidad_medida` ,
-                             `cantidad` ,
-                             `costo_unitario` ,
-                             `precio_unitario` ,
-                             `fecha_vencimiento` ,
-                             `saldo_minimo` ,
-                             `fk_id_proveedor` ,
-                             `fk_id_archivo_imagen` ,
-                             date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
-                             `usuario_transaccion` ,
-                             `estado_registro` ,
-                             `transaccion_creacion` ,
-                             `transaccion_modificacion` ,
-                             `fk_id_empresa`
+                            pk_id_item ,
+                             codigo_item ,
+                             codigo_fabrica ,
+                             descripcion ,
+                             caracteristicas_especiales ,
+                             fk_id_unidad_medida ,
+                             cantidad ,
+                             costo_unitario ,
+                             precio_unitario ,
+                             fecha_vencimiento ,
+                             saldo_minimo ,
+                             fk_id_proveedor ,
+                             fk_id_archivo_imagen ,
+                             date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
+                             usuario_transaccion ,
+                             estado_registro ,
+                             transaccion_creacion ,
+                             transaccion_modificacion ,
+                             fk_id_empresa
                         from item
-                        where `estado_registro`='A'
+                        where estado_registro='A'
                         ";
 
                 if( $idItem != self::ALL){
