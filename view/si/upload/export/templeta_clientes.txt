@@ -1,0 +1,1 @@
+codigo|razon_social|nit|direccion|telefono1|telefono2|telefono3|contacto|fk_id_rubro|fk_id_categoria|fk_id_departamento|fk_id_municipio|fk_id_vendedor|fecha1|fecha2|texto1|texto2
