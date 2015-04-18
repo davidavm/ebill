@@ -37,8 +37,8 @@ if ($action == 'subir') {
         // usleep(5000);
 
         // Settings  c:\wamp\tmp\plupload
-        $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-        //$targetDir = "view/si/upload/import/clients";
+        //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
+        $targetDir = "view/si/upload/import/clients";
         //$targetDir = 'uploads';
         $cleanupTargetDir = true; // Remove old files
         $maxFileAge = 5 * 3600; // Temp file age in seconds
