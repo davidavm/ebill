@@ -105,11 +105,11 @@
                                         cod_almacen ,
                                         almacen ,
                                         descripcion ,
-                                        fk_id_grupo ,
-                                        (select grupo
-                                        from grupo
-                                        where pk_id_grupo=a.fk_id_grupo
-                                        and estado_registro='A') grupo,
+                                        fk_id_sucursal ,
+                                        (select concat(sucursal,' (',numero,')')
+                                        from sucursal
+                                        where pk_id_sucursal=a.fk_id_sucursal
+                                        and estado_registro='A') sucursal,
                                         fk_id_sistema_valoracion_inventario ,
                                         (select descripcion
                                         from catalogo

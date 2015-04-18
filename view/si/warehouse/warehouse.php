@@ -31,7 +31,7 @@ if ($action == 'insert') {
             $data = array($_POST["cod_almacen"], 
                           $_POST["almacen"], 
                           $_POST["descripcion"], 
-                          (isset($_POST["fk_id_grupo"]) && ($_POST["fk_id_grupo"]==NULL)?-1:$_POST["fk_id_grupo"]),
+                          (isset($_POST["fk_id_sucursal"]) && ($_POST["fk_id_sucursal"]==NULL)?-1:$_POST["fk_id_sucursal"]),
                           (isset($_POST["fk_id_sistema_valoracion_inventario"]) && ($_POST["fk_id_sistema_valoracion_inventario"]==NULL)?-1:$_POST["fk_id_sistema_valoracion_inventario"]),
                           $_SESSION["authenticated_id_user"], 
                           $idTransaccion, 
@@ -86,7 +86,7 @@ if ($action == 'edit') {
                            $_POST["cod_almacen"],
                            $_POST["almacen"], 
                            $_POST["descripcion"], 
-                           (isset($_POST["fk_id_grupo"]) && ($_POST["fk_id_grupo"]==NULL)?-1:$_POST["fk_id_grupo"]),
+                           (isset($_POST["fk_id_sucursal"]) && ($_POST["fk_id_sucursal"]==NULL)?-1:$_POST["fk_id_sucursal"]),
                            (isset($_POST["fk_id_sistema_valoracion_inventario"]) && ($_POST["fk_id_sistema_valoracion_inventario"]==NULL)?-1:$_POST["fk_id_sistema_valoracion_inventario"]),
                            $_SESSION["authenticated_id_user"], 
                            $idTransaccion,
@@ -191,7 +191,7 @@ if ($action == 'list') {
                                 <th>C&oacute;digo</th>
                                 <th>Almacen</th>
                                 <th>Descripci&oacute;n</th>
-                                <th>Grupo</th>
+                                <th>Sucursal</th>
                                 <th>Valoraci&oacute;n Inventario</th>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>                    
@@ -204,7 +204,7 @@ if ($action == 'list') {
                                 <th>C&oacute;digo</th>
                                 <th>Almacen</th>
                                 <th>Descripci&oacute;n</th>
-                                <th>Grupo</th>
+                                <th>Sucursal</th>
                                 <th>Valoraci&oacute;n Inventario</th>
                                 <th>Modificaci&oacute;n</th>
                                 <th>Acciones</th>   
@@ -220,7 +220,7 @@ if ($action == 'list') {
                                     <td><?php echo $register['cod_almacen']; ?></td>
                                     <td><?php echo $register['almacen']; ?></td>
                                     <td><?php echo $register['descripcion']; ?></td>
-                                    <td><?php echo $register['grupo']; ?></td>
+                                    <td><?php echo $register['sucursal']; ?></td>
                                     <td><?php echo $register['sistema_valoracion_inventario']; ?></td>
                                     <td style="width: 120px;"><?php echo $register['fecha_transaccion']; ?></td>
                                     <td style="width: 80px; text-align: center">
@@ -335,27 +335,27 @@ if ($action == 'list') {
                                 </div>
                             </div> 
                             <div class="form-group col-lg-6">
-                                <label for="grupo">Grupo:</label>                                    
+                                <label for="fk_id_sucursal">Sucursal:</label>                                    
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <span  class="fa fa-bars" data-toggle="tooltip" data-placement="top" title="Opcional un valor de la lista."></span>                                        
                                     </span>
-                                    <select id="fk_id_grupo" name="fk_id_grupo" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
+                                    <select id="fk_id_sucursal" name="fk_id_sucursal" class="form-control" <?php echo($action == 'view_form' ? 'disabled="disabled"' : NULL); ?> >                                            
                                         <option value="" <?php 
-                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_grupo"] == NULL) ) { 
+                                        if ( ($action == 'insert_form') || ($objectEdit["fk_id_sucursal"] == NULL) ) { 
                                             echo ' selected="selected" ';
                                         }
                                         ?> ></option>
                                         <?php
-                                        $grupo = new Grupo($registry[$dbSystem]);
-                                        $result_grupo = $grupo->getList(Grupo::ALL,($_SESSION["authenticated_id_empresa"]==-1?Grupo::ALL:$_SESSION["authenticated_id_empresa"]));
-                                        foreach ($result_grupo as $indice => $register_grupo) {
+                                        $sucursal = new Sucursal($registry[$dbSystem]);
+                                        $result_sucursal = $sucursal->getList(Sucursal::ALL,($_SESSION["authenticated_id_empresa"]==-1?Sucursal::ALL:$_SESSION["authenticated_id_empresa"]));
+                                        foreach ($result_sucursal as $indice => $register_sucursal) {
                                         ?>
-                                        <option value="<?php echo $register_grupo["pk_id_grupo"]; ?>" <?php 
-                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_grupo"] == $register_grupo["pk_id_grupo"]) ) {
+                                        <option value="<?php echo $register_sucursal["pk_id_sucursal"]; ?>" <?php 
+                                            if ( ($action == 'edit_form' || $action == 'view_form') && ($objectEdit["fk_id_sucursal"] == $register_sucursal["pk_id_sucursal"]) ) {
                                                 echo ' selected="selected" ';
                                             }
-                                        ?> ><?php echo $register_grupo["grupo"]; ?></option>
+                                        ?> ><?php echo $register_sucursal["sucursal"]." (".$register_sucursal["numero"].")"; ?></option>
                                         <?php
                                         }
                                         ?>

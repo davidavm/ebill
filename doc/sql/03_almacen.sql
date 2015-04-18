@@ -5,7 +5,7 @@ DELIMITER //
 CREATE  PROCEDURE almacen_alta( pi_cod_almacen VARCHAR(255) ,
 											pi_almacen VARCHAR(255) ,
 											pi_descripcion TEXT ,
-											pi_fk_id_grupo INT(11) ,
+											pi_fk_id_sucursal INT(11) ,
 											pi_fk_id_sistema_valoracion_inventario INT(11) ,
 											
 											pi_usuario_transaccion INT(11) ,
@@ -19,7 +19,7 @@ BEGIN
         DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
-        DECLARE vf_id_grupo int;
+        DECLARE vf_id_sucursal int;
 
         DECLARE code VARCHAR(5) DEFAULT '00000';
         DECLARE msg TEXT;
@@ -43,16 +43,16 @@ BEGIN
 	CALL audit_insert(nombre_proceso, current_timestamp(), @resultado);
 	SELECT @resultado INTO v_res;
       
-        if pi_fk_id_grupo= -1 then
-        set vf_id_grupo = null;
+        if pi_fk_id_sucursal= -1 then
+        set vf_id_sucursal = null;
         else
-        set vf_id_grupo = pi_fk_id_grupo;
+        set vf_id_sucursal = pi_fk_id_sucursal;
         end if; 
 
       INSERT INTO almacen (cod_almacen  ,
 											almacen  ,
 											descripcion  ,
-											fk_id_grupo  ,
+											fk_id_sucursal  ,
 											fk_id_sistema_valoracion_inventario  ,
 											fecha_transaccion,
 											usuario_transaccion  ,
@@ -65,7 +65,7 @@ BEGIN
 									    pi_cod_almacen  ,
 											pi_almacen  ,
 											pi_descripcion  ,
-											vf_id_grupo  ,
+											vf_id_sucursal  ,
 											pi_fk_id_sistema_valoracion_inventario  ,
 											current_timestamp(),
 											pi_usuario_transaccion  ,
@@ -92,7 +92,7 @@ CREATE  PROCEDURE almacen_modif(	pi_pk_id_almacen INT(11) ,
 												pi_cod_almacen VARCHAR(255) ,
 												pi_almacen VARCHAR(255) ,
 												pi_descripcion TEXT ,
-												pi_fk_id_grupo INT(11) ,
+												pi_fk_id_sucursal INT(11) ,
 												pi_fk_id_sistema_valoracion_inventario INT(11) ,
 												
 												pi_usuario_transaccion INT(11) ,
@@ -105,7 +105,7 @@ BEGIN
     DECLARE v_res INT;
 	DECLARE v_cant_reg INT default 0;
 	DECLARE nombre_proceso VARCHAR(250);
-        DECLARE vf_id_grupo int;
+        DECLARE vf_id_sucursal int;
 	
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION	
     BEGIN		
@@ -122,17 +122,17 @@ BEGIN
 	CALL audit_insert(nombre_proceso, current_timestamp(), @resultado);
 	SELECT @resultado INTO v_res;
 
-        if pi_fk_id_grupo= -1 then
-        set vf_id_grupo = null;
+        if pi_fk_id_sucursal= -1 then
+        set vf_id_sucursal = null;
         else
-        set vf_id_grupo = pi_fk_id_grupo;
+        set vf_id_sucursal = pi_fk_id_sucursal;
         end if; 
 
       update almacen set         
 												cod_almacen = pi_cod_almacen ,
 												almacen =pi_almacen ,
 												descripcion = pi_descripcion ,
-												fk_id_grupo = vf_id_grupo,
+												fk_id_sucursal = vf_id_sucursal,
 												fk_id_sistema_valoracion_inventario = pi_fk_id_sistema_valoracion_inventario ,
 												fecha_transaccion = current_timestamp() ,
 												usuario_transaccion= pi_usuario_transaccion ,
