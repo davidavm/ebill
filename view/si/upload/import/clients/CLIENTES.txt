@@ -1,3 +1,0 @@
-codigo|razon_social|nit|direccion|telefono1|telefono2|telefono3|contacto|fk_id_rubro|fk_id_categoria|fk_id_departamento|fk_id_municipio|fk_id_vendedor|fecha1|fecha2|texto1|texto2
-CLI-001|TORRICO|4524857|AV. SANTA CRUZ ESQ. PEDRO BLANCO|4525481|707101412||luis almendras|1|1|1|1|1|2015-02-01|2015-02-01|cumples|aniversario jefe
-CLI-002|RIOS|3454857|AV. SANTA CRUZ ESQ. PEDRO BLANCO|3525481|607101412||SHIRLEY GUARDIA|1|1|1|1|1|2010-05-01|2010-07-01|ANIVERSARIO EMPRESA|CUMPLES JEFE

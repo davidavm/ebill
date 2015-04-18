@@ -11,6 +11,14 @@ $objImportacion = new ImportacionDatos($registry[$dbSystem]);
 // Prepare Transacction
 $transaction = new Transaccion($registry[$dbSystem]);
 
+ //manejo de session para el nombre del directorio temporal
+if (isset($_SESSION["fileupload_dirname"])) 
+ {
+    $tmpDirName = $_SESSION["fileupload_dirname"];
+ }
+   
+        
+ 
 // Data Action insert/delete/edit/view/insert_form/edit_form Capture, by default action is list
 $action = 'formulario';
 if (isset($_POST["action"])) {
@@ -40,11 +48,17 @@ if ($action == 'subir') {
 
         // Settings  c:\wamp\tmp\plupload
         //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-        $targetDir = "view/si/upload/import/clients";
-        //$targetDir = 'uploads';
+        
+        $targetDir = "view/si/upload/import/clients/".$_SESSION["authenticated_id_empresa"].'/'.$tmpDirName;
+        //$targetDir = "view/si/upload/import/clients/".$_SESSION["authenticated_id_empresa"];
+                
+//$targetDir = 'uploads';
         $cleanupTargetDir = true; // Remove old files
         $maxFileAge = 5 * 3600; // Temp file age in seconds
 
+        
+                                
+                                
 
         // Create target dir
         if (!file_exists($targetDir)) {
@@ -60,8 +74,8 @@ if ($action == 'subir') {
                 $fileName = uniqid("file_");
         }
 
-        $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
-
+        //$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
+        $filePath = $targetDir . '/' . $fileName;
         // Chunking might be enabled
         $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
         $chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
@@ -75,8 +89,18 @@ if ($action == 'subir') {
                 
               
                 while (($file = readdir($dir)) !== false) {
-                        $tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
+                     if($file!='.')
+                        if($file!='..')
+                        {
+                        $tmpfilePath = $targetDir . '/' . $file;
 
+                        
+                               $texto ="file = ".$file.' tmpdir '.$tmpfilePath;
+                                $file_read = fopen("files.log", "a");
+                                fwrite($file_read, $texto . PHP_EOL);                            
+                                fclose($file_read);  
+                                
+                                
                         // If temp file is current file proceed to the next
                         if ($tmpfilePath == "{$filePath}.part") {
                                 continue;
@@ -89,7 +113,8 @@ if ($action == 'subir') {
                     
                     // registro de los archivos en la base
                     if($file!='.')
-                        if($file!='..'){
+                        if($file!='..')
+                        {
                             $fileType = pathinfo($tmpfilePath,PATHINFO_EXTENSION);
                             $data = array($file,
                                             $fileType,
@@ -116,7 +141,10 @@ if ($action == 'subir') {
                         }
                   
                 }
+                   } 
                 closedir($dir);
+                 
+                 
         }	
 
 
@@ -157,6 +185,7 @@ if ($action == 'subir') {
                     $filename=$filePath;
                     $handle = fopen($filename, "r");
 
+                           
                     if ($handle) {
                         $cont = 1;
                         $insertados = 0;
@@ -184,27 +213,46 @@ if ($action == 'subir') {
                                            // REGISTRAR EN UNA TABLA DE LOS LOS ERRONEOS
                                        }
                                      }
-                                     $cont++;
+                                     $cont++;                         
+                        }
                         
-                                     
+                        $leidos = $cont-2;
+                        
                       // REGISTRO DE RESUMEN DE LA CARGA DE LOS DATOS
-                        $id_archivo_cargado =0;//falta un dato
+                        $id_archivo_cargado =$object->getIdFile($filename);
+                          
+                            $texto ="filename = ".$filename.' id '.$id_archivo_cargado[0]['pk_id_archivo'];
+                            $file = fopen("importacion.log", "a");
+                            fwrite($file, $texto . PHP_EOL);                            
+                            fclose($file);  
+                            
+                      
                         $mensaje_carga = $erroneos>0?'EXISTIO ERRORES EN LA CARGA':'CARGA CORRECTA';
                         $data_import = array(
-                                            $cont-1, // registros leidos
+                                            $leidos, // registros leidos
                                             $insertados, // registros ingresados
                                             $erroneos, //registros error
                                             $mensaje_carga, //mensaje de la carga
                                             562, //tipo_importacion_datos
-                                            $id_archivo_cargado,    //id del archivo cargado
+                                            $id_archivo_cargado[0]['pk_id_archivo'],    //id del archivo cargado
                                             $_SESSION["authenticated_id_user"], 
                                             $idTransaccion, 
                                             $idTransaccion, 
                                             ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])                                                                         
                                             );
+                        
+                        
                         $res_importacion = $objImportacion->insert($data_import); 
                         
-                        }
+                        if($res_importacion<0)
+                        {
+                            $texto ="error en el registro del log id = ".$res_importacion;
+                            $file = fopen("importacion.log", "a");
+                            fwrite($file, $texto . PHP_EOL);                            
+                            fclose($file);  
+                        } 
+                            
+                            
                       fclose($handle);
                     } else {
                         echo "No es posible abrir el archivo!!!!!!";

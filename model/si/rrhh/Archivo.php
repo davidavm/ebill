@@ -372,7 +372,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        private function randomNameFile() {
+        public function randomNameFile() {
             $resultado = "";
             try {
                 $str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
@@ -385,6 +385,55 @@
             return $resultado;
         }
 
+        /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function getIdFile($Archivo){
+            $result = null;
+            $query = null;
+           
+            try{
+                $query = " 	
+                         select 
+                                `pk_id_archivo` ,
+                                `nombre` ,
+                                `extension` ,
+                                `bytes` ,
+                                `ruta` ,
+                                `ruta2` ,
+                                `fk_id_tipo_archivo` ,
+                                date_format(`fecha_transaccion`,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,                                     
+                                `usuario_transaccion` ,
+                                `estado_registro`,
+                                `transaccion_creacion` ,
+                                `transaccion_modificacion` ,
+                                `fk_id_empresa`
+                                from archivo
+                                where `estado_registro`='A'
+                                ";
+
+                if( $Archivo != self::ALL){
+                $query = $query." and concat(ruta,'/',nombre) = ? ";
+                $result = DataBase::getArrayListQuery($query, array($Archivo), $this->instanceDataBase);
+                }
+                else{
+                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                }
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+        
     // }}}
     }
 ?>
