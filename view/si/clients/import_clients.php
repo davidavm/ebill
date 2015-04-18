@@ -6,6 +6,8 @@ $routeFull = $route . "&cf_jscss[0]=plupload&ci_jq[0]=plupload&ci_js[0]=messages
 
 // Prepare Object 
 $object = new Archivo($registry[$dbSystem]);
+$objFileCliente = new Cliente($registry[$dbSystem]);
+$objImportacion = new ImportacionDatos($registry[$dbSystem]);
 // Prepare Transacction
 $transaction = new Transaccion($registry[$dbSystem]);
 
@@ -37,8 +39,8 @@ if ($action == 'subir') {
         // usleep(5000);
 
         // Settings  c:\wamp\tmp\plupload
-        $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-        
+        //$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
+        $targetDir = "view/si/upload/import/clients";
         //$targetDir = 'uploads';
         $cleanupTargetDir = true; // Remove old files
         $maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -102,7 +104,15 @@ if ($action == 'subir') {
                                             ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])                        
                                               );
                     
-                            $object->insert($data);
+                            $res_upload_file = $object->insert($data);
+                            
+                            if($res_upload_file<0)
+                            {
+                                $texto ="error en el registro del log id = ".$res_upload_file;
+                                $file = fopen("clientes.log", "a");
+                                fwrite($file, $texto . PHP_EOL);                            
+                                fclose($file);  
+                            } 
                         }
                   
                 }
@@ -141,6 +151,67 @@ if ($action == 'subir') {
         if (!$chunks || $chunk == $chunks - 1) {
                 // Strip the temp .part suffix off 
                 rename("{$filePath}.part", $filePath);
+                
+                //#########################################################################               
+                    $separador="|";
+                    $filename=$filePath;
+                    $handle = fopen($filename, "r");
+
+                    if ($handle) {
+                        $cont = 1;
+                        $insertados = 0;
+                        $erroneos=0;
+                        while (($line = fgets($handle)) !== false) 
+                            {
+                                     if($cont!=1)
+                                     {
+                                       $data = explode($separador,$line);	 
+                                       array_push($data,
+                                                  $_SESSION["authenticated_id_user"], 
+                                                  $idTransaccion, 
+                                                  $idTransaccion, 
+                                                  ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])                        
+                                                 );
+                                       //mostrar el contenido
+                                       // INSERTAR A LA TABLA CLIENES
+                                       $res_insert = $objFileCliente->insert($data);
+                                       
+                                       if ($res_insert > 0 )
+                                          $insertados++;
+                                       else
+                                       {
+                                           $erroneos++;
+                                           // REGISTRAR EN UNA TABLA DE LOS LOS ERRONEOS
+                                       }
+                                     }
+                                     $cont++;
+                        
+                                     
+                      // REGISTRO DE RESUMEN DE LA CARGA DE LOS DATOS
+                        $id_archivo_cargado =0;//falta un dato
+                        $mensaje_carga = $erroneos>0?'EXISTIO ERRORES EN LA CARGA':'CARGA CORRECTA';
+                        $data_import = array(
+                                            $cont-1, // registros leidos
+                                            $insertados, // registros ingresados
+                                            $erroneos, //registros error
+                                            $mensaje_carga, //mensaje de la carga
+                                            562, //tipo_importacion_datos
+                                            $id_archivo_cargado,    //id del archivo cargado
+                                            $_SESSION["authenticated_id_user"], 
+                                            $idTransaccion, 
+                                            $idTransaccion, 
+                                            ($_SESSION["authenticated_id_empresa"]==-1 ? NULL : $_SESSION["authenticated_id_empresa"])                                                                         
+                                            );
+                        $res_importacion = $objImportacion->insert($data_import); 
+                        
+                        }
+                      fclose($handle);
+                    } else {
+                        echo "No es posible abrir el archivo!!!!!!";
+                    } 
+    //#########################################################################               
+           
+
         }
 
         // Return Success JSON-RPC response
@@ -190,4 +261,5 @@ if ($action == 'formulario'){
   </div>
 </div>
 <?php
-}
+ }
+?>
