@@ -179,7 +179,7 @@
         
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call empresa_alta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
+                $sentencia = $gbd->prepare("call empresa_alta(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado);  ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -196,7 +196,6 @@
                 $sentencia->bindParam(14, $datos[13], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(15, $datos[14], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(16, $datos[15], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000);                                 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();
@@ -271,7 +270,7 @@
          
                 $gbd=$this->instanceDataBase;
                   
-                $sentencia = $gbd->prepare("call empresa_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
+                $sentencia = $gbd->prepare("call empresa_modif(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,@resultado); ");
                 $sentencia->bindParam(1, $datos[0], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(2, $datos[1], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(3, $datos[2], PDO::PARAM_STR, 4000); 
@@ -288,7 +287,6 @@
                 $sentencia->bindParam(14, $datos[13], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(15, $datos[14], PDO::PARAM_STR, 4000); 
                 $sentencia->bindParam(16, $datos[15], PDO::PARAM_STR, 4000); 
-                $sentencia->bindParam(17, $datos[16], PDO::PARAM_STR, 4000); 
 
                 // llamar al procedimiento almacenado
                 $sentencia->execute();

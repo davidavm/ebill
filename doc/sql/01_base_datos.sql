@@ -4,7 +4,7 @@
 -- Project :      EBIL
 -- Author :       wallejlla
 --
--- Date Created : Saturday, April 18, 2015 01:47:59
+-- Date Created : Saturday, April 18, 2015 03:43:27
 -- Target DBMS : MySQL 5.x
 --
 
@@ -37,8 +37,8 @@ CREATE TABLE almacen(
     cod_almacen                            VARCHAR(255),
     almacen                                VARCHAR(255),
     descripcion                            TEXT,
-    fk_id_grupo                            INT,
     fk_id_sistema_valoracion_inventario    INT,
+    fk_id_sucursal                         INT,
     fecha_transaccion                      DATETIME        NOT NULL,
     usuario_transaccion                    INT,
     estado_registro                        VARCHAR(32),
@@ -613,6 +613,7 @@ CREATE TABLE item(
     saldo_minimo                  DECIMAL(15, 5),
     fk_id_proveedor               INT,
     fk_id_archivo_imagen          INT,
+    fk_id_grupo                   INT,
     fecha_transaccion             DATETIME          NOT NULL,
     usuario_transaccion           INT,
     estado_registro               VARCHAR(32),
@@ -1096,14 +1097,14 @@ ALTER TABLE almacen ADD CONSTRAINT Refempresa379
     REFERENCES empresa(pk_id_empresa)
 ;
 
-ALTER TABLE almacen ADD CONSTRAINT Refgrupo382 
-    FOREIGN KEY (fk_id_grupo)
-    REFERENCES grupo(pk_id_grupo)
-;
-
 ALTER TABLE almacen ADD CONSTRAINT Refcatalogo384 
     FOREIGN KEY (fk_id_sistema_valoracion_inventario)
     REFERENCES catalogo(pk_id_catalogo)
+;
+
+ALTER TABLE almacen ADD CONSTRAINT Refsucursal493 
+    FOREIGN KEY (fk_id_sucursal)
+    REFERENCES sucursal(pk_id_sucursal)
 ;
 
 
@@ -2029,6 +2030,11 @@ ALTER TABLE item ADD CONSTRAINT Reftransaccion_log229
 ALTER TABLE item ADD CONSTRAINT Refempresa241 
     FOREIGN KEY (fk_id_empresa)
     REFERENCES empresa(pk_id_empresa)
+;
+
+ALTER TABLE item ADD CONSTRAINT Refgrupo492 
+    FOREIGN KEY (fk_id_grupo)
+    REFERENCES grupo(pk_id_grupo)
 ;
 
 

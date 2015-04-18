@@ -91,7 +91,7 @@ if ($action == 'list') {
    
     <div class="page-title">
         <div class="title-env">
-            <h1 class="title"><i class="fa fa-user"></i> Clientees</h1>
+            <h1 class="title"><i class="fa fa-user"></i> Clientes</h1>
             <p class="description">En esta p&aacute;gina podr&aacute; realizar operaciones relacionadas con los datos de vendedores.</p>
         </div>
 
