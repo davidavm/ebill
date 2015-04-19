@@ -95,7 +95,7 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
-        public function getList($idItem = self::ALL){
+        public function getList($idItem = self::ALL, $idEmpresa = self::ALL){
             $result = null;
             $query = null;
             try{
@@ -107,6 +107,7 @@
                              descripcion ,
                              caracteristicas_especiales ,
                              fk_id_unidad_medida ,
+                             ( select abreviacion from unidad_medida where pk_id_unidad_medida = a.fk_id_unidad_medida ) unidad_medida,
                              cantidad ,
                              costo_unitario ,
                              precio_unitario ,
@@ -119,18 +120,32 @@
                              estado_registro ,
                              transaccion_creacion ,
                              transaccion_modificacion ,
-                             fk_id_empresa
-                        from item
-                        where estado_registro='A'
+                             fk_id_empresa,
+                             fk_id_grupo,
+                             (select fk_id_grupo_padre 
+                              from grupo 
+                              where estado_registro = 'A' and pk_id_grupo = a.fk_id_grupo) fk_id_grupo_padre 
+                        from item a
+                        where estado_registro='A' 
                         ";
 
                 if( $idItem != self::ALL){
-                $query = $query." and a.pk_id_item = ?";
-                $result = DataBase::getArrayListQuery($query, array($idItem), $this->instanceDataBase);
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_item = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idItem, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_item = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idItem), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
                 }
-                else{
-                $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
-                }
+
                 return $result;
             }
             catch(PDOException $e){

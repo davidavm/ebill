@@ -94,6 +94,132 @@
      * @since      Available from the version  1.0 01-01-2015.
      * @deprecated No.
      */
+        public function getListOffSpring($idGrupo = self::ALL, $idEmpresa = self::ALL){
+            $result = null;
+            $query = null;
+            try{
+                $query = "	select    pk_id_grupo ,
+                                            fk_id_grupo_padre ,
+                                            (select gp.grupo
+                                                 from grupo gp
+                                                 where gp.pk_id_grupo=a.fk_id_grupo_padre
+                                                 and gp.estado_registro='A') as grupo_padre,
+                                            grupo ,
+                                            descripcion ,
+                                            fk_id_tipo_grupo ,
+                                            (select c.descripcion
+                                                 from catalogo c
+                                                 where  c.pk_id_catalogo=a.fk_id_tipo_grupo
+                                                 and c.catalogo = 'tipo_grupo'
+                                                 and c.estado_registro='A') as tipo_grupo,
+                                            date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
+                                            usuario_transaccion ,
+                                            estado_registro ,
+                                            transaccion_creacion ,
+                                            transaccion_modificacion ,
+                                            fk_id_empresa 
+                                         from grupo a
+                                         where estado_registro = 'A' 
+                                         ";
+
+                if( $idGrupo != self::ALL){
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_grupo_padre = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idGrupo, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND fk_id_grupo_padre = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idGrupo), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
+                }
+                                
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+        
+    /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
+        public function getListFathers($idGrupo = self::ALL, $idEmpresa = self::ALL){
+            $result = null;
+            $query = null;
+            try{
+                $query = "	select    pk_id_grupo ,
+                                            fk_id_grupo_padre ,
+                                            (select gp.grupo
+                                                 from grupo gp
+                                                 where gp.pk_id_grupo=a.fk_id_grupo_padre
+                                                 and gp.estado_registro='A') as grupo_padre,
+                                            grupo ,
+                                            descripcion ,
+                                            fk_id_tipo_grupo ,
+                                            (select c.descripcion
+                                                 from catalogo c
+                                                 where  c.pk_id_catalogo=a.fk_id_tipo_grupo
+                                                 and c.catalogo = 'tipo_grupo'
+                                                 and c.estado_registro='A') as tipo_grupo,
+                                            date_format(fecha_transaccion,'%Y-%m-%d %H:%i-%s')  as fecha_transaccion,
+                                            usuario_transaccion ,
+                                            estado_registro ,
+                                            transaccion_creacion ,
+                                            transaccion_modificacion ,
+                                            fk_id_empresa 
+                                         from grupo a
+                                         where estado_registro = 'A' 
+                                         and a.fk_id_tipo_grupo = 460 ";
+
+                if( $idGrupo != self::ALL){
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND pk_id_grupo = ? AND fk_id_empresa = ? ";
+                        $result = DataBase::getArrayListQuery($query, array($idGrupo, $idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $query = $query." AND pk_id_grupo = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idGrupo), $this->instanceDataBase);
+                    }                
+                } else{
+                    if($idEmpresa != self::ALL){
+                        $query = $query." AND fk_id_empresa = ?";
+                        $result = DataBase::getArrayListQuery($query, array($idEmpresa), $this->instanceDataBase);
+                    } else{
+                        $result = DataBase::getArrayListQuery($query,array(), $this->instanceDataBase);
+                    }
+                }
+                
+                return $result;
+            }
+            catch(PDOException $e){
+                throw $e;
+            }            
+        }
+        
+    /**
+     * The implementation method for query to the instance data Base.
+     *
+     * @throws None.
+     *
+     * @access     public
+     * @static     No.
+     * @see        None.
+     * @since      Available from the version  1.0 01-01-2015.
+     * @deprecated No.
+     */
         public function getList($idGrupo = self::ALL, $idEmpresa = self::ALL, $notInGrupo = self::ALL){
             $result = null;
             $query = null;
